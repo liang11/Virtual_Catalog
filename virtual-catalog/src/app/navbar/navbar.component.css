@@ -1,7 +1,7 @@
 
 .navbar {
   background-color: #343a40;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 2rem;
   color: rgba(255, 255, 255, 0.75);
   display: flex;
   align-items: center;
@@ -9,6 +9,7 @@
 
 .navbar-brand {
   filter: saturate(175%) contrast(65%);
+  padding-top: 0.5rem;
 }
 
 .fixed-top {
@@ -16,19 +17,18 @@
   top: 0;
 }
 
-.navbar-items {
+.navbar-item-list {
   display: flex;
   cursor: pointer;
   margin-left: auto;
 }
 
-.item {
-  padding: 8px;
+.navbar-item {
+  padding: 0.5rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.navbar-items .item:hover {
+.navbar-item-list .navbar-item:hover {
   color: aliceblue;
-  filter: saturate(100%);
 }
 
