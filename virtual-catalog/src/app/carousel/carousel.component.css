@@ -1,0 +1,13 @@
+
+.big-carousel {
+    display: flex;
+    background-color: aqua;
+    margin: 5rem;
+    padding: 2rem;
+    justify-content: center;
+}
+
+.imagen {
+    display: flex;
+    justify-content: center;
+}
