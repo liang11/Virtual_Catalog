@@ -35,7 +35,7 @@
 }
 
 .icon:hover {
-    filter: contrast(50%);
+    filter: contrast(15%);
 }
 
 .no-cursor {

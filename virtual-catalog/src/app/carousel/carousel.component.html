@@ -1,12 +1,17 @@
-<ngb-carousel class="big-carousel imagen" *ngIf="images">
-    <ng-template ngbSlide >
-        <img [src]="images[0]" alt="Random first slide">
-        <div class="carousel-caption">
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+<ngb-carousel class="main-carousel" *ngIf="images">
+    <ng-template ngbSlide>
+        <div class="center-image">
+            <img src="../../assets/imgs/book_icon.png">
+        </div>
+        <div class="catalog-msg">
+            <h3>Catálogo de Productos</h3>
+            <p class="description">Genera tu propio catálogo de productos. Podrás<br> ver fotos, descripción, precio y muchos más datos de tu interés.</p>
+        </div>
+        <div class="align-button">
+            <button class="button-style" mat-button>Nuevo</button>
         </div>
     </ng-template>
-    <ng-template ngbSlide>
+    <!-- <ng-template ngbSlide>
         <img [src]="images[1]" alt="Random second slide">
         <div class="carousel-caption">
             <h3>Second slide label</h3>
@@ -19,5 +24,5 @@
             <h3>Third slide label</h3>
             <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
         </div>
-    </ng-template>
+    </ng-template> -->
 </ngb-carousel>
