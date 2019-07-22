@@ -46,3 +46,8 @@
     display: flex;
     justify-content: center;
 }
+
+.space-around {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
