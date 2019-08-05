@@ -14,15 +14,15 @@ export class DropDownMultiselectComponent implements OnInit {
   dropdownSettings = {};
   ngOnInit() {
     this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' }
+      { item_id: 1, item_text: 'Alimentos' },
+      { item_id: 2, item_text: 'Bebidas' },
+      { item_id: 3, item_text: 'Cuidado Personal' },
+      { item_id: 4, item_text: 'Cuidado del Hogar' }
+      //{ item_id: 5, item_text: 'New Delhi' }
     ];
     this.selectedItems = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' }
+      { item_id: 1, item_text: 'Alimentos' },
+      { item_id: 2, item_text: 'Bebidas' }
     ];
     this.dropdownSettings = {
       singleSelection: false,
