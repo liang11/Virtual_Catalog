@@ -4,6 +4,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -12,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { FilterComponent } from './filter/filter.component';
 import { DropDownMultiselectComponent } from './drop-down-multiselect/drop-down-multiselect.component';
+import { ServiceVirtualCatalogService } from './service-virtual-catalog.service';
 
 @NgModule({
   declarations: [
@@ -29,9 +32,11 @@ import { DropDownMultiselectComponent } from './drop-down-multiselect/drop-down-
     NgbModule,
     NgMultiSelectDropDownModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MultiSelectModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [ServiceVirtualCatalogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

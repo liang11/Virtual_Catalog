@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ServiceVirtualCatalogService } from '../service-virtual-catalog.service';
+import { family } from '../classes/family';
 
 @Component({
   selector: 'home',
