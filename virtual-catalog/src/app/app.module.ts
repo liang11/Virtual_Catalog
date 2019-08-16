@@ -5,6 +5,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {SpinnerModule} from 'primeng/spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -15,6 +17,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { FilterComponent } from './filter/filter.component';
 import { DropDownMultiselectComponent } from './drop-down-multiselect/drop-down-multiselect.component';
 import { ServiceVirtualCatalogService } from './service-virtual-catalog.service';
+import { CatalogComponent } from './catalog/catalog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,8 @@ import { ServiceVirtualCatalogService } from './service-virtual-catalog.service'
     FooterComponent,
     CarouselComponent,
     FilterComponent,
-    DropDownMultiselectComponent
+    DropDownMultiselectComponent,
+    CatalogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,9 @@ import { ServiceVirtualCatalogService } from './service-virtual-catalog.service'
     FormsModule,
     ReactiveFormsModule,
     MultiSelectModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RadioButtonModule,
+    SpinnerModule
   ],
   providers: [ServiceVirtualCatalogService],
   bootstrap: [AppComponent]

@@ -63,30 +63,42 @@
     <div class="form-container">
         <form class="row">
             <div class="column">
-                <h3>Familia</h3>
-                <drop-down-multiselect [listData]="listFamily" (listDataOutput)="selectedFamilies($event)"
-                    class="space-around"></drop-down-multiselect>
-                <h3>SubFamilia</h3>
-                <drop-down-multiselect [listData]="listSubFamilyFiltered" (listDataOutput)="selectedSubFamilies($event)"
-                    class="space-around"></drop-down-multiselect>
-                <h3>Índice de Penetración</h3>
+                <h4>Familia</h4>
+                <drop-down-multiselect [listData]="listFamily" [selectedItems]="listFamilySelected"
+                    (listDataOutput)="selectedFamilies($event)" class="space-around"></drop-down-multiselect>
+                <h4>SubFamilia</h4>
+                <drop-down-multiselect [listData]="listSubFamilyFiltered" [selectedItems]="listSubFamilySelected"
+                    (listDataOutput)="selectedSubFamilies($event)" class="space-around"></drop-down-multiselect>
+                <h4>Categoría</h4>
+                <drop-down-multiselect [listData]="listCategoryFiltered" [selectedItems]="listCategorySelected"
+                    (listDataOutput)="selectedCategories($event)" class="space-around"></drop-down-multiselect>
+                <h4>SubCategoría</h4>
+                <drop-down-multiselect [listData]="listSubCategoryFiltered" [selectedItems]="listSubCategorySelected"
+                    (listDataOutput)="selectedSubCategories($event)" class="space-around">
+                </drop-down-multiselect>
+                <h4>SubSubCategoría</h4>
                 <drop-down-multiselect class="space-around"></drop-down-multiselect>
             </div>
 
             <div class="column">
-                <h3>Categoría</h3>
-                <drop-down-multiselect [listData]="listCategoryFiltered" (listDataOutput)="selectedCategories($event)"
-                    class="space-around"></drop-down-multiselect>
-                <h3>SubCategoría</h3>
-                <drop-down-multiselect [listData]="listSubCategoryFiltered" class="space-around">
-                </drop-down-multiselect>
-                <h3>SubSubCategoría</h3>
+                <h4>Índice de Penetración</h4>
                 <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                <h4>Producto Nuevo</h4>
+                    <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si" [(ngModel)]="selectedValue"></p-radioButton>
+                    <p-radioButton name="groupname" class="space-around" value="No" label="No" [(ngModel)]="selectedValue"></p-radioButton>
+                <h4>Item x página</h4>
+                <p-spinner [(ngModel)]="spinner" name="spinner" [min]="0" [max]="100" class="space-around"></p-spinner>
+                <h4>Producto Inidividual</h4>
+                <div class="ui-inputgroup" class="space-around">
+                    <input type="text" [(ngModel)]="property" name="property" placeholder="Product">
+                    <button pButton type="button" class="addButton">Agregar</button>
+                </div>
+
             </div>
         </form>
 
         <div class="align-button">
-            <button class="button-style" routerLink="/filter" mat-button>Generar Catálogo</button>
+            <button (click)="generateCatalog()" class="button-style" routerLink="/catalog" [state]="{ data: {x: selectedValue}}" mat-button>Generar Catálogo</button>
         </div>
 
     </div>

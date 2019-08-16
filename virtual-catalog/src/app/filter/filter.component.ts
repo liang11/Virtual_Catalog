@@ -18,43 +18,79 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listCategoryFiltered: any[] = [];
   listSubCategoryFiltered: any[] = [];
 
+  listFamilySelected: any[] = [];
+  listSubFamilySelected: any[] = [];
+  listCategorySelected: any[] = [];
+  listSubCategorySelected: any[] = [];
+
+  selectedValue: string = "No";
+  property: string = ""
+  spinner: number = 4;
+
   constructor(private service: ServiceVirtualCatalogService) {
   }
 
   selectedFamilies(data: family[]) {
-    console.log("Recibi lo siguiente:");
-    console.log(data);
+    //console.log("Recibi lo siguiente:");;
+    this.listFamilySelected = data;
     this.listSubFamilyFiltered = [];
-    data.forEach(element => {
+    let temp: any[] = [];
+    //console.log(this.listFamilySelected);
+    this.listFamilySelected.forEach(element => {
       this.listSubFamily.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
-        this.listSubFamilyFiltered.push(item);
+        if (!this.listSubFamilyFiltered.some(e => e.name == item.name)) {
+          this.listSubFamilyFiltered.push(item);
+        }
+      });
+      this.listSubFamilySelected.filter((data) => data.parent_id == element.name).forEach(item => {
+        temp.push(item);
       });
     });
-    console.log("ListSubFamily");
-    console.log(this.listSubFamilyFiltered);
+    this.selectedSubFamilies(temp);
   }
 
   selectedSubFamilies(data: subFamily[]) {
-    // console.log("entre cateogira");
-    // console.log(data);
+    //console.log("selectedSubFamilies");
+    this.listSubFamilySelected = data;
     this.listCategoryFiltered = [];
-    data.forEach(element => {
-      this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
-        this.listCategoryFiltered.push(item);
-        //console.log(item);
+    let temp: any[] = [];
+    //console.log(this.listSubFamilySelected);
+    this.listSubFamilySelected.forEach(element => {
+      this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach((item,index) => {
+        if (!this.listCategoryFiltered.some(e => e.name == item.name)) {
+          this.listCategoryFiltered.push(item);
+        }
+      });
+      this.listCategorySelected.filter((data) => data.parent_id == element.name).forEach(item => {
+        temp.push(item);
       });
     });
+    this.selectedCategories(temp);
   }
 
   selectedCategories(data: subFamily[]) {
-    console.log("entre cateogira");
-    console.log(data);
+    //console.log("selectedCategories");
+    this.listCategorySelected = data;
     this.listSubCategoryFiltered = [];
+    let temp: any[] = [];
+    //console.log(this.listCategorySelected);
     data.forEach(element => {
       this.listSubCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
-        this.listSubCategoryFiltered.push(item);
+        if (!this.listSubCategoryFiltered.some(e => e.name == item.name)) {
+          this.listSubCategoryFiltered.push(item);
+        }
+      });
+      this.listSubCategorySelected.filter((data) => data.parent_id == element.name).forEach(item => {
+        temp.push(item);
       });
     });
+    this.selectedSubCategories(temp);
+  }
+
+  selectedSubCategories(data: subFamily[]) {
+    // console.log("entre a carga subcategorias");
+    // console.log(data);
+    this.listSubCategorySelected = data;
   }
 
   ngOnInit() {
@@ -74,6 +110,23 @@ export class FilterComponent implements OnInit, AfterViewInit {
       //console.log(subCategorias);
       this.listSubCategoria = subCategorias;
     })
+  }
+
+  generateCatalog() {
+    console.log("Generando Catálogo...");
+    console.log("Familias");
+    console.log(this.listFamilySelected);
+    console.log("SubFamilias");
+    console.log(this.listSubFamilySelected);
+    console.log("Categorías");
+    console.log(this.listCategorySelected);
+    console.log("SubCategorías");
+    console.log(this.listSubCategorySelected);
+    console.log("Producto Nuevo");
+    console.log(this.selectedValue);
+    console.log("Items por página");
+    console.log(this.spinner);
+    console.log(this.property);
   }
 
   ngAfterViewInit() {
