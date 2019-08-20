@@ -18,6 +18,7 @@ import { FilterComponent } from './filter/filter.component';
 import { DropDownMultiselectComponent } from './drop-down-multiselect/drop-down-multiselect.component';
 import { ServiceVirtualCatalogService } from './service-virtual-catalog.service';
 import { CatalogComponent } from './catalog/catalog.component';
+import { DataStorage } from './Service/DataStorage';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { CatalogComponent } from './catalog/catalog.component';
     RadioButtonModule,
     SpinnerModule
   ],
-  providers: [ServiceVirtualCatalogService],
+  providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

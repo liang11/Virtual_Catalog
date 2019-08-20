@@ -35,7 +35,17 @@ export class DropDownMultiselectComponent implements OnChanges {
       this.optionList = [];
       this.listData.forEach(element => {
         this.optionList.push({ label: element.name, value: element });
+        this.optionList.sort(function (a, b) {
+          if (a.label > b.label) {
+            return 1;
+          }
+          if (a.label < b.label) {
+            return -1;
+          }
+          return 0;
+        });
       });
     }
   }
+
 }

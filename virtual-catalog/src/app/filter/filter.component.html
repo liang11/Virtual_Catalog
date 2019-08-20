@@ -88,7 +88,7 @@
                     <p-radioButton name="groupname" class="space-around" value="No" label="No" [(ngModel)]="selectedValue"></p-radioButton>
                 <h4>Item x página</h4>
                 <p-spinner [(ngModel)]="spinner" name="spinner" [min]="0" [max]="100" class="space-around"></p-spinner>
-                <h4>Producto Inidividual</h4>
+                <h4>Producto</h4>
                 <div class="ui-inputgroup" class="space-around">
                     <input type="text" [(ngModel)]="property" name="property" placeholder="Product">
                     <button pButton type="button" class="addButton">Agregar</button>
@@ -98,7 +98,7 @@
         </form>
 
         <div class="align-button">
-            <button (click)="generateCatalog()" class="button-style" routerLink="/catalog" [state]="{ data: {x: selectedValue}}" mat-button>Generar Catálogo</button>
+           <button (click)="generateCatalog()"  routerLink="/catalog" class="button-style" mat-button>Generar Catálogo</button> 
         </div>
 
     </div>

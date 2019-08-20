@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ServiceVirtualCatalogService } from '../service-virtual-catalog.service';
 import { family } from '../classes/family';
 import { subFamily } from '../classes/subFamily';
+import { DataStorage } from '../Service/DataStorage';
 
 @Component({
   selector: 'filter',
@@ -27,7 +28,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   property: string = ""
   spinner: number = 4;
 
-  constructor(private service: ServiceVirtualCatalogService) {
+  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) {
   }
 
   selectedFamilies(data: family[]) {
@@ -56,7 +57,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     let temp: any[] = [];
     //console.log(this.listSubFamilySelected);
     this.listSubFamilySelected.forEach(element => {
-      this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach((item,index) => {
+      this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach((item, index) => {
         if (!this.listCategoryFiltered.some(e => e.name == item.name)) {
           this.listCategoryFiltered.push(item);
         }
@@ -127,6 +128,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
     console.log("Items por página");
     console.log(this.spinner);
     console.log(this.property);
+
+    this._data.data = {
+      familyList: this.listFamilySelected,
+      subFamilyList: this.listSubFamilySelected,
+      categoryList: this.listCategorySelected,
+      subCategoryList: this.listSubCategorySelected,
+      selectedValue: this.selectedValue,
+      spinner: this.spinner
+    }
   }
 
   ngAfterViewInit() {

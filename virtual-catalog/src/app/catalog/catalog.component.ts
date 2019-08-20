@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataStorage } from '../Service/DataStorage';
 
 @Component({
   selector: 'app-catalog',
@@ -7,14 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CatalogComponent implements OnInit {
 
-  spinnerNumber: number;
+  sub: any[];
 
-  constructor() { 
-    //this.spinnerNumber = history.state.data.spinner;
-    console.log(history.state.data);
+  constructor(private _data: DataStorage) { 
+    console.log(this._data.data);
   }
 
   ngOnInit() {
+    
   }
 
 }
