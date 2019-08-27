@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ViewEncapsulation } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'drop-down-multiselect',
   templateUrl: './drop-down-multiselect.component.html',
-  styleUrls: ['./drop-down-multiselect.component.css']
+  styleUrls: ['./drop-down-multiselect.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DropDownMultiselectComponent implements OnChanges {
 
@@ -13,7 +14,7 @@ export class DropDownMultiselectComponent implements OnChanges {
 
   optionList: SelectItem[] = [];
 
-  @Input() public selectedItems: { id: number, parent_id: string, name: string }[] = [];
+  @Input() public selectedItems: any[] = [];
   dropdownSettings = {};
 
   constructor() {

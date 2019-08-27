@@ -1,0 +1,7 @@
+
+.space-around {
+    background-color: aquamarine;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+}

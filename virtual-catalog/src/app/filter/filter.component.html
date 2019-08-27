@@ -60,46 +60,120 @@
 
 <div class="filter-page">
     <h1 class="filter_page-title">Configuración</h1>
+    <hr width=100% size=1>
     <div class="form-container">
-        <form class="row">
-            <div class="column">
-                <h4>Familia</h4>
-                <drop-down-multiselect [listData]="listFamily" [selectedItems]="listFamilySelected"
-                    (listDataOutput)="selectedFamilies($event)" class="space-around"></drop-down-multiselect>
-                <h4>SubFamilia</h4>
-                <drop-down-multiselect [listData]="listSubFamilyFiltered" [selectedItems]="listSubFamilySelected"
-                    (listDataOutput)="selectedSubFamilies($event)" class="space-around"></drop-down-multiselect>
-                <h4>Categoría</h4>
-                <drop-down-multiselect [listData]="listCategoryFiltered" [selectedItems]="listCategorySelected"
-                    (listDataOutput)="selectedCategories($event)" class="space-around"></drop-down-multiselect>
-                <h4>SubCategoría</h4>
-                <drop-down-multiselect [listData]="listSubCategoryFiltered" [selectedItems]="listSubCategorySelected"
-                    (listDataOutput)="selectedSubCategories($event)" class="space-around">
-                </drop-down-multiselect>
-                <h4>SubSubCategoría</h4>
-                <drop-down-multiselect class="space-around"></drop-down-multiselect>
+        <div class="row">
+            <div class="row underline">
+                <h3> Opciones de Selección </h3>
             </div>
-
-            <div class="column">
-                <h4>Índice de Penetración</h4>
-                <drop-down-multiselect class="space-around"></drop-down-multiselect>
-                <h4>Producto Nuevo</h4>
-                    <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si" [(ngModel)]="selectedValue"></p-radioButton>
-                    <p-radioButton name="groupname" class="space-around" value="No" label="No" [(ngModel)]="selectedValue"></p-radioButton>
-                <h4>Item x página</h4>
-                <p-spinner [(ngModel)]="spinner" name="spinner" [min]="0" [max]="100" class="space-around"></p-spinner>
-                <h4>Producto</h4>
-                <div class="ui-inputgroup" class="space-around">
-                    <input type="text" [(ngModel)]="property" name="property" placeholder="Product">
-                    <button pButton type="button" class="addButton">Agregar</button>
+            <div class="row">
+                <div class="column">
+                    <h4>Actividad Comercial (Índice de Penetración)</h4>
+                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                    <h4>Código del Cliente</h4>
+                    <div class="input-group space-around">
+                        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                    </div>
+                    <h4>Histórico de Venta</h4>
+                    <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si"
+                        [(ngModel)]="selectedValue"></p-radioButton>
+                    <p-radioButton name="groupname" class="space-around-noBottom" value="No" label="No"
+                        [(ngModel)]="selectedValue">
+                    </p-radioButton>
+                    <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
+                        [(ngModel)]="selectedValue">
+                    </p-radioButton>
                 </div>
 
+                <div class="column">
+                    <h4>Especialidad</h4>
+                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                    <h4>Dirección</h4>
+                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                    <h4>Ocasión de Uso</h4>
+                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                </div>
             </div>
-        </form>
 
-        <div class="align-button">
-           <button (click)="generateCatalog()"  routerLink="/catalog" class="button-style" mat-button>Generar Catálogo</button> 
+            <div class="row">
+                <hr width=95%>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <h4>Familia</h4>
+                    <drop-down-multiselect [listData]="listFamily" [selectedItems]="listFamilySelected"
+                        (listDataOutput)="selectedFamilies($event)" class="space-around"></drop-down-multiselect>
+                    <h4>SubFamilia</h4>
+                    <drop-down-multiselect [listData]="listSubFamilyFiltered" [selectedItems]="listSubFamilySelected"
+                        (listDataOutput)="selectedSubFamilies($event)" class="space-around"></drop-down-multiselect>
+                    <h4>Categoría</h4>
+                    <drop-down-multiselect [listData]="listCategoryFiltered" [selectedItems]="listCategorySelected"
+                        (listDataOutput)="selectedCategories($event)" class="space-around"></drop-down-multiselect>
+                </div>
+
+                <div class="column">
+                    <h4>SubCategoría</h4>
+                    <drop-down-multiselect [listData]="listSubCategoryFiltered"
+                        [selectedItems]="listSubCategorySelected" (listDataOutput)="selectedSubCategories($event)"
+                        class="space-around">
+                    </drop-down-multiselect>
+                    <h4>SubSubCategoría</h4>
+                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                    <h4>Producto Individual</h4>
+                    <drop-down-multiselect [listData]="listProducts" (listDataOutput)="selectedProducts($event)"
+                        class="space-around">
+                    </drop-down-multiselect>
+                </div>
+            </div>
         </div>
+    </div>
 
+    <div class="form-container">
+        <div class="row underline">
+            <h3> Opciones de Visualización </h3>
+        </div>
+        <div class="row">
+            <div class="column">
+                <h4>Precio</h4>
+                <p-radioButton name="groupname6" class="space-around-noBottom" value="Si" label="Si"
+                    [(ngModel)]="selectedValuePrice"></p-radioButton>
+                <p-radioButton name="groupname6" class="space-around" value="No" label="No"
+                    [(ngModel)]="selectedValuePrice">
+                </p-radioButton>
+                <h4>Descripción</h4>
+                <p-radioButton name="groupname3" class="space-around-noBottom" value="Si" label="Si"
+                    [(ngModel)]="selectedValueDescripcion"></p-radioButton>
+                <p-radioButton name="groupname3" class="space-around" value="No" label="No"
+                    [(ngModel)]="selectedValueDescripcion">
+                </p-radioButton>
+                <h4>Item x página</h4>
+                <p-spinner [(ngModel)]="spinner" name="spinner" [min]="0" [max]="100" class="space-around"></p-spinner>
+            </div>
+
+            <div class="column">
+                <h4>Tamaño de Imagen</h4>
+                <p-radioButton name="groupname5" class="space-around-noBottom" value="S" label="S"
+                    [(ngModel)]="selectedValueSize"></p-radioButton>
+                <p-radioButton name="groupname5" class="space-around-noBottom" value="M" label="M"
+                    [(ngModel)]="selectedValueSize">
+                </p-radioButton>
+                <p-radioButton name="groupname1" class="space-around" value="L" label="L"
+                    [(ngModel)]="selectedValueSize">
+                </p-radioButton>
+                <h4>Promociones</h4>
+                <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
+                    [(ngModel)]="selectedValuePromocion"></p-radioButton>
+                <p-radioButton name="groupname4" class="space-around" value="No" label="No"
+                    [(ngModel)]="selectedValuePromocion">
+                </p-radioButton>
+            </div>
+
+            <div class="row align-button">
+                <hr width=95%>
+                <button (click)="generateCatalog()" routerLink="/catalog" class="button-style" mat-button>Generar
+                    Catálogo</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -3,6 +3,7 @@ import { ServiceVirtualCatalogService } from '../service-virtual-catalog.service
 import { family } from '../classes/family';
 import { subFamily } from '../classes/subFamily';
 import { DataStorage } from '../Service/DataStorage';
+import { product } from '../classes/product';
 
 @Component({
   selector: 'filter',
@@ -11,6 +12,7 @@ import { DataStorage } from '../Service/DataStorage';
 })
 export class FilterComponent implements OnInit, AfterViewInit {
 
+  listProducts: any[] = [];
   listFamily: any[] = [];
   listSubFamily: any[] = [];
   listCategoria: any[] = [];
@@ -23,8 +25,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listSubFamilySelected: any[] = [];
   listCategorySelected: any[] = [];
   listSubCategorySelected: any[] = [];
+  listProductsSelected: any[] = [];
 
   selectedValue: string = "No";
+  selectedValuePrice: string = "No";
+  selectedValueDescripcion: string = "No";
+  selectedValuePromocion: string = "No";
+  selectedValueSize: string = "S";
   property: string = ""
   spinner: number = 4;
 
@@ -94,6 +101,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.listSubCategorySelected = data;
   }
 
+  selectedProducts(data: any[]) {
+    this.listProductsSelected = data;
+  }
+
   ngOnInit() {
     this.service.getFamily().then((families: family[]) => {
       //console.log(families);
@@ -110,6 +121,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.service.getSubCategoria().then((subCategorias: subFamily[]) => {
       //console.log(subCategorias);
       this.listSubCategoria = subCategorias;
+    })
+    this.service.getProduct().then((products: product[]) => {
+      //console.log(subCategorias);
+      this.listProducts = products;
     })
   }
 
@@ -128,14 +143,18 @@ export class FilterComponent implements OnInit, AfterViewInit {
     console.log("Items por página");
     console.log(this.spinner);
     console.log(this.property);
+    console.log(this.listProductsSelected);
 
     this._data.data = {
       familyList: this.listFamilySelected,
       subFamilyList: this.listSubFamilySelected,
       categoryList: this.listCategorySelected,
       subCategoryList: this.listSubCategorySelected,
+      productsList: this.listProducts,
       selectedValue: this.selectedValue,
-      spinner: this.spinner
+      spinner: this.spinner,
+      products: this.listProductsSelected,
+      allProducts: this.listProducts
     }
   }
 

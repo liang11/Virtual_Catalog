@@ -3,5 +3,6 @@
     (onDeSelect)="onItemSelect($event)">
 </ng-multiselect-dropdown> -->
 
-<p-multiSelect defaultLabel="--Select--" [options]="optionList" resetFilterOnHide="true" [panelStyle]="{minWidth:'12em'}" filterBy="label" [(ngModel)]="selectedItems"
+<p-multiSelect defaultLabel="--Select--" [panelStyle]="{minWidth:'18em'}" [options]="optionList" 
+    resetFilterOnHide="true"  filterBy="label" [(ngModel)]="selectedItems" [virtualScroll]="true" itemSize="30"
     (onChange)="onItemSelect()"></p-multiSelect>

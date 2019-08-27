@@ -108,5 +108,30 @@ export class ServiceVirtualCatalogService {
             }
         })
     }
+
+
+    public getProduct() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getProducts();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getProducts");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseProducts(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
 }
 

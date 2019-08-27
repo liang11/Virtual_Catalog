@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataStorage } from '../Service/DataStorage';
 
 @Component({
@@ -6,16 +6,22 @@ import { DataStorage } from '../Service/DataStorage';
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.css']
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent {
 
-  sub: any[];
+  data: any = [];
+  productFiltered: any = [];
 
-  constructor(private _data: DataStorage) { 
-    console.log(this._data.data);
-  }
+  constructor(public dataStorage: DataStorage) { 
+    this.data = dataStorage.data;
+    console.log(this.data);
 
-  ngOnInit() {
-    
+    this.data.familyList.forEach(element => {
+      this.data.allProducts.filter((item) => element.name == item.family).forEach(product => {
+        this.productFiltered.push(product);
+      });
+    });
+
+    console.log(this.productFiltered);
   }
 
 }

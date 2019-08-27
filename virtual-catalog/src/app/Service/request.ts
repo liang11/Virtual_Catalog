@@ -31,4 +31,12 @@ export class request {
         '</s:Body>' +
       '</s:Envelope>';
     }
+
+    getProducts() {
+        return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<s:Body>' +
+          '<getProducts xmlns="http://tempuri.org/" />' +
+        '</s:Body>' +
+      '</s:Envelope>';
+    }
 }
