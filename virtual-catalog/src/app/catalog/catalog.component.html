@@ -2,13 +2,13 @@
 <div class="row">
     <ng-container *ngFor="let p of productFiltered; let i = index">
         <div class="col">
-            <div class="card space-around" style="width: 18rem;">
+            <div class="card space-around" style="width: 15rem;">
                 <!-- <img src="..." class="card-img-top" alt="..."> -->
-                <img class="image-container" src="http://186.176.206.154:8088/images/Products/{{ p.productId }}_l_.PNG">
+                <img class="image-container" src="http://186.176.206.154:8088/images/Products/{{ p.productId }}_l_.PNG" onerror="this.src='../assets/imgs/error_img.png'">
                 <div class="card-body">
-                    <h5 class="card-title">{{ p.name }}</h5>
+                    <h5 class="card-title">{{  p.name }}</h5>
                     <p class="card-text">{{ p.productId }}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="#" class="btn btn-primary">Ver Detalles</a>
                 </div>
             </div>
         </div>

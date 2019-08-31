@@ -1,6 +1,9 @@
 import { family } from '../classes/family';
 import { subFamily } from '../classes/subFamily';
 import { product } from '../classes/product';
+import { lifeCycle } from '../classes/lifeCycle';
+import { ipLevel } from '../classes/ipLevel';
+import { priceGroup } from '../classes/priceGroup';
 
 export class Interpreter{
 
@@ -75,10 +78,65 @@ export class Interpreter{
             newProduct.category = xmlProduct.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;
             newProduct.subCategory = xmlProduct.item(index).getElementsByTagName(this.prefix + "subCategory").item(0).textContent;
             newProduct.description = xmlProduct.item(index).getElementsByTagName(this.prefix + "description").item(0).textContent;
+            newProduct.lifeCycle = xmlProduct.item(index).getElementsByTagName(this.prefix + "lifeCycle").item(0).textContent;
             newProduct.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             products.push(newProduct);
         }
         return products;
+    }
+
+    parseLifeCycle(xml: XMLDocument) {
+        var lifeCycleList: lifeCycle[] = [];
+        var xmlLifeCycle = xml.getElementsByTagName(this.prefix + "LifeCycleService");
+        for (var index = 0; index < xmlLifeCycle.length; index++) {
+            var newLifeCycle = new lifeCycle();
+            newLifeCycle.lifeCycleId = xmlLifeCycle.item(index).getElementsByTagName(this.prefix + "lifeCycleId").item(0).textContent;
+            newLifeCycle.name = xmlLifeCycle.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newLifeCycle.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            lifeCycleList.push(newLifeCycle);
+        }
+        return lifeCycleList;
+    }
+
+    parseMainActivity(xml: XMLDocument) {
+        var mainActivityList: ipLevel[] = [];
+        var xmlMainActivity = xml.getElementsByTagName(this.prefix + "IpMainCommercialActivityService");
+        for (var index = 0; index < xmlMainActivity.length; index++) {
+            var newMainActivity = new ipLevel();
+            newMainActivity.name = xmlMainActivity.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newMainActivity.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            mainActivityList.push(newMainActivity);
+        }
+        return mainActivityList;
+    }
+
+    parseSpeciality(xml: XMLDocument) {
+        var specialityList: ipLevel[] = [];
+        var xmlSpeciality = xml.getElementsByTagName(this.prefix + "IpSpecialityService");
+        for (var index = 0; index < xmlSpeciality.length; index++) {
+            var newSpeciality = new ipLevel();
+            newSpeciality.name = xmlSpeciality.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newSpeciality.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            specialityList.push(newSpeciality);
+        }
+        return specialityList;
+    }
+
+    parsePriceGroup(xml: XMLDocument) {
+        var priceGroupList: priceGroup[] = [];
+        var xmlPriceGroup = xml.getElementsByTagName(this.prefix + "PriceGroupService");
+        for (var index = 0; index < xmlPriceGroup.length; index++) {
+            var newPriceGroup = new priceGroup();
+            newPriceGroup.name = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "priceId").item(0).textContent;
+            newPriceGroup.priceId = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newPriceGroup.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            priceGroupList.push(newPriceGroup);
+        }
+        return priceGroupList;
     }
 }

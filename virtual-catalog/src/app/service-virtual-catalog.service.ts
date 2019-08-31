@@ -109,7 +109,6 @@ export class ServiceVirtualCatalogService {
         })
     }
 
-
     public getProduct() {
         return new Promise((resolve, reject) => {
             var xmlRequest = this.request.getProducts();
@@ -133,5 +132,102 @@ export class ServiceVirtualCatalogService {
             }
         })
     }
+
+    public getLifeCycle() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getLifeCycle();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getLifeCycle");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseLifeCycle(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getMainActivity() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getMainActivity();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getMainCommercialActivity");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseMainActivity(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getSpeciality() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getSpeciality();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getSpeciality");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseSpeciality(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getPriceGroup() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getPriceGroup();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getPriceGroup");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parsePriceGroup(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
 }
 

@@ -4,6 +4,9 @@ import { family } from '../classes/family';
 import { subFamily } from '../classes/subFamily';
 import { DataStorage } from '../Service/DataStorage';
 import { product } from '../classes/product';
+import { lifeCycle } from '../classes/lifeCycle';
+import { ipLevel } from '../classes/ipLevel';
+import { priceGroup } from '../classes/priceGroup';
 
 @Component({
   selector: 'filter',
@@ -17,33 +20,43 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listSubFamily: any[] = [];
   listCategoria: any[] = [];
   listSubCategoria: any[] = [];
+  listMainActivity: any[] = [];
+  listSpeciality: any[] = [];
+  listLifeCycle: any[] = [];
+  listPriceGroup: any[] = [];
+
   listSubFamilyFiltered: any[] = [];
   listCategoryFiltered: any[] = [];
   listSubCategoryFiltered: any[] = [];
+  listProductFiltered: any[] = [];
+  listIndividualProducts: any[] = [];
 
   listFamilySelected: any[] = [];
   listSubFamilySelected: any[] = [];
   listCategorySelected: any[] = [];
   listSubCategorySelected: any[] = [];
   listProductsSelected: any[] = [];
+  listMainActivitySelected: any[] = [];
+  listSpecialitySelected: any[] = [];
+  listLifeCycleSelected: any[] = [];
 
-  selectedValue: string = "No";
+  historicoVenta: string = "No";
   selectedValuePrice: string = "No";
   selectedValueDescripcion: string = "No";
   selectedValuePromocion: string = "No";
+  selectedValuePriceList: string = "Other";
   selectedValueSize: string = "S";
   property: string = ""
   spinner: number = 4;
 
   constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) {
+    console.log(this.listIndividualProducts);
   }
 
   selectedFamilies(data: family[]) {
-    //console.log("Recibi lo siguiente:");;
     this.listFamilySelected = data;
     this.listSubFamilyFiltered = [];
     let temp: any[] = [];
-    //console.log(this.listFamilySelected);
     this.listFamilySelected.forEach(element => {
       this.listSubFamily.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
         if (!this.listSubFamilyFiltered.some(e => e.name == item.name)) {
@@ -58,11 +71,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   selectedSubFamilies(data: subFamily[]) {
-    //console.log("selectedSubFamilies");
     this.listSubFamilySelected = data;
     this.listCategoryFiltered = [];
     let temp: any[] = [];
-    //console.log(this.listSubFamilySelected);
     this.listSubFamilySelected.forEach(element => {
       this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach((item, index) => {
         if (!this.listCategoryFiltered.some(e => e.name == item.name)) {
@@ -77,11 +88,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   selectedCategories(data: subFamily[]) {
-    //console.log("selectedCategories");
     this.listCategorySelected = data;
     this.listSubCategoryFiltered = [];
     let temp: any[] = [];
-    //console.log(this.listCategorySelected);
     data.forEach(element => {
       this.listSubCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
         if (!this.listSubCategoryFiltered.some(e => e.name == item.name)) {
@@ -96,16 +105,74 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   selectedSubCategories(data: subFamily[]) {
-    // console.log("entre a carga subcategorias");
-    // console.log(data);
     this.listSubCategorySelected = data;
+    console.log(this.getLowerLevel());
+    this.filterProducts();
+    this.filterIndividualProducts();
   }
 
   selectedProducts(data: any[]) {
     this.listProductsSelected = data;
   }
 
+  selectedLifeCycle(data: any[]) {
+    this.listLifeCycleSelected = data;
+  }
+
+  selectedMainActivity(data: any[]) {
+    this.listMainActivitySelected = data;
+  }
+
+  selectedSpeciality(data: any[]) {
+    this.listSpecialitySelected = data;
+  }
+
+  filterProducts() {
+    let temp = [];
+    this.listProductFiltered = [];
+    let lowerLevel = this.getLowerLevel();
+    temp = this.getList(lowerLevel);
+
+    temp.forEach(element => {
+      this.listProducts.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
+        if (!this.listProductFiltered.some(e => e.productId == product.productId)) {
+          this.listProductFiltered.push(product);
+        }
+      });
+    });
+  }
+
+  filterIndividualProducts() {
+    let temp = [];
+    this.listIndividualProducts = [];
+    let lowerLevel = this.getLowerLevel();
+    temp = this.getList(lowerLevel);
+
+    if (temp.length > 0) {
+      temp.forEach(element => {
+        this.listProducts.filter((item) => item.getAttribute(lowerLevel) != element.name).forEach(product => {
+          if (!this.listIndividualProducts.some(e => e.productId == product.productId)) {
+            this.listIndividualProducts.push(product);
+          }
+        });
+      });
+    } else {
+      // this.listProducts.forEach(product => {
+      //   if (!this.listIndividualProducts.some(e => e.productId == product.productId)) {
+      //     this.listIndividualProducts.push(product);
+      //   }
+      // });
+      this.listIndividualProducts = this.filterRepeat(this.listProducts);
+    }
+
+  }
+
   ngOnInit() {
+    this.service.getProduct().then((products: product[]) => {
+      this.listIndividualProducts = this.filterRepeat(this.listProducts);
+      console.log(products);
+      this.listProducts = products;
+    })
     this.service.getFamily().then((families: family[]) => {
       //console.log(families);
       this.listFamily = families;
@@ -122,36 +189,52 @@ export class FilterComponent implements OnInit, AfterViewInit {
       //console.log(subCategorias);
       this.listSubCategoria = subCategorias;
     })
-    this.service.getProduct().then((products: product[]) => {
-      //console.log(subCategorias);
-      this.listProducts = products;
+    this.service.getLifeCycle().then((lifeCycles: lifeCycle[]) => {
+      //console.log(lifeCycles);
+      this.listLifeCycle = lifeCycles;
+    })
+    this.service.getMainActivity().then((mainActivity: ipLevel[]) => {
+      //console.log(lifeCycles);
+      this.listMainActivity = mainActivity;
+    })
+    this.service.getSpeciality().then((speciality: ipLevel[]) => {
+      //console.log(lifeCycles);
+      this.listSpeciality = speciality;
+    })
+    this.service.getPriceGroup().then((priceGroup: priceGroup[]) => {
+      //console.log(lifeCycles);
+      this.listPriceGroup = priceGroup;
     })
   }
 
   generateCatalog() {
-    console.log("Generando Catálogo...");
-    console.log("Familias");
-    console.log(this.listFamilySelected);
-    console.log("SubFamilias");
-    console.log(this.listSubFamilySelected);
-    console.log("Categorías");
-    console.log(this.listCategorySelected);
-    console.log("SubCategorías");
-    console.log(this.listSubCategorySelected);
-    console.log("Producto Nuevo");
-    console.log(this.selectedValue);
-    console.log("Items por página");
-    console.log(this.spinner);
-    console.log(this.property);
-    console.log(this.listProductsSelected);
+    console.log("genere");
+    // console.log("Generando Catálogo...");
+    // console.log("Familias");
+    // console.log(this.listFamilySelected);
+    // console.log("SubFamilias");
+    // console.log(this.listSubFamilySelected);
+    // console.log("Categorías");
+    // console.log(this.listCategorySelected);
+    // console.log("SubCategorías");
+    // console.log(this.listSubCategorySelected);
+    // console.log("Producto Nuevo");
+    // console.log(this.historicoVenta);
+    // console.log("Items por página");
+    // console.log(this.spinner);
+    // console.log(this.property);
+    // console.log(this.listProductsSelected);
 
     this._data.data = {
       familyList: this.listFamilySelected,
       subFamilyList: this.listSubFamilySelected,
       categoryList: this.listCategorySelected,
       subCategoryList: this.listSubCategorySelected,
-      productsList: this.listProducts,
-      selectedValue: this.selectedValue,
+      productsList: this.listProductFiltered,
+      lifeCycle: this.listLifeCycleSelected,
+      mainActivity: this.listMainActivitySelected,
+      speciality: this.listSpecialitySelected,
+      historicoVenta: this.historicoVenta,
       spinner: this.spinner,
       products: this.listProductsSelected,
       allProducts: this.listProducts
@@ -159,7 +242,35 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    
+  }
 
+  getLowerLevel() {
+    if (this.listSubCategorySelected.length > 0) { return "subCategory" };
+    if (this.listCategorySelected.length > 0) { return "category" };
+    if (this.listSubFamilySelected.length > 0) { return "subFamily" };
+    if (this.listFamilySelected.length > 0) { return "family" };
+  }
+
+  getList(list: string) {
+    switch (list) {
+      case "family": { return this.listFamilySelected; }
+      case "subFamily": { return this.listSubFamilySelected; }
+      case "category": { return this.listCategorySelected; }
+      case "subCategory": { return this.listSubCategorySelected; }
+      default: { return [] };
+    }
+  }
+
+  filterRepeat(lista: any[]) {
+    let temp: any[] = [];
+    lista.forEach(product => {
+      if (!temp.some(e => e.productId == product.productId)) {
+        temp.push(product);
+      }
+    });
+    return temp;
   }
 
 }
+

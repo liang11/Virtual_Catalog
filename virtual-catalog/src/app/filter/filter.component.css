@@ -64,7 +64,7 @@
     padding-left: 1rem;
 }
 
-h4 {
+h5 {
     margin-left: 1rem;
 }
 
@@ -82,4 +82,22 @@ h4 {
 .input-group {
     display: flex;
     width: 50%;
+}
+
+.form-container {
+    margin: 1rem;
+}
+
+.border-box {
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    padding: 0.5rem;
+    border-color: darkgrey;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.radio-other {
+    display: flex;
 }

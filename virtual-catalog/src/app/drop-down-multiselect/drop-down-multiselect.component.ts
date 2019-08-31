@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnChanges, ViewEncapsulation } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 
 @Component({

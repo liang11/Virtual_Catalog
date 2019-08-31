@@ -8,20 +8,25 @@ import { DataStorage } from '../Service/DataStorage';
 })
 export class CatalogComponent {
 
-  data: any = [];
-  productFiltered: any = [];
+  data: any = {};
+  productFiltered: any[] = [];
 
   constructor(public dataStorage: DataStorage) { 
     this.data = dataStorage.data;
-    console.log(this.data);
+    //console.log(this.data);
 
-    this.data.familyList.forEach(element => {
-      this.data.allProducts.filter((item) => element.name == item.family).forEach(product => {
-        this.productFiltered.push(product);
-      });
-    });
+    this.productFiltered = this.data.productsList;
 
-    console.log(this.productFiltered);
+    // let lowerLevel = dataStorage.getLowerLevel();
+    // let temp = dataStorage.getList(lowerLevel);
+
+    // temp.forEach(element => {
+    //   this.data.allProducts.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
+    //     if(!this.productFiltered.some(e => e.productId == product.productId)) {
+    //       this.productFiltered.push(product); 
+    //     }
+    //   });      
+    // });
+    
   }
-
 }
