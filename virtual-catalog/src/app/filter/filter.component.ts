@@ -39,6 +39,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listMainActivitySelected: any[] = [];
   listSpecialitySelected: any[] = [];
   listLifeCycleSelected: any[] = [];
+  listIndvProdSelected: any[] = [];
 
   historicoVenta: string = "No";
   selectedValuePrice: string = "No";
@@ -49,9 +50,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   property: string = ""
   spinner: number = 4;
 
-  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) {
-    console.log(this.listIndividualProducts);
-  }
+  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) { }
 
   selectedFamilies(data: family[]) {
     this.listFamilySelected = data;
@@ -106,13 +105,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   selectedSubCategories(data: subFamily[]) {
     this.listSubCategorySelected = data;
-    console.log(this.getLowerLevel());
-    this.filterProducts();
     this.filterIndividualProducts();
   }
 
   selectedProducts(data: any[]) {
-    this.listProductsSelected = data;
+    this.listIndvProdSelected = data;
   }
 
   selectedLifeCycle(data: any[]) {
@@ -140,28 +137,39 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
       });
     });
+
+    this.listIndvProdSelected.forEach(element => {
+      if(!this.listProductFiltered.some(e => element.productId == e.productId)) {
+        this.listProductFiltered.push(element);
+      }
+    });
   }
 
   filterIndividualProducts() {
     let temp = [];
+    let aux = [];
     this.listIndividualProducts = [];
     let lowerLevel = this.getLowerLevel();
     temp = this.getList(lowerLevel);
 
     if (temp.length > 0) {
-      temp.forEach(element => {
-        this.listProducts.filter((item) => item.getAttribute(lowerLevel) != element.name).forEach(product => {
-          if (!this.listIndividualProducts.some(e => e.productId == product.productId)) {
-            this.listIndividualProducts.push(product);
+      this.listProducts.forEach(element => {
+        if(!temp.some(e => e.name == element.getAttribute(lowerLevel))) {
+          if(!this.listIndividualProducts.some(item => item.productId == element.productId)) {
+            this.listIndividualProducts.push(element);
           }
-        });
+        }
       });
+
+      this.listIndvProdSelected.forEach(element => {
+        if(!temp.some(e => e.name == element.getAttribute(lowerLevel))) {
+          aux.push(element);
+        }
+      });
+
+      this.listIndvProdSelected = aux;
+      console.log(this.listIndvProdSelected);
     } else {
-      // this.listProducts.forEach(product => {
-      //   if (!this.listIndividualProducts.some(e => e.productId == product.productId)) {
-      //     this.listIndividualProducts.push(product);
-      //   }
-      // });
       this.listIndividualProducts = this.filterRepeat(this.listProducts);
     }
 
@@ -169,9 +177,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.service.getProduct().then((products: product[]) => {
+      this.listProducts = products;
       this.listIndividualProducts = this.filterRepeat(this.listProducts);
       console.log(products);
-      this.listProducts = products;
     })
     this.service.getFamily().then((families: family[]) => {
       //console.log(families);
@@ -208,6 +216,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   generateCatalog() {
+    this.filterProducts();
     console.log("genere");
     // console.log("Generando Catálogo...");
     // console.log("Familias");
@@ -273,4 +282,3 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
 }
-

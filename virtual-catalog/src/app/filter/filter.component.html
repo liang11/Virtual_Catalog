@@ -131,7 +131,8 @@
                             <h5>SubSubCategoría</h5>
                             <drop-down-multiselect class="space-around"></drop-down-multiselect>
                             <h5>Producto Individual</h5>
-                            <drop-down-multiselect [listData]="listIndividualProducts" (listDataOutput)="selectedProducts($event)"
+                            <drop-down-multiselect [listData]="listIndividualProducts"
+                                [selectedItems]="listIndvProdSelected" (listDataOutput)="selectedProducts($event)"
                                 class="space-around">
                             </drop-down-multiselect>
                         </div>
@@ -164,7 +165,8 @@
                                 <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
                                     label="Otro" [(ngModel)]="selectedValuePriceList">
                                 </p-radioButton>
-                                <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup" ></drop-down-multiselect>
+                                <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup">
+                                </drop-down-multiselect>
                             </div>
                         </div>
                         <h5>Descripción</h5>
