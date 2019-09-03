@@ -81,7 +81,7 @@ h5 {
 
 .input-group {
     display: flex;
-    width: 50%;
+    width: 80%;
 }
 
 .form-container {
@@ -100,4 +100,8 @@ h5 {
 
 .radio-other {
     display: flex;
+}
+
+.button-text-small {
+    font-size: 80%;
 }

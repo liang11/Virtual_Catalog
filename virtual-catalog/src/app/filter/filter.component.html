@@ -72,28 +72,34 @@
                         <div class="column">
                             <h5>Actividad Comercial (Índice de Penetración)</h5>
                             <drop-down-multiselect class="space-around" [listData]="listMainActivity"
+                                [disable]="listSpecialitySelected.length > 0 || text != '' ? true:false"
                                 (listDataOutput)="selectedMainActivity($event)"></drop-down-multiselect>
                             <h5>Código del Cliente</h5>
                             <div class="input-group space-around">
-                                <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                                <input type="text" class="form-control" [(ngModel)]="text" (keyup)="checkEmpty()"
+                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                <button type="button" class="button-text-small" (click)="checkClient()"
+                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
                             </div>
                             <h5>Histórico de Venta</h5>
                             <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si"
-                                [(ngModel)]="historicoVenta"></p-radioButton>
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient"></p-radioButton>
                             <p-radioButton name="groupname" class="space-around-noBottom" value="No" label="No"
-                                [(ngModel)]="historicoVenta">
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
                             </p-radioButton>
                             <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
-                                [(ngModel)]="historicoVenta">
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
                             </p-radioButton>
                         </div>
 
                         <div class="column">
                             <h5>Especialidad</h5>
                             <drop-down-multiselect class="space-around" [listData]="listSpeciality"
+                                [disable]="listMainActivitySelected.length > 0 || text != '' ? true:false"
                                 (listDataOutput)="selectedSpeciality($event)"></drop-down-multiselect>
                             <h5>Dirección</h5>
-                            <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                            <drop-down-multiselect class="space-around" [disable]="boolClient">
+                            </drop-down-multiselect>
                             <h5>Ocasión de Uso</h5>
                             <drop-down-multiselect class="space-around"></drop-down-multiselect>
                             <h5>Ciclo de vida</h5>
@@ -165,7 +171,8 @@
                                 <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
                                     label="Otro" [(ngModel)]="selectedValuePriceList">
                                 </p-radioButton>
-                                <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup">
+                                <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
+                                    [disable]="selectedValuePriceList == 'Other' ? false:true">
                                 </drop-down-multiselect>
                             </div>
                         </div>
@@ -176,7 +183,8 @@
                             [(ngModel)]="selectedValueDescripcion">
                         </p-radioButton>
                         <h5>Item x página</h5>
-                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="2" [max]="8" [step]="2" class="space-around">
+                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="2" [max]="8" [step]="2"
+                            class="space-around">
                         </p-spinner>
                     </div>
 

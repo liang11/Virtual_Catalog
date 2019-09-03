@@ -48,10 +48,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
   selectedValueSize: string = "S";
   property: string = ""
   spinner: number = 4;
+  text = '';
+  boolClient: boolean = true;
 
   constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) { }
 
   selectedFamilies(data: family[]) {
+    console.log(this.text);
     this.listFamilySelected = data;
     this.listSubFamilyFiltered = [];
     let temp: any[] = [];
@@ -179,7 +182,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
     } else {
       this.listIndividualProducts = this.filterRepeat(this.listProducts);
     }
+  }
 
+  checkClient() {
+    this.boolClient = false;
+    console.log(this.text);
+  }
+
+  checkEmpty() {
+    if(!(this.text.length > 0)) {
+      this.boolClient = true;
+    }
   }
 
   ngOnInit() {

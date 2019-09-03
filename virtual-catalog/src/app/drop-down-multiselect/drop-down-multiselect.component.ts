@@ -10,11 +10,12 @@ import { SelectItem } from 'primeng/api';
 export class DropDownMultiselectComponent implements OnChanges {
 
   @Input() public listData: { id: number, parent_id: string, name: string }[] = [];
+  @Input() public selectedItems: any[] = [];
+  @Input() public disable: boolean = false;
   @Output() public listDataOutput = new EventEmitter();
 
   optionList: SelectItem[] = [];
 
-  @Input() public selectedItems: any[] = [];
   dropdownSettings = {};
 
   constructor() {
