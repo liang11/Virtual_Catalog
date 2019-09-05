@@ -4,6 +4,9 @@ import { product } from '../classes/product';
 import { lifeCycle } from '../classes/lifeCycle';
 import { ipLevel } from '../classes/ipLevel';
 import { priceGroup } from '../classes/priceGroup';
+import { productUse } from '../classes/productUse';
+import { itemType } from '../classes/itemType';
+import { itemMark } from '../classes/itemMark';
 
 export class Interpreter{
 
@@ -138,5 +141,46 @@ export class Interpreter{
             priceGroupList.push(newPriceGroup);
         }
         return priceGroupList;
+    }
+
+    parseProductUse(xml: XMLDocument) {
+        var productUseList: productUse[] = [];
+        var xmlProductUse = xml.getElementsByTagName(this.prefix + "ProductUseService");
+        for (var index = 0; index < xmlProductUse.length; index++) {
+            var newProductUse = new productUse();
+            newProductUse.name = xmlProductUse.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
+            newProductUse.productUseId = xmlProductUse.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newProductUse.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            productUseList.push(newProductUse);
+        }
+        return productUseList;
+    }
+
+    parseItemType(xml: XMLDocument) {
+        var itemTypeList: itemType[] = [];
+        var xmlItemType = xml.getElementsByTagName(this.prefix + "ItemTypeService");
+        for (var index = 0; index < xmlItemType.length; index++) {
+            var newItemType = new itemType();
+            newItemType.name = xmlItemType.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newItemType.itemTypeId = xmlItemType.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
+            newItemType.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            itemTypeList.push(newItemType);
+        }
+        return itemTypeList;
+    }
+
+    parseItemMark(xml: XMLDocument) {
+        var itemMarkList: itemMark[] = [];
+        var xmlItemMark = xml.getElementsByTagName(this.prefix + "ItemMarkService");
+        for (var index = 0; index < xmlItemMark.length; index++) {
+            var newItemMark = new itemMark();
+            newItemMark.name = xmlItemMark.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newItemMark.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            itemMarkList.push(newItemMark);
+        }
+        return itemMarkList;
     }
 }

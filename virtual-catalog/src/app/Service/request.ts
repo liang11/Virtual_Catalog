@@ -71,4 +71,28 @@ export class request {
       '</s:Body>' +
       '</s:Envelope>';
   }
+
+  getProductUse() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getProductUse xmlns="http://tempuri.org/" />' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
+
+  getItemType() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getItemType xmlns="http://tempuri.org/" />' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
+
+  getItemMark() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getItemMark xmlns="http://tempuri.org/" />' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
 }

@@ -4,7 +4,7 @@
         <div class="col">
             <div class="card space-around" style="width: 15rem;">
                 <!-- <img src="..." class="card-img-top" alt="..."> -->
-                <img class="image-container" src="http://186.176.206.154:8088/images/Products/{{ p.productId }}_l_.PNG" onerror="this.src='../assets/imgs/error_img.png'">
+                <img class="image-container" src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG" onerror="this.src='../assets/imgs/error_img.png'">
                 <div class="card-body">
                     <h5 class="card-title">{{  p.name }}</h5>
                     <p class="card-text">{{ p.productId }}</p>
@@ -12,6 +12,6 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="(i +1) % 3 === 0" class="w-100"></div>
+        <div *ngIf="(i +1) % 2 === 0" class="w-100"></div>
     </ng-container>
 </div>

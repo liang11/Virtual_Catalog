@@ -229,5 +229,77 @@ export class ServiceVirtualCatalogService {
         })
     }
 
+    public getProductUse() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getProductUse();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getProductUse");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseProductUse(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getItemType() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getItemType();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getItemType");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseItemType(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getItemMark() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getItemMark();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getItemMark");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseItemMark(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
 }
 

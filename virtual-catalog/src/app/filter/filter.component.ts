@@ -7,6 +7,9 @@ import { product } from '../classes/product';
 import { lifeCycle } from '../classes/lifeCycle';
 import { ipLevel } from '../classes/ipLevel';
 import { priceGroup } from '../classes/priceGroup';
+import { productUse } from '../classes/productUse';
+import { itemType } from '../classes/itemType';
+import { itemMark } from '../classes/itemMark';
 
 @Component({
   selector: 'filter',
@@ -24,6 +27,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listSpeciality: any[] = [];
   listLifeCycle: any[] = [];
   listPriceGroup: any[] = [];
+  listProductUse: any[] = [];
+  listProductSize: any[] = [];
+  listImgSize: any[] = [];
+  listItemType: any[] = [];
+  listItemMark: any[] = [];
 
   listSubFamilyFiltered: any[] = [];
   listCategoryFiltered: any[] = [];
@@ -39,13 +47,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listSpecialitySelected: any[] = [];
   listLifeCycleSelected: any[] = [];
   listIndvProdSelected: any[] = [];
+  listImgSelected: any[] = [];
 
   historicoVenta: string = "No";
   selectedValuePrice: string = "No";
   selectedValueDescripcion: string = "No";
   selectedValuePromocion: string = "No";
   selectedValuePriceList: string = "Other";
-  selectedValueSize: string = "S";
   property: string = ""
   spinner: number = 4;
   text = '';
@@ -124,6 +132,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   selectedSpeciality(data: any[]) {
     this.listSpecialitySelected = data;
+  }
+
+  selectedImgSize(data: any[]) {
+    this.listImgSelected = data;
   }
 
   filterProducts() {
@@ -233,6 +245,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
       //console.log(lifeCycles);
       this.listPriceGroup = priceGroup;
     })
+    this.service.getProductUse().then((_productUse: productUse[]) => {
+      //console.log(lifeCycles);
+      this.listProductUse = _productUse;
+    })
+    this.service.getItemType().then((_itemType: itemType[]) => {
+      //console.log(lifeCycles);
+      this.listItemType = _itemType;
+    })
+    this.service.getItemMark().then((_itemMark: itemMark[]) => {
+      //console.log(lifeCycles);
+      this.listItemMark = _itemMark;
+    })
+
+    this.listImgSize = [{name: 'S', id:'_s_'}, {name: 'M', id:'_m_'}, {name: 'L', id:'_l_'}, {name: 'XL', id:''}];
   }
 
   generateCatalog() {
@@ -264,7 +290,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
       speciality: this.listSpecialitySelected,
       historicoVenta: this.historicoVenta,
       spinner: this.spinner,
-      allProducts: this.listProducts
+      allProducts: this.listProducts,
+      productImgSize: this.listImgSelected.pop().id
     }
   }
 

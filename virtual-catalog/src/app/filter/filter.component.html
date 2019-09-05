@@ -100,11 +100,31 @@
                             <h5>Dirección</h5>
                             <drop-down-multiselect class="space-around" [disable]="boolClient">
                             </drop-down-multiselect>
-                            <h5>Ocasión de Uso</h5>
-                            <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                            <h5>Uso del Producto</h5>
+                            <drop-down-multiselect class="space-around" [listData]="listProductUse">
+                            </drop-down-multiselect>
+                            <h5>Tipo de Artículo</h5>
+                            <drop-down-multiselect class="space-around" [listData]="listItemType">
+                            </drop-down-multiselect>
+                            <h5>Marca del Artículo</h5>
+                            <drop-down-multiselect class="space-around" [listData]="listItemMark">
+                            </drop-down-multiselect>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <hr width=95%>
+                    </div>
+
+                    <div class="row">
+                        <div class="column">
                             <h5>Ciclo de vida</h5>
                             <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
                                 (listDataOutput)="selectedLifeCycle($event)"></drop-down-multiselect>
+                        </div>
+                        <div class="column">
+                            <h5>Ocasión de Uso</h5>
+                            <drop-down-multiselect class="space-around"></drop-down-multiselect>
                         </div>
                     </div>
 
@@ -163,16 +183,19 @@
                         <div class="border-box">
                             <h6>Lista de Precio</h6>
                             <p-radioButton name="groupname2" class="space-around-noBottom" value="Cliente"
-                                label="Cliente" [(ngModel)]="selectedValuePriceList"></p-radioButton>
+                                [disabled]="selectedValuePrice == 'Si' ? false:true" label="Cliente"
+                                [(ngModel)]="selectedValuePriceList"></p-radioButton>
                             <p-radioButton name="groupname2" class="space-around-noBottom" value="Direccion"
-                                label="Dirección" [(ngModel)]="selectedValuePriceList">
+                                label="Dirección" [(ngModel)]="selectedValuePriceList"
+                                [disabled]="selectedValuePrice == 'Si' ? false:true">
                             </p-radioButton>
-                            <div class="radio-other" disabled>
+                            <div class="radio-other">
                                 <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
-                                    label="Otro" [(ngModel)]="selectedValuePriceList">
+                                    label="Otro" [(ngModel)]="selectedValuePriceList"
+                                    [disabled]="selectedValuePrice == 'Si' ? false:true">
                                 </p-radioButton>
                                 <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
-                                    [disable]="selectedValuePriceList == 'Other' ? false:true">
+                                    [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
                                 </drop-down-multiselect>
                             </div>
                         </div>
@@ -190,20 +213,15 @@
 
                     <div class="column">
                         <h5>Tamaño de Imagen</h5>
-                        <p-radioButton name="groupname5" class="space-around-noBottom" value="S" label="S"
-                            [(ngModel)]="selectedValueSize"></p-radioButton>
-                        <p-radioButton name="groupname5" class="space-around-noBottom" value="M" label="M"
-                            [(ngModel)]="selectedValueSize">
-                        </p-radioButton>
-                        <p-radioButton name="groupname1" class="space-around" value="L" label="L"
-                            [(ngModel)]="selectedValueSize">
-                        </p-radioButton>
-                        <h5>Promociones</h5>
+                        <drop-down-multiselect class="space-around-noBottom" [listData]="listImgSize" (listDataOutput)="selectedImgSize($event)">
+                        </drop-down-multiselect>
+                        
+                        <!-- <h5>Promociones</h5>
                         <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
                             [(ngModel)]="selectedValuePromocion"></p-radioButton>
                         <p-radioButton name="groupname4" class="space-around" value="No" label="No"
                             [(ngModel)]="selectedValuePromocion">
-                        </p-radioButton>
+                        </p-radioButton> -->
                     </div>
 
                     <div class="row align-button">

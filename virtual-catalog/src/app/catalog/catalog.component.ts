@@ -13,7 +13,7 @@ export class CatalogComponent {
 
   constructor(public dataStorage: DataStorage) { 
     this.data = dataStorage.data;
-    //console.log(this.data);
+    console.log(this.data.productImgSize);
 
     this.productFiltered = this.data.productsList;
 
