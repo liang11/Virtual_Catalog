@@ -75,7 +75,6 @@ export class Interpreter{
             var newProduct = new product();
             newProduct.name = xmlProduct.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
             newProduct.productId = xmlProduct.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
-            newProduct.barcode = xmlProduct.item(index).getElementsByTagName(this.prefix + "barcode").item(0).textContent;
             newProduct.family = xmlProduct.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
             newProduct.subFamily = xmlProduct.item(index).getElementsByTagName(this.prefix + "subFamily").item(0).textContent;
             newProduct.category = xmlProduct.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;

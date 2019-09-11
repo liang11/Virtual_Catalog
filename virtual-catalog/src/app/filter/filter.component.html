@@ -62,105 +62,164 @@
     <h1 class="filter_page-title">Configuración</h1>
     <hr width=100% size=1>
     <div class="row">
-        <div class="column">
-            <div class="form-container">
-                <div class="row">
-                    <div class="row underline">
-                        <h3> Opciones de Selección </h3>
-                    </div>
-                    <div class="row">
-                        <div class="column">
-                            <h5>Actividad Comercial (Índice de Penetración)</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listMainActivity"
-                                [disable]="listSpecialitySelected.length > 0 || text != '' ? true:false"
-                                (listDataOutput)="selectedMainActivity($event)"></drop-down-multiselect>
-                            <h5>Código del Cliente</h5>
-                            <div class="input-group space-around">
-                                <input type="text" class="form-control" [(ngModel)]="text" (keyup)="checkEmpty()"
-                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
-                                <button type="button" class="button-text-small" (click)="checkClient()"
-                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+        <div class="column form-container">
+            <div class="row">
+                <div class="row underline">
+                    <h3> Opciones de Selección </h3>
+                </div>
+                <div class='componentWrapper'>
+                    <div class="fix-title-border">
+                        <div class='componentTitle' pTooltip="Enter your username">Compañia
+                            <img src="../assets/imgs/help_icon.png">
+                        </div>
+                        <div class='componentContent'>
+                            <div class="row">
+                                <div class="column">
+                                    <h5>Empresa</h5>
+                                    <drop-down-multiselect class="space-around-noBottom"></drop-down-multiselect>
+                                </div>
+                                <div class="column">
+                                    <h5>Proveedores</h5>
+                                    <drop-down-multiselect class="space-around-noBottom"></drop-down-multiselect>
+                                </div>
                             </div>
-                            <h5>Histórico de Venta</h5>
-                            <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si"
-                                [(ngModel)]="historicoVenta" [disabled]="boolClient"></p-radioButton>
-                            <p-radioButton name="groupname" class="space-around-noBottom" value="No" label="No"
-                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                            </p-radioButton>
-                            <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
-                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                            </p-radioButton>
-                        </div>
-
-                        <div class="column">
-                            <h5>Especialidad</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listSpeciality"
-                                [disable]="listMainActivitySelected.length > 0 || text != '' ? true:false"
-                                (listDataOutput)="selectedSpeciality($event)"></drop-down-multiselect>
-                            <h5>Dirección</h5>
-                            <drop-down-multiselect class="space-around" [disable]="boolClient">
-                            </drop-down-multiselect>
-                            <h5>Uso del Producto</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listProductUse">
-                            </drop-down-multiselect>
-                            <h5>Tipo de Artículo</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listItemType">
-                            </drop-down-multiselect>
-                            <h5>Marca del Artículo</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listItemMark">
-                            </drop-down-multiselect>
                         </div>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <hr width=95%>
-                    </div>
-
-                    <div class="row">
-                        <div class="column">
-                            <h5>Ciclo de vida</h5>
-                            <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
-                                (listDataOutput)="selectedLifeCycle($event)"></drop-down-multiselect>
+                <div class="componentWrapper">
+                    <div class="fix-title-border">
+                        <div class='componentTitle' pTooltip="Enter your username">Gestión de IP(opcional)
+                            <img src="../assets/imgs/help_icon.png">
                         </div>
-                        <div class="column">
-                            <h5>Ocasión de Uso</h5>
-                            <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                        <div class="componentContent">
+                            <div class="row">
+                                <div class="column">
+                                    <h5>Actividad Comercial</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listMainActivity"
+                                        [disable]="listSpecialitySelected.length > 0 || text != '' ? true:false"
+                                        (listDataOutput)="selectedMainActivity($event)"></drop-down-multiselect>
+                                    <h5>Código del Cliente</h5>
+                                    <div class="input-group space-around">
+                                        <input type="text" class="form-control" [(ngModel)]="text"
+                                            (keyup)="checkEmpty()"
+                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                        <button type="button" class="button-text-small" (click)="checkClient()"
+                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                                    </div>
+                                </div>
+
+                                <div class="column">
+                                    <h5>Especialidad</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listSpeciality"
+                                        [disable]="listMainActivitySelected.length > 0 || text != '' ? true:false"
+                                        (listDataOutput)="selectedSpeciality($event)"></drop-down-multiselect>
+                                    <h5>Dirección</h5>
+                                    <drop-down-multiselect class="space-around" [disable]="boolClient">
+                                    </drop-down-multiselect>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <hr width=95%>
-                    </div>
-
-                    <div class="row">
-                        <div class="column">
-                            <h5>Familia</h5>
-                            <drop-down-multiselect [listData]="listFamily" [selectedItems]="listFamilySelected"
-                                (listDataOutput)="selectedFamilies($event)" class="space-around">
-                            </drop-down-multiselect>
-                            <h5>SubFamilia</h5>
-                            <drop-down-multiselect [listData]="listSubFamilyFiltered"
-                                [selectedItems]="listSubFamilySelected" (listDataOutput)="selectedSubFamilies($event)"
-                                class="space-around"></drop-down-multiselect>
-                            <h5>Categoría</h5>
-                            <drop-down-multiselect [listData]="listCategoryFiltered"
-                                [selectedItems]="listCategorySelected" (listDataOutput)="selectedCategories($event)"
-                                class="space-around"></drop-down-multiselect>
+                <div class="componentWrapper">
+                    <div class="fix-title-border">
+                        <div class='componentTitle' pTooltip="Enter your username">Parámetros de Artículo
+                            <img src="../assets/imgs/help_icon.png">
                         </div>
+                        <div class="componentContent">
+                            <div class="row">
+                                <div class="column">
+                                    <h5>Tipo de Artículo</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listItemType">
+                                    </drop-down-multiselect>
+                                    <h5>Uso del Producto</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listProductUse">
+                                    </drop-down-multiselect>
+                                    <h5>Ocasión de Uso</h5>
+                                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
 
-                        <div class="column">
-                            <h5>SubCategoría</h5>
-                            <drop-down-multiselect [listData]="listSubCategoryFiltered"
-                                [selectedItems]="listSubCategorySelected"
-                                (listDataOutput)="selectedSubCategories($event)" class="space-around">
-                            </drop-down-multiselect>
-                            <h5>SubSubCategoría</h5>
-                            <drop-down-multiselect class="space-around"></drop-down-multiselect>
-                            <h5>Producto Individual</h5>
-                            <drop-down-multiselect [listData]="listIndividualProducts"
-                                [selectedItems]="listIndvProdSelected" (listDataOutput)="selectedProducts($event)"
-                                class="space-around">
-                            </drop-down-multiselect>
+                                    <h5>Código del Cliente</h5>
+                                    <div class="input-group space-around">
+                                        <input type="text" class="form-control" [(ngModel)]="text"
+                                            (keyup)="checkEmpty()"
+                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                        <button type="button" class="button-text-small" (click)="checkClient()"
+                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                                    </div>
+                                    <h5>Histórico de Venta</h5>
+                                    <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si"
+                                        [(ngModel)]="historicoVenta" [disabled]="boolClient"></p-radioButton>
+                                    <p-radioButton name="groupname" class="space-around-noBottom" value="No" label="No"
+                                        [(ngModel)]="historicoVenta" [disabled]="boolClient">
+                                    </p-radioButton>
+                                    <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
+                                        [(ngModel)]="historicoVenta" [disabled]="boolClient">
+                                    </p-radioButton>
+                                </div>
+
+                                <div class="column">
+                                    <h5>Marca del Artículo</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listItemMark">
+                                    </drop-down-multiselect>
+                                    <h5>Ciclo de vida</h5>
+                                    <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
+                                        (listDataOutput)="selectedLifeCycle($event)"></drop-down-multiselect>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="componentWrapper">
+                    <div class="fix-title-border">
+                        <div class='componentTitle' pTooltip="Enter your username">Clasificación de Artículos
+                            <img src="../assets/imgs/help_icon.png">
+                        </div>
+                        <div class="componentContent">
+                            <div class="row">
+                                <div class="row">
+                                    *La siguiente selección filtrará solamente los productos que hayan pasado los
+                                    criterios previamente
+                                    elegidos.
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <h5>Familia</h5>
+                                        <drop-down-multiselect [listData]="listFamily"
+                                            [selectedItems]="listFamilySelected"
+                                            (listDataOutput)="selectedFamilies($event)" class="space-around">
+                                        </drop-down-multiselect>
+                                        <h5>SubFamilia</h5>
+                                        <drop-down-multiselect [listData]="listSubFamilyFiltered"
+                                            [selectedItems]="listSubFamilySelected"
+                                            (listDataOutput)="selectedSubFamilies($event)" class="space-around">
+                                        </drop-down-multiselect>
+                                        <h5>Categoría</h5>
+                                        <drop-down-multiselect [listData]="listCategoryFiltered"
+                                            [selectedItems]="listCategorySelected"
+                                            (listDataOutput)="selectedCategories($event)" class="space-around">
+                                        </drop-down-multiselect>
+                                    </div>
+
+                                    <div class="column">
+                                        <h5>SubCategoría</h5>
+                                        <drop-down-multiselect [listData]="listSubCategoryFiltered"
+                                            [selectedItems]="listSubCategorySelected"
+                                            (listDataOutput)="selectedSubCategories($event)" class="space-around">
+                                        </drop-down-multiselect>
+                                        <h5>SubSubCategoría</h5>
+                                        <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                                        <h5>Producto Individual</h5>
+                                        <drop-down-multiselect [listData]="listIndividualProducts"
+                                            [selectedItems]="listIndvProdSelected"
+                                            (listDataOutput)="selectedProducts($event)" class="space-around">
+                                        </drop-down-multiselect>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -180,25 +239,28 @@
                         <p-radioButton name="groupname6" class="space-around" value="No" label="No"
                             [(ngModel)]="selectedValuePrice">
                         </p-radioButton>
-                        <div class="border-box">
-                            <h6>Lista de Precio</h6>
-                            <p-radioButton name="groupname2" class="space-around-noBottom" value="Cliente"
-                                [disabled]="selectedValuePrice == 'Si' ? false:true" label="Cliente"
-                                [(ngModel)]="selectedValuePriceList"></p-radioButton>
-                            <p-radioButton name="groupname2" class="space-around-noBottom" value="Direccion"
-                                label="Dirección" [(ngModel)]="selectedValuePriceList"
-                                [disabled]="selectedValuePrice == 'Si' ? false:true">
-                            </p-radioButton>
-                            <div class="radio-other">
-                                <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
-                                    label="Otro" [(ngModel)]="selectedValuePriceList"
+                        <div *ngIf="selectedValuePrice == 'Si' ? true:false">
+                            <div class="border-box-col">
+                                <h6>Lista de Precio</h6>
+                                <p-radioButton name="groupname2" class="space-around-noBottom" value="Cliente"
+                                    [disabled]="selectedValuePrice == 'Si' ? false:true" label="Cliente"
+                                    [(ngModel)]="selectedValuePriceList"></p-radioButton>
+                                <p-radioButton name="groupname2" class="space-around-noBottom" value="Direccion"
+                                    label="Dirección" [(ngModel)]="selectedValuePriceList"
                                     [disabled]="selectedValuePrice == 'Si' ? false:true">
                                 </p-radioButton>
-                                <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
-                                    [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
-                                </drop-down-multiselect>
+                                <div class="radio-other">
+                                    <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
+                                        label="Otro" [(ngModel)]="selectedValuePriceList"
+                                        [disabled]="selectedValuePrice == 'Si' ? false:true">
+                                    </p-radioButton>
+                                    <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
+                                        [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
+                                    </drop-down-multiselect>
+                                </div>
                             </div>
                         </div>
+
                         <h5>Descripción</h5>
                         <p-radioButton name="groupname3" class="space-around-noBottom" value="Si" label="Si"
                             [(ngModel)]="selectedValueDescripcion"></p-radioButton>
@@ -206,16 +268,21 @@
                             [(ngModel)]="selectedValueDescripcion">
                         </p-radioButton>
                         <h5>Item x página</h5>
-                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="2" [max]="8" [step]="2"
+                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="1" [max]="8"
                             class="space-around">
                         </p-spinner>
                     </div>
 
                     <div class="column">
                         <h5>Tamaño de Imagen</h5>
-                        <drop-down-multiselect class="space-around-noBottom" [listData]="listImgSize" (listDataOutput)="selectedImgSize($event)">
+                        <drop-down-multiselect class="space-around" [listData]="listImgSize"
+                            (listDataOutput)="selectedImgSize($event)">
                         </drop-down-multiselect>
-                        
+
+                        <h5>Ordenamiento</h5>
+                        <drop-down-multiselect class="space-around">
+                        </drop-down-multiselect>
+
                         <!-- <h5>Promociones</h5>
                         <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
                             [(ngModel)]="selectedValuePromocion"></p-radioButton>

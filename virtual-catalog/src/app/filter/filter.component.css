@@ -25,6 +25,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    padding-left: 1rem;
 }
   
 .column {
@@ -88,9 +89,17 @@ h5 {
     margin: 1rem;
 }
 
-.border-box {
+.border-box-col {
     display: flex;
     flex-direction: column;
+    border-style: solid;
+    padding: 0.5rem;
+    border-color: darkgrey;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.border-box-row {
     border-style: solid;
     padding: 0.5rem;
     border-color: darkgrey;
@@ -105,3 +114,23 @@ h5 {
 .button-text-small {
     font-size: 80%;
 }
+
+.componentWrapper {
+    border: solid rgb(169, 169, 169);
+    border-radius: 15px;
+    padding: 10px;
+    width: 95%;
+    margin-top: 1em;
+    margin-bottom: 2rem;
+  }
+  
+  .fix-title-border {
+    margin-top: -2.2em;
+  }
+  
+  .componentTitle {
+    font-size: 18px;
+    background-color: #dbdcdc;
+    display: inline-block;
+    padding: .5em .3em;
+  }

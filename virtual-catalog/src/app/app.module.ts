@@ -8,6 +8,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {SpinnerModule} from 'primeng/spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FieldsetModule} from 'primeng/fieldset';
+import {TooltipModule} from 'primeng/tooltip';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -41,7 +43,9 @@ import { DataStorage } from './Service/DataStorage';
     MultiSelectModule,
     BrowserAnimationsModule,
     RadioButtonModule,
-    SpinnerModule
+    SpinnerModule,
+    FieldsetModule,
+    TooltipModule
   ],
   providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]

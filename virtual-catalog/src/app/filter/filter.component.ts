@@ -177,7 +177,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     if (temp.length > 0) {
       this.listProducts.forEach(element => {
-        if (!temp.some(e => e.name == element.getAttribute(lowerLevel))) {
+        if (temp.some(e => e.name == element.getAttribute(lowerLevel))) {
           if (!this.listIndividualProducts.some(item => item.productId == element.productId)) {
             this.listIndividualProducts.push(element);
           }
@@ -210,7 +210,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.service.getProduct().then((products: product[]) => {
       this.listProducts = products;
-      this.listIndividualProducts = this.filterRepeat(this.listProducts);
+      // this.listIndividualProducts = this.filterRepeat(this.listProducts);
       console.log(products);
     })
     this.service.getFamily().then((families: family[]) => {
