@@ -95,4 +95,20 @@ export class request {
       '</s:Body>' +
       '</s:Envelope>';
   }
+
+  getItemBarcode() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getItemBarcode xmlns="http://tempuri.org/" />' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
+
+  getCompanies() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getCompanies xmlns="http://tempuri.org/" />' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
 }

@@ -301,5 +301,53 @@ export class ServiceVirtualCatalogService {
         })
     }
 
+    public getItemBarcode() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getItemBarcode();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getItemBarcode");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseItemBarcode(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getCompanies() {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getCompanies();
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getCompanies");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parseCompanies(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
 }
 

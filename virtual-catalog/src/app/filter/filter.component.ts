@@ -10,6 +10,7 @@ import { priceGroup } from '../classes/priceGroup';
 import { productUse } from '../classes/productUse';
 import { itemType } from '../classes/itemType';
 import { itemMark } from '../classes/itemMark';
+import { company } from '../classes/company';
 
 @Component({
   selector: 'filter',
@@ -32,6 +33,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listImgSize: any[] = [];
   listItemType: any[] = [];
   listItemMark: any[] = [];
+  listCompanies: any[] = [];
 
   listSubFamilyFiltered: any[] = [];
   listCategoryFiltered: any[] = [];
@@ -48,6 +50,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listLifeCycleSelected: any[] = [];
   listIndvProdSelected: any[] = [];
   listImgSelected: any[] = [];
+  listItemTypeSelected: any[] = [];
+  listProdUseSelected: any[] = [];
+  listMarkSelected: any[] = [];
 
   historicoVenta: string = "No";
   selectedValuePrice: string = "No";
@@ -115,7 +120,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   selectedSubCategories(data: subFamily[]) {
     this.listSubCategorySelected = data;
-    this.filterIndividualProducts();
+    this.filterProducts();
   }
 
   selectedProducts(data: any[]) {
@@ -124,6 +129,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   selectedLifeCycle(data: any[]) {
     this.listLifeCycleSelected = data;
+    this.filterProducts();
   }
 
   selectedMainActivity(data: any[]) {
@@ -138,20 +144,84 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.listImgSelected = data;
   }
 
+  selectedItemType(data: any[]) {
+    this.listItemTypeSelected = data;
+    this.filterProducts();
+  }
+
+  selectedUseProduct(data: any[]) {
+    this.listProdUseSelected = data;
+    this.filterProducts();
+  }
+
+  selectedMark(data: any[]) {
+    this.listMarkSelected = data;
+    this.filterProducts();
+  }
+
   filterProducts() {
-    let universe = [];
+    let universe = this.listProducts;
     let temp = [];
+    let aux: any = [];
     this.listProductFiltered = [];
     let lowerLevel = this.getLowerLevel();
     temp = this.getList(lowerLevel);
 
-    this.listProducts.forEach(element => {
-      if(this.listLifeCycleSelected.some(e => e.lifeCycleId == element.lifeCycle)) {
-        if(!universe.some((item) => item.productId == element.productId)) {
-          universe.push(element);
-        }
-      }
-    });
+    // this.listProducts.forEach(element => {
+    //   if(this.listItemTypeSelected.some(e => e.name == element.itemType)) {
+    //     universe.push(element);
+    //   }
+    // });
+
+    // universe.forEach(element => {
+    //   if(this.listProdUseSelected.some(e => e.name == element.productUse)) {
+    //     aux.push(element);
+    //   }
+    // }); universe = aux; aux = [];
+
+    // universe.forEach(element => {
+    //   if(this.listMarkSelected.some(e => e.name == element.itemMark)) {
+    //     aux.push(element);
+    //   }
+    // }); universe = aux; aux = [];
+
+    // universe.forEach(element => {
+    //   if(this.listLifeCycleSelected.some(e => e.lifeCycleId == element.lifeCycle)) {
+    //     aux.push(element);
+    //   }
+    // }); universe = aux; aux = [];
+
+    if (this.listItemTypeSelected.length > 0) {
+      this.listItemTypeSelected.forEach(element => {
+        aux = aux.concat(universe.filter((e) => e.itemType == element.name));
+      });
+      universe = aux;
+      aux = [];
+    }
+
+    if (this.listProdUseSelected.length > 0) {
+      this.listProdUseSelected.forEach(element => {
+        aux = aux.concat(universe.filter((e) => e.productUse == element.name));
+      });
+      universe = aux;
+      aux = [];
+    }
+
+    if (this.listMarkSelected.length > 0) {
+      this.listMarkSelected.forEach(element => {
+        aux = aux.concat(universe.filter((e) => e.itemMark == element.name));
+      });
+      universe = aux;
+      aux = [];
+    }
+
+    if (this.listLifeCycleSelected.length > 0) {
+      this.listLifeCycleSelected.forEach(element => {
+        aux = aux.concat(universe.filter((e) => e.lifeCycle == element.lifeCycleId));
+      });
+      universe = aux;
+      aux = [];
+    }
 
     temp.forEach(element => {
       universe.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
@@ -159,13 +229,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
           this.listProductFiltered.push(product);
         }
       });
-    });
+    }); this.listIndividualProducts = this.listProductFiltered;
 
-    this.listIndvProdSelected.forEach(element => {
-      if (!this.listProductFiltered.some(e => element.productId == e.productId)) {
-        this.listProductFiltered.push(element);
-      }
-    });
+    this.listIndvProdSelected = this.listIndividualProducts;
+
+    // this.listIndvProdSelected.forEach(element => {
+    //   if (!this.listProductFiltered.some(e => element.productId == e.productId)) {
+    //     this.listProductFiltered.push(element);
+    //   }
+    // });
   }
 
   filterIndividualProducts() {
@@ -202,7 +274,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   checkEmpty() {
-    if(!(this.text.length > 0)) {
+    if (!(this.text.length > 0)) {
       this.boolClient = true;
     }
   }
@@ -257,8 +329,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
       //console.log(lifeCycles);
       this.listItemMark = _itemMark;
     })
+    this.service.getCompanies().then((_companies: company[]) => {
+      //console.log(lifeCycles);
+      this.listCompanies = _companies;
+    })
 
-    this.listImgSize = [{name: 'S', id:'_s_'}, {name: 'M', id:'_m_'}, {name: 'L', id:'_l_'}, {name: 'XL', id:''}];
+    this.listImgSize = [{ labelCode: 'S', id: '_s_' }, { labelCode: 'M', id: '_m_' }, { labelCode: 'L', id: '_l_' }, { labelCode: 'XL', id: '' }];
   }
 
   generateCatalog() {
@@ -284,7 +360,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
       subFamilyList: this.listSubFamilySelected,
       categoryList: this.listCategorySelected,
       subCategoryList: this.listSubCategorySelected,
-      productsList: this.listProductFiltered,
+      productsList: this.listIndvProdSelected,
       lifeCycle: this.listLifeCycleSelected,
       mainActivity: this.listMainActivitySelected,
       speciality: this.listSpecialitySelected,

@@ -1,8 +1,8 @@
 
-export class priceGroup {
+export class company {
     id: number;
     name: string;
-    priceId: string;
+    companyId: string;
     label: string;
     labelCode: string;
 }

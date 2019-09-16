@@ -9,7 +9,7 @@ import { SelectItem } from 'primeng/api';
 })
 export class DropDownMultiselectComponent implements OnChanges {
 
-  @Input() public listData: { id: number, parent_id: string, name: string }[] = [];
+  @Input() public listData: any[];//{ id: number, parent_id: string, name: string }[] = [];
   @Input() public selectedItems: any[] = [];
   @Input() public disable: boolean = false;
   @Output() public listDataOutput = new EventEmitter();
@@ -36,7 +36,7 @@ export class DropDownMultiselectComponent implements OnChanges {
       //console.log("OnChange");
       this.optionList = [];
       this.listData.forEach(element => {
-        this.optionList.push({ label: element.name, value: element });
+        this.optionList.push({ label: element.label, value: element });
         this.optionList.sort(function (a, b) {
           if (a.label > b.label) {
             return 1;

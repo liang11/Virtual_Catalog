@@ -76,7 +76,7 @@
                             <div class="row">
                                 <div class="column">
                                     <h5>Empresa</h5>
-                                    <drop-down-multiselect class="space-around-noBottom"></drop-down-multiselect>
+                                    <drop-down-multiselect class="space-around-noBottom" [listData]="listCompanies"></drop-down-multiselect>
                                 </div>
                                 <div class="column">
                                     <h5>Proveedores</h5>
@@ -125,6 +125,32 @@
 
                 <div class="componentWrapper">
                     <div class="fix-title-border">
+                        <div class='componentTitle' pTooltip="Enter your username">Historial(opcional)
+                            <img src="../assets/imgs/help_icon.png">
+                        </div>
+                        <div class="componentContent">
+                            <h5>Código del Cliente</h5>
+                            <div class="input-group space-around">
+                                <input type="text" class="form-control" [(ngModel)]="text" (keyup)="checkEmpty()"
+                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                <button type="button" class="button-text-small" (click)="checkClient()"
+                                    [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                            </div>
+                            <h5>Histórico de Venta</h5>
+                            <p-radioButton name="groupname" class="space-around" value="Si" label="Si"
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient"></p-radioButton>
+                            <p-radioButton name="groupname" class="space-around" value="No" label="No"
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
+                            </p-radioButton>
+                            <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
+                                [(ngModel)]="historicoVenta" [disabled]="boolClient">
+                            </p-radioButton>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="componentWrapper">
+                    <div class="fix-title-border">
                         <div class='componentTitle' pTooltip="Enter your username">Parámetros de Artículo
                             <img src="../assets/imgs/help_icon.png">
                         </div>
@@ -132,36 +158,18 @@
                             <div class="row">
                                 <div class="column">
                                     <h5>Tipo de Artículo</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listItemType">
+                                    <drop-down-multiselect class="space-around" [listData]="listItemType" (listDataOutput)="selectedItemType($event)">
                                     </drop-down-multiselect>
                                     <h5>Uso del Producto</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listProductUse">
+                                    <drop-down-multiselect class="space-around" [listData]="listProductUse" (listDataOutput)="selectedUseProduct($event)">
                                     </drop-down-multiselect>
                                     <h5>Ocasión de Uso</h5>
                                     <drop-down-multiselect class="space-around"></drop-down-multiselect>
-
-                                    <h5>Código del Cliente</h5>
-                                    <div class="input-group space-around">
-                                        <input type="text" class="form-control" [(ngModel)]="text"
-                                            (keyup)="checkEmpty()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
-                                        <button type="button" class="button-text-small" (click)="checkClient()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
-                                    </div>
-                                    <h5>Histórico de Venta</h5>
-                                    <p-radioButton name="groupname" class="space-around-noBottom" value="Si" label="Si"
-                                        [(ngModel)]="historicoVenta" [disabled]="boolClient"></p-radioButton>
-                                    <p-radioButton name="groupname" class="space-around-noBottom" value="No" label="No"
-                                        [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                                    </p-radioButton>
-                                    <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
-                                        [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                                    </p-radioButton>
                                 </div>
 
                                 <div class="column">
                                     <h5>Marca del Artículo</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listItemMark">
+                                    <drop-down-multiselect class="space-around" [listData]="listItemMark" (listDataOutput)="selectedMark($event)">
                                     </drop-down-multiselect>
                                     <h5>Ciclo de vida</h5>
                                     <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
@@ -243,11 +251,11 @@
                             <div class="border-box-col">
                                 <h6>Lista de Precio</h6>
                                 <p-radioButton name="groupname2" class="space-around-noBottom" value="Cliente"
-                                    [disabled]="selectedValuePrice == 'Si' ? false:true" label="Cliente"
+                                    [disabled]="!boolClient && listMainActivitySelected && listSpecialitySelected ? false:true" label="Cliente"
                                     [(ngModel)]="selectedValuePriceList"></p-radioButton>
                                 <p-radioButton name="groupname2" class="space-around-noBottom" value="Direccion"
                                     label="Dirección" [(ngModel)]="selectedValuePriceList"
-                                    [disabled]="selectedValuePrice == 'Si' ? false:true">
+                                    [disabled]="!boolClient && listMainActivitySelected && listSpecialitySelected ? false:true">
                                 </p-radioButton>
                                 <div class="radio-other">
                                     <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
@@ -268,8 +276,7 @@
                             [(ngModel)]="selectedValueDescripcion">
                         </p-radioButton>
                         <h5>Item x página</h5>
-                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="1" [max]="8"
-                            class="space-around">
+                        <p-spinner [(ngModel)]="spinner" name="spinner" [min]="1" [max]="8" class="space-around">
                         </p-spinner>
                     </div>
 

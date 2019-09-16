@@ -7,6 +7,8 @@ import { priceGroup } from '../classes/priceGroup';
 import { productUse } from '../classes/productUse';
 import { itemType } from '../classes/itemType';
 import { itemMark } from '../classes/itemMark';
+import { barcode } from '../classes/barcode';
+import { company } from '../classes/company';
 
 export class Interpreter{
 
@@ -18,9 +20,9 @@ export class Interpreter{
         for (var index = 0; index < xmlFamily.length; index++) {
             var newFamily = new family();
             newFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
+            newFamily.label = newFamily.name;
             newFamily.id = index;
             newFamily.parent_id = "";
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             families.push(newFamily);
         }
         return families;
@@ -33,6 +35,7 @@ export class Interpreter{
             var newSubFamily = new subFamily();
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "subFamily").item(0).textContent;
+            newSubFamily.label = newSubFamily.name;
             newSubFamily.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             subFamilies.push(newSubFamily);
@@ -48,7 +51,7 @@ export class Interpreter{
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "subFamily").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;
             newSubFamily.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            newSubFamily.label = newSubFamily.name;
             categories.push(newSubFamily);
         }
         return categories;
@@ -62,7 +65,7 @@ export class Interpreter{
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "subCategory").item(0).textContent;
             newSubFamily.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            newSubFamily.label = newSubFamily.name;
             categories.push(newSubFamily);
         }
         return categories;
@@ -81,8 +84,12 @@ export class Interpreter{
             newProduct.subCategory = xmlProduct.item(index).getElementsByTagName(this.prefix + "subCategory").item(0).textContent;
             newProduct.description = xmlProduct.item(index).getElementsByTagName(this.prefix + "description").item(0).textContent;
             newProduct.lifeCycle = xmlProduct.item(index).getElementsByTagName(this.prefix + "lifeCycle").item(0).textContent;
+            newProduct.productUse = xmlProduct.item(index).getElementsByTagName(this.prefix + "productUse").item(0).textContent;
+            newProduct.itemMark = xmlProduct.item(index).getElementsByTagName(this.prefix + "itemMark").item(0).textContent;
+            newProduct.itemType = xmlProduct.item(index).getElementsByTagName(this.prefix + "itemType").item(0).textContent;
+            newProduct.label = newProduct.name;
+            newProduct.labelCode = newProduct.productId;
             newProduct.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             products.push(newProduct);
         }
         return products;
@@ -95,6 +102,8 @@ export class Interpreter{
             var newLifeCycle = new lifeCycle();
             newLifeCycle.lifeCycleId = xmlLifeCycle.item(index).getElementsByTagName(this.prefix + "lifeCycleId").item(0).textContent;
             newLifeCycle.name = xmlLifeCycle.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newLifeCycle.label = newLifeCycle.name;
+            newLifeCycle.labelCode = newLifeCycle.lifeCycleId;
             newLifeCycle.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             lifeCycleList.push(newLifeCycle);
@@ -108,6 +117,7 @@ export class Interpreter{
         for (var index = 0; index < xmlMainActivity.length; index++) {
             var newMainActivity = new ipLevel();
             newMainActivity.name = xmlMainActivity.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newMainActivity.label = newMainActivity.name;
             newMainActivity.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             mainActivityList.push(newMainActivity);
@@ -121,6 +131,7 @@ export class Interpreter{
         for (var index = 0; index < xmlSpeciality.length; index++) {
             var newSpeciality = new ipLevel();
             newSpeciality.name = xmlSpeciality.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newSpeciality.label = newSpeciality.name;
             newSpeciality.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             specialityList.push(newSpeciality);
@@ -133,8 +144,10 @@ export class Interpreter{
         var xmlPriceGroup = xml.getElementsByTagName(this.prefix + "PriceGroupService");
         for (var index = 0; index < xmlPriceGroup.length; index++) {
             var newPriceGroup = new priceGroup();
-            newPriceGroup.name = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "priceId").item(0).textContent;
-            newPriceGroup.priceId = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newPriceGroup.name = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newPriceGroup.priceId = xmlPriceGroup.item(index).getElementsByTagName(this.prefix + "priceId").item(0).textContent;
+            newPriceGroup.label = newPriceGroup.name;
+            newPriceGroup.labelCode = newPriceGroup.priceId;
             newPriceGroup.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             priceGroupList.push(newPriceGroup);
@@ -147,8 +160,10 @@ export class Interpreter{
         var xmlProductUse = xml.getElementsByTagName(this.prefix + "ProductUseService");
         for (var index = 0; index < xmlProductUse.length; index++) {
             var newProductUse = new productUse();
-            newProductUse.name = xmlProductUse.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
-            newProductUse.productUseId = xmlProductUse.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newProductUse.name = xmlProductUse.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newProductUse.productUseId = xmlProductUse.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
+            newProductUse.label = newProductUse.name;
+            newProductUse.labelCode = newProductUse.productUseId;
             newProductUse.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             productUseList.push(newProductUse);
@@ -163,6 +178,7 @@ export class Interpreter{
             var newItemType = new itemType();
             newItemType.name = xmlItemType.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
             newItemType.itemTypeId = xmlItemType.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
+            newItemType.label = newItemType.name;
             newItemType.id = index;
             // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             itemTypeList.push(newItemType);
@@ -176,10 +192,41 @@ export class Interpreter{
         for (var index = 0; index < xmlItemMark.length; index++) {
             var newItemMark = new itemMark();
             newItemMark.name = xmlItemMark.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newItemMark.label = newItemMark.name;
             newItemMark.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             itemMarkList.push(newItemMark);
         }
         return itemMarkList;
+    }
+
+    parseItemBarcode(xml: XMLDocument) {
+        var itemBarcodeList: barcode[] = [];
+        var xmlItemBarcode = xml.getElementsByTagName(this.prefix + "ItemBarcodeService");
+        for (var index = 0; index < xmlItemBarcode.length; index++) {
+            var newItemBarcode = new barcode();
+            newItemBarcode.barcode = xmlItemBarcode.item(index).getElementsByTagName(this.prefix + "barcode").item(0).textContent;
+            newItemBarcode.itemId = xmlItemBarcode.item(index).getElementsByTagName(this.prefix + "itemId").item(0).textContent;
+            newItemBarcode.unit = xmlItemBarcode.item(index).getElementsByTagName(this.prefix + "unit").item(0).textContent;
+            newItemBarcode.id = index;
+            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
+            itemBarcodeList.push(newItemBarcode);
+        }
+        return itemBarcodeList;
+    }
+
+    parseCompanies(xml: XMLDocument) {
+        var companyList: company[] = [];
+        var xmlCompany = xml.getElementsByTagName(this.prefix + "CompanyService");
+        for (var index = 0; index < xmlCompany.length; index++) {
+            var newCompany = new company();
+            newCompany.name = xmlCompany.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
+            newCompany.companyId = xmlCompany.item(index).getElementsByTagName(this.prefix + "companyId").item(0).textContent;
+            newCompany.label = newCompany.name;
+            newCompany.labelCode = newCompany.companyId;
+            newCompany.id = index;
+            
+            companyList.push(newCompany);
+        }
+        return companyList;
     }
 }
