@@ -53,6 +53,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listItemTypeSelected: any[] = [];
   listProdUseSelected: any[] = [];
   listMarkSelected: any[] = [];
+  listPriceSelected: any[] = [];
 
   historicoVenta: string = "No";
   selectedValuePrice: string = "No";
@@ -157,6 +158,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
   selectedMark(data: any[]) {
     this.listMarkSelected = data;
     this.filterProducts();
+  }
+
+  selectedPrice(data: any[]) {
+    this.listPriceSelected = data;
+    console.log(this.listPriceSelected);
   }
 
   filterProducts() {

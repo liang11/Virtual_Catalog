@@ -111,4 +111,14 @@ export class request {
       '</s:Body>' +
       '</s:Envelope>';
   }
+
+  getCompan1ies() {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<getCompanies xmlns="http://tempuri.org/">' +
+      
+      '</getCompanies>' +
+      '</s:Body>' +
+      '</s:Envelope>';
+  }
 }
