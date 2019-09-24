@@ -11,6 +11,8 @@ import { productUse } from '../classes/productUse';
 import { itemType } from '../classes/itemType';
 import { itemMark } from '../classes/itemMark';
 import { company } from '../classes/company';
+import { price } from '../classes/price';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'filter',
@@ -34,6 +36,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listItemType: any[] = [];
   listItemMark: any[] = [];
   listCompanies: any[] = [];
+  listProductAttributes: any[] = [];
 
   listSubFamilyFiltered: any[] = [];
   listCategoryFiltered: any[] = [];
@@ -65,7 +68,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   text = '';
   boolClient: boolean = true;
 
-  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage) { }
+  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router) { }
 
   selectedFamilies(data: family[]) {
     console.log(this.text);
@@ -172,30 +175,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.listProductFiltered = [];
     let lowerLevel = this.getLowerLevel();
     temp = this.getList(lowerLevel);
-
-    // this.listProducts.forEach(element => {
-    //   if(this.listItemTypeSelected.some(e => e.name == element.itemType)) {
-    //     universe.push(element);
-    //   }
-    // });
-
-    // universe.forEach(element => {
-    //   if(this.listProdUseSelected.some(e => e.name == element.productUse)) {
-    //     aux.push(element);
-    //   }
-    // }); universe = aux; aux = [];
-
-    // universe.forEach(element => {
-    //   if(this.listMarkSelected.some(e => e.name == element.itemMark)) {
-    //     aux.push(element);
-    //   }
-    // }); universe = aux; aux = [];
-
-    // universe.forEach(element => {
-    //   if(this.listLifeCycleSelected.some(e => e.lifeCycleId == element.lifeCycle)) {
-    //     aux.push(element);
-    //   }
-    // }); universe = aux; aux = [];
 
     if (this.listItemTypeSelected.length > 0) {
       this.listItemTypeSelected.forEach(element => {
@@ -361,20 +340,30 @@ export class FilterComponent implements OnInit, AfterViewInit {
     // console.log(this.spinner);
     // console.log(this.property);
 
-    this._data.data = {
-      familyList: this.listFamilySelected,
-      subFamilyList: this.listSubFamilySelected,
-      categoryList: this.listCategorySelected,
-      subCategoryList: this.listSubCategorySelected,
-      productsList: this.listIndvProdSelected,
-      lifeCycle: this.listLifeCycleSelected,
-      mainActivity: this.listMainActivitySelected,
-      speciality: this.listSpecialitySelected,
-      historicoVenta: this.historicoVenta,
-      spinner: this.spinner,
-      allProducts: this.listProducts,
-      productImgSize: this.listImgSelected.pop().id
-    }
+    this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
+      this.listProductAttributes = _prices;
+
+      this._data.data = {
+        familyList: this.listFamilySelected,
+        subFamilyList: this.listSubFamilySelected,
+        categoryList: this.listCategorySelected,
+        subCategoryList: this.listSubCategorySelected,
+        productsList: this.listIndvProdSelected, //Este es el que hacce display.
+        lifeCycle: this.listLifeCycleSelected,
+        mainActivity: this.listMainActivitySelected,
+        speciality: this.listSpecialitySelected,
+        historicoVenta: this.historicoVenta,
+        spinner: this.spinner,
+        allProducts: this.listProducts,
+        productImgSize: this.listImgSelected.pop().id,
+        prices: this.listProductAttributes
+      }
+      
+      this.router.navigate(['/catalog']);
+
+    });
+
+
   }
 
   ngAfterViewInit() {
@@ -406,6 +395,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
       }
     });
     return temp;
+  }
+
+  getProductsCodes() {
+    let productCodes: string[] = [];
+    console.log(this.listIndvProdSelected);
+    this.listIndvProdSelected.forEach(element => {
+      productCodes.push(element.productId);
+    });
+    return productCodes;
   }
 
 }

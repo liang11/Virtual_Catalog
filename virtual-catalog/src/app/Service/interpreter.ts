@@ -9,6 +9,8 @@ import { itemType } from '../classes/itemType';
 import { itemMark } from '../classes/itemMark';
 import { barcode } from '../classes/barcode';
 import { company } from '../classes/company';
+import { price } from '../classes/price';
+import { priceAttributes } from '../classes/priceAttributes';
 
 export class Interpreter{
 
@@ -228,5 +230,34 @@ export class Interpreter{
             companyList.push(newCompany);
         }
         return companyList;
+    }
+
+    parsePrices(xml: XMLDocument) {
+        var pricesList: price[] = [];
+        var xmlPrice = xml.getElementsByTagName(this.prefix + "PriceService");
+        for (var index = 0; index < xmlPrice.length; index++) {
+            var newCPrice = new price();
+            let temp_priceAttribute: any;
+            let temp_Attributes: any;
+            let attributeList: priceAttributes[] = [];
+
+            temp_priceAttribute = xmlPrice.item(index).getElementsByTagName(this.prefix + "attributes")[0];
+            temp_Attributes = temp_priceAttribute.getElementsByTagName(this.prefix + "PriceAttribute");
+            for(var idx = 0; idx < temp_Attributes.length; idx++) {
+                let new_attributes: priceAttributes = new priceAttributes();
+
+                new_attributes.barcode = temp_Attributes.item(idx).getElementsByTagName(this.prefix + "barcode").item(0).textContent;
+                new_attributes.price = temp_Attributes.item(idx).getElementsByTagName(this.prefix + "price").item(0).textContent;
+                new_attributes.unit = temp_Attributes.item(idx).getElementsByTagName(this.prefix + "unit").item(0).textContent;
+
+                attributeList.push(new_attributes);
+            }
+            newCPrice.id = index;
+            newCPrice.itemId = xmlPrice.item(index).getElementsByTagName(this.prefix + "itemId").item(0).textContent;
+            newCPrice.attributes = attributeList;         
+            
+            pricesList.push(newCPrice);
+        }
+        return pricesList;
     }
 }

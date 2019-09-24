@@ -10,6 +10,7 @@ import {SpinnerModule} from 'primeng/spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FieldsetModule} from 'primeng/fieldset';
 import {TooltipModule} from 'primeng/tooltip';
+import {DialogModule} from 'primeng/dialog';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -45,7 +46,8 @@ import { DataStorage } from './Service/DataStorage';
     RadioButtonModule,
     SpinnerModule,
     FieldsetModule,
-    TooltipModule
+    TooltipModule,
+    DialogModule
   ],
   providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]

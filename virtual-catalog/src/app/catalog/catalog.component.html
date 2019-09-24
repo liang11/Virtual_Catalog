@@ -1,17 +1,34 @@
-
 <div class="row">
     <ng-container *ngFor="let p of productFiltered; let i = index">
         <div class="col">
             <div class="card space-around" style="width: 15rem;">
                 <!-- <img src="..." class="card-img-top" alt="..."> -->
-                <img class="image-container" src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG" onerror="this.src='../assets/imgs/error_img.png'">
+                <img class="image-container"
+                    src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
+                    onerror="this.src='../assets/imgs/error_img.png'">
                 <div class="card-body">
                     <h5 class="card-title">{{  p.name }}</h5>
                     <p class="card-text">{{ p.productId }}</p>
-                    <a href="#" class="btn btn-primary">Ver Detalles</a>
+                    <a class="btn btn-primary" (click)="itemDetail(p)">Ver Detalles</a>
                 </div>
             </div>
         </div>
         <div *ngIf="(i +1) % 2 === 0" class="w-100"></div>
     </ng-container>
 </div>
+
+<p-dialog header="Title" [(visible)]="display" [modal]="true">
+    <!-- {{ this.current_product.productId }} -->
+    <h3>{{ this.current_product.name }}</h3>
+    <h5>{{ this.current_product.productId }}</h5>
+    <p>
+        Esto es la descripcion.
+    </p>
+    <ng-container *ngFor="let a of temp">
+        <p>
+            Unidad: {{ a.unit }}
+            Precio: ₡ {{ a.price | number }}
+        </p>
+    </ng-container>
+
+</p-dialog>

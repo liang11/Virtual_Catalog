@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DataStorage } from '../Service/DataStorage';
 import { ServiceVirtualCatalogService } from '../service-virtual-catalog.service';
-import { barcode } from '../classes/barcode';
+import { product } from '../classes/product';
 
 @Component({
   selector: 'app-catalog',
@@ -11,31 +11,40 @@ import { barcode } from '../classes/barcode';
 export class CatalogComponent {
 
   data: any = {};
+  product_attributes: any;
   productFiltered: any[] = [];
+  listProductAttributes: any[] = [];
+  display: boolean = false;
+  current_product: any = new product;
+  temp: any[] = [];
 
   constructor(private service: ServiceVirtualCatalogService, public dataStorage: DataStorage) { 
     this.data = dataStorage.data;
-    console.log(this.data.productImgSize);
+    this.product_attributes = this.data.prices;
+    console.log(this.data.prices);
 
     this.productFiltered = this.data.productsList;
-
-    // let lowerLevel = dataStorage.getLowerLevel();
-    // let temp = dataStorage.getList(lowerLevel);
-
-    // temp.forEach(element => {
-    //   this.data.allProducts.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
-    //     if(!this.productFiltered.some(e => e.productId == product.productId)) {
-    //       this.productFiltered.push(product); 
-    //     }
-    //   });      
-    // });
-    
   }
 
   ngOnInit() {
-    this.service.getItemBarcode().then((itemBarcode: barcode[]) => {
-      console.log(itemBarcode);
-      //this.listFamily = families;
-    })
+
   }
+
+  itemDetail(item: any) {
+    this.display = !this.display;
+    this.current_product = item;
+    this.getItemPrice(this.current_product.productId);
+    console.log(this.current_product);
+  }
+
+  getItemPrice(itemCode: string) {
+    this.data.prices.forEach(element => {
+      if(element.itemId == itemCode) {
+        this.temp = element.attributes;
+        console.log(element.itemId);
+        console.log(this.temp);
+      }
+    });
+  }
+
 }

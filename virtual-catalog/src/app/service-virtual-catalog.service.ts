@@ -7,7 +7,7 @@ import { Interpreter } from './Service/interpreter';
 })
 export class ServiceVirtualCatalogService {
 
-    serviceLink = "http://localhost:53519/Service1.svc";
+    serviceLink = "http://john-wick:8091/Service1.svc";
 
     request: request = new request();
 
@@ -340,6 +340,30 @@ export class ServiceVirtualCatalogService {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         resolve(interpreter.parseCompanies(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+        })
+    }
+
+    public getPrices(items: string[], priceList: string) {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getPrices(items, priceList);
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getPrices");
+            xhr.send(xmlRequest);
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(interpreter.parsePrices(xhr.responseXML));
                     }
                 }
             };
