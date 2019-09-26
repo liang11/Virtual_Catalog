@@ -18,6 +18,8 @@ export class CatalogComponent {
   current_product: any = new product;
   temp: any[] = [];
 
+  images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
+
   constructor(private service: ServiceVirtualCatalogService, public dataStorage: DataStorage) { 
     this.data = dataStorage.data;
     this.product_attributes = this.data.prices;

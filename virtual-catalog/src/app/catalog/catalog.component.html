@@ -7,7 +7,7 @@
                     src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
                     onerror="this.src='../assets/imgs/error_img.png'">
                 <div class="card-body">
-                    <h5 class="card-title">{{  p.name }}</h5>
+                    <h5 class="card-title">{{ p.name }}</h5>
                     <p class="card-text">{{ p.productId }}</p>
                     <a class="btn btn-primary" (click)="itemDetail(p)">Ver Detalles</a>
                 </div>
@@ -17,18 +17,42 @@
     </ng-container>
 </div>
 
-<p-dialog header="Title" [(visible)]="display" [modal]="true">
-    <!-- {{ this.current_product.productId }} -->
-    <h3>{{ this.current_product.name }}</h3>
-    <h5>{{ this.current_product.productId }}</h5>
-    <p>
-        Esto es la descripcion.
-    </p>
-    <ng-container *ngFor="let a of temp">
-        <p>
-            Unidad: {{ a.unit }}
-            Precio: ₡ {{ a.price | number }}
-        </p>
-    </ng-container>
 
+<p-dialog width="1000" [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false" [dismissableMask]="true">
+    <div style="display: flex;">
+        <ngb-carousel *ngIf="images">
+            <ng-template ngbSlide>
+                <div class="img_container">
+                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_l_.PNG"
+                        onerror="this.src='../assets/imgs/error_img.png'">
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="img_container">
+                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_m_.PNG"
+                        onerror="this.src='../assets/imgs/error_img.png'">
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="img_container">
+                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_s_.PNG"
+                        onerror="this.src='../assets/imgs/error_img.png'">
+                </div>
+            </ng-template>
+        </ngb-carousel>
+
+        <div class="detail_container">
+            <h3>{{ this.current_product.name }}</h3>
+            <h4>{{ this.current_product.productId }}</h4>
+            <p>
+                Esto es la descripcion.
+            </p>
+            <ng-container *ngFor="let a of temp">
+                <p>
+                    Unidad: {{ a.unit }}
+                    Precio: ₡ {{ a.price | number }}
+                </p>
+            </ng-container>
+        </div>
+    </div>
 </p-dialog>
