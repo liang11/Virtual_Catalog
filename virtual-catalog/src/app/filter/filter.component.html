@@ -318,7 +318,7 @@
 
                     <div class="column">
                         <h5>Tamaño de Imagen</h5>
-                        <drop-down-multiselect class="space-around" [listData]="listImgSize"
+                        <drop-down-multiselect class="space-around" [listData]="listImgSize" [selectedItems]="listImgSelected"
                             (listDataOutput)="selectedImgSize($event)">
                         </drop-down-multiselect>
 

@@ -18,7 +18,8 @@
 </div>
 
 
-<p-dialog width="1000" [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false" [dismissableMask]="true">
+<p-dialog width="1000" [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false"
+    [dismissableMask]="true">
     <div style="display: flex;">
         <ngb-carousel *ngIf="images">
             <ng-template ngbSlide>
@@ -48,10 +49,14 @@
                 Esto es la descripcion.
             </p>
             <ng-container *ngFor="let a of temp">
-                <p>
-                    Unidad: {{ a.unit }}
-                    Precio: ₡ {{ a.price | number }}
-                </p>
+                 <div style="display: flex; align-items: center;"> <!-- justify-content; space-between -->
+                    <p>
+                        Unidad: {{ a.unit }} <br>
+                        Precio: ₡ {{ a.price | number }}
+                    </p>
+                    <ngx-barcode [bc-margin-left]="100" [bc-height]='38' [bc-value]='a.barcode' [bc-display-value]="true"></ngx-barcode>
+                </div>
+
             </ng-container>
         </div>
     </div>

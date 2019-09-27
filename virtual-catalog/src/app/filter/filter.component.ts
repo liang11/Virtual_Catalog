@@ -319,26 +319,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
       this.listCompanies = _companies;
     })
 
-    this.listImgSize = [{ labelCode: 'S', id: '_s_' }, { labelCode: 'M', id: '_m_' }, { labelCode: 'L', id: '_l_' }, { labelCode: 'XL', id: '' }];
+    this.listImgSize = [{ labelCode: 'S', label: 'Small', id: '_s_' }, { labelCode: 'M', label: 'Medium', id: '_m_' }, { labelCode: 'L', label: 'Large', id: '_l_' }, { labelCode: 'XL', label: 'Extra Large', id: '' }];
   }
 
   generateCatalog() {
     this.filterProducts();
     console.log("genere");
-    // console.log("Generando Catálogo...");
-    // console.log("Familias");
-    // console.log(this.listFamilySelected);
-    // console.log("SubFamilias");
-    // console.log(this.listSubFamilySelected);
-    // console.log("Categorías");
-    // console.log(this.listCategorySelected);
-    // console.log("SubCategorías");
-    // console.log(this.listSubCategorySelected);
-    // console.log("Producto Nuevo");
-    // console.log(this.historicoVenta);
-    // console.log("Items por página");
-    // console.log(this.spinner);
-    // console.log(this.property);
 
     this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
       this.listProductAttributes = _prices;
@@ -358,7 +344,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         productImgSize: this.listImgSelected.pop().id,
         prices: this.listProductAttributes
       }
-      
+
       this.router.navigate(['/catalog']);
 
     });
