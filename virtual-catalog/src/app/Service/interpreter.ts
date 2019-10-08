@@ -254,6 +254,16 @@ export class Interpreter{
             }
             newCPrice.id = index;
             newCPrice.itemId = xmlPrice.item(index).getElementsByTagName(this.prefix + "itemId").item(0).textContent;
+
+            if(attributeList.length == 0) {
+                let new_attributes: priceAttributes = new priceAttributes();
+                new_attributes.barcode = '0';
+                new_attributes.price = '-1';
+                new_attributes.unit = '-1';
+
+                attributeList.push(new_attributes);
+            }
+
             newCPrice.attributes = attributeList;         
             
             pricesList.push(newCPrice);

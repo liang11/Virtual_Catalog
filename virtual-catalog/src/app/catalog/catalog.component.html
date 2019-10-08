@@ -1,8 +1,8 @@
-<div class="row">
+<!-- <div class="row">
     <ng-container *ngFor="let p of productFiltered; let i = index">
         <div class="col">
             <div class="card space-around" style="width: 15rem;">
-                <!-- <img src="..." class="card-img-top" alt="..."> -->
+                < !-- <img src="..." class="card-img-top" alt="..."> -- >
                 <img class="image-container"
                     src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
                     onerror="this.src='../assets/imgs/error_img.png'">
@@ -15,8 +15,29 @@
         </div>
         <div *ngIf="(i +1) % 2 === 0" class="w-100"></div>
     </ng-container>
+</div> -->
+<div style="display: flex;justify-content: center;background-color: darkgray;">
+    <p-dataView [totalRecords]= "40" [rows]="4" [value]="productFiltered" [paginator]="true" paginatorPosition="both"
+        layout="grid" (onPage)="pagination($event)">
+        <ng-template let-p pTemplate="gridItem">
+            <div *ngIf="p.productId != 'MTBLBE01' " style="padding:.5em; display: flex; justify-content: center;" class="ui-g-12 ui-md-5">
+                <div class="card space-around" style="width: 15rem;">
+                    <img class="image-container"
+                        src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
+                        onerror="this.src='../assets/imgs/error_img.png'">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ p.name }}</h6>
+                        <h6 class="card-text">{{ p.productId }}</h6>
+                        <ngx-barcode [bc-height]='40' [bc-width]='1.5' [bc-value]='p.attributes[0].barcode'
+                            [bc-display-value]="true" [bc-background]="background">
+                        </ngx-barcode>
+                        <a class="btn btn-primary" (click)="itemDetail(p)">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
 </div>
-
 
 <p-dialog width="1000" [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false"
     [dismissableMask]="true">
@@ -49,14 +70,14 @@
                 Esto es la descripcion.
             </p>
             <ng-container *ngFor="let a of temp">
-                 <div style="display: flex; align-items: center;"> <!-- justify-content; space-between -->
+                <div style="display: flex; align-items: center; justify-content: space-between">
                     <p>
                         Unidad: {{ a.unit }} <br>
                         Precio: ₡ {{ a.price | number }}
                     </p>
-                    <ngx-barcode [bc-margin-left]="100" [bc-height]='38' [bc-value]='a.barcode' [bc-display-value]="true"></ngx-barcode>
+                    <ngx-barcode [bc-height]='38' [bc-value]='a.barcode' [bc-display-value]="true">
+                    </ngx-barcode>
                 </div>
-
             </ng-container>
         </div>
     </div>

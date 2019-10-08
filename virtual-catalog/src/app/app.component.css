@@ -3,3 +3,15 @@
     position: relative;
     min-height: 100vh;
 }
+
+.header-content {
+    height: 6vh; 
+}
+
+.router-content {
+    height: 84vh;
+}
+
+.footer-content {
+    height: 10vh;
+}

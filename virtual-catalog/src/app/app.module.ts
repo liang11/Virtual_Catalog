@@ -12,6 +12,9 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {TooltipModule} from 'primeng/tooltip';
 import {DialogModule} from 'primeng/dialog';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import {DataViewModule} from 'primeng/dataview';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -49,7 +52,9 @@ import { DataStorage } from './Service/DataStorage';
     FieldsetModule,
     TooltipModule,
     DialogModule,
-    NgxBarcodeModule
+    NgxBarcodeModule,
+    DataViewModule,
+    PaginationModule
   ],
   providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]

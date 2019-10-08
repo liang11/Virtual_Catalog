@@ -11,6 +11,10 @@ import { product } from '../classes/product';
 export class CatalogComponent {
 
   data: any = {};
+  x: string;
+  len = 40;
+  cantRow = 1;
+  background = '#ffffff00';
   product_attributes: any;
   productFiltered: any[] = [];
   listProductAttributes: any[] = [];
@@ -47,6 +51,28 @@ export class CatalogComponent {
         console.log(this.temp);
       }
     });
+  }
+
+  getBarcode(itemCode: string) {
+    let ret:any;
+    this.data.prices.forEach(element => {
+      if(element.itemId == itemCode) {
+        let att = element.attributes;
+        if (att) {
+          console.log("-------------------------------------");
+          console.log(att);
+          console.log(att[0].barcode);
+          this.x = att[0].barcode;
+          console.log(this.x);
+        }
+      }
+    });
+  }
+
+  pagination(event: any) { 
+    this.cantRow = this.cantRow + 1;
+    console.log(event.first);
+    console.log(this.productFiltered[event.first]);
   }
 
 }

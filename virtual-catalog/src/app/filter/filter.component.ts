@@ -13,6 +13,7 @@ import { itemMark } from '../classes/itemMark';
 import { company } from '../classes/company';
 import { price } from '../classes/price';
 import { Router } from '@angular/router';
+import { priceAttributes } from '../classes/priceAttributes';
 
 @Component({
   selector: 'filter',
@@ -329,12 +330,27 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
       this.listProductAttributes = _prices;
 
+      let mixed = [];
+
+      this.listProductAttributes.forEach((itm, i) => {
+          mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));        
+      });
+
+      const mergeById = (a1, a2) =>
+        a1.map(itm => ({
+          ...itm,
+          ...a2.find((item) => (item.id === itm.id) && item)
+        }));
+
+      // console.log(mergeById(this.listIndvProdSelected, this.listProductAttributes));
+      console.log(mixed);
+
       this._data.data = {
         familyList: this.listFamilySelected,
         subFamilyList: this.listSubFamilySelected,
         categoryList: this.listCategorySelected,
         subCategoryList: this.listSubCategorySelected,
-        productsList: this.listIndvProdSelected, //Este es el que hacce display.
+        productsList: mixed,//this.listIndvProdSelected, //Este es el que hacce display.
         lifeCycle: this.listLifeCycleSelected,
         mainActivity: this.listMainActivitySelected,
         speciality: this.listSpecialitySelected,

@@ -12,6 +12,7 @@ export class DropDownMultiselectComponent implements OnChanges {
   @Input() public listData: any[];//{ id: number, parent_id: string, name: string }[] = [];
   @Input() public selectedItems: any[] = [];
   @Input() public disable: boolean = false;
+  @Input() public uniqueSelection: number = null;
   @Output() public listDataOutput = new EventEmitter();
 
   optionList: SelectItem[] = [];
