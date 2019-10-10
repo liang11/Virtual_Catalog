@@ -68,6 +68,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   spinner: number = 4;
   text = '';
   boolClient: boolean = true;
+  filtersToApply: any[] = [];
 
   constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router) { }
 
@@ -103,6 +104,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         temp.push(item);
       });
     });
+
     this.selectedCategories(temp);
   }
 
@@ -209,13 +211,28 @@ export class FilterComponent implements OnInit, AfterViewInit {
       aux = [];
     }
 
-    temp.forEach(element => {
-      universe.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
+    this.filtersToApply = this.listFamilySelected.slice(0);
+    this.updateFilters(this.listSubFamilySelected);
+    this.updateFilters(this.listCategorySelected);
+    this.updateFilters(this.listSubCategorySelected);
+
+    console.log(this.filtersToApply);
+
+    this.filtersToApply.forEach(element => {
+      universe.filter((item) => item.getAttribute(this.getHierarchy(element.name)) == element.name).forEach(product => {
         if (!this.listProductFiltered.some(e => e.productId == product.productId)) {
           this.listProductFiltered.push(product);
         }
       });
     }); this.listIndividualProducts = this.listProductFiltered;
+
+    // temp.forEach(element => {
+    //   universe.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
+    //     if (!this.listProductFiltered.some(e => e.productId == product.productId)) {
+    //       this.listProductFiltered.push(product);
+    //     }
+    //   });
+    // }); this.listIndividualProducts = this.listProductFiltered;
 
     this.listIndvProdSelected = this.listIndividualProducts;
 
@@ -333,14 +350,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
       let mixed = [];
 
       this.listProductAttributes.forEach((itm, i) => {
-          mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));        
+        mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));
       });
-
-      const mergeById = (a1, a2) =>
-        a1.map(itm => ({
-          ...itm,
-          ...a2.find((item) => (item.id === itm.id) && item)
-        }));
 
       // console.log(mergeById(this.listIndvProdSelected, this.listProductAttributes));
       console.log(mixed);
@@ -406,6 +417,32 @@ export class FilterComponent implements OnInit, AfterViewInit {
       productCodes.push(element.productId);
     });
     return productCodes;
+  }
+
+  updateFilters(filter: any[]) {
+    filter.forEach(element => {
+      let position = this.filtersToApply.findIndex(i => i.name == element.parent_id);
+      if (position != -1) {
+        this.filtersToApply.splice(position, 1, element);
+      } else {
+        this.filtersToApply.push(element);
+      }
+    });
+  }
+
+  getHierarchy(name: string) {
+    if(this.listFamily.some((e => e.name == name))) {
+      return "family";
+    }
+    if(this.listSubFamily.some((e => e.name == name))) {
+      return "subFamily";
+    }
+    if(this.listCategoria.some((e => e.name == name))) {
+      return "category";
+    }
+    if(this.listSubCategoria.some((e => e.name == name))) {
+      return "subCategory";
+    }
   }
 
 }

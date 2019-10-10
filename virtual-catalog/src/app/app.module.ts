@@ -54,7 +54,7 @@ import { DataStorage } from './Service/DataStorage';
     DialogModule,
     NgxBarcodeModule,
     DataViewModule,
-    PaginationModule
+    PaginationModule.forRoot()
   ],
   providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]
