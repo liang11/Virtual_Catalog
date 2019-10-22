@@ -17,7 +17,7 @@
     </ng-container>
 </div> -->
 <div style="display: flex;justify-content: center;background-color: darkgray;">
-        <!-- <div class="row">
+    <!-- <div class="row">
                 <div class="col-xs-12 col-12">
                   <div class="content-wrapper">
                     <p class="content-item" *ngFor="let content of returnedArray">{{content}}</p>
@@ -25,10 +25,16 @@
                   <pagination [totalItems]="10" [itemsPerPage]="4" (pageChanged)="pageChanged($event)"></pagination>
                 </div>
               </div> -->
-    <p-dataView [totalRecords]= "40" [rows]="4" [value]="productFiltered" [paginator]="true" paginatorPosition="both"
-        layout="grid" (onPage)="pagination($event)">
+    <p-dataView [rows]="spinner" [value]="productFiltered" [paginator]="true" paginatorPosition="both" layout="grid"
+        (onPage)="pagination($event)">
+        <p-header>
+            <button (click)="generatePdf(productFiltered)" class="button-style" mat-button>Generar
+                Catálogo</button>
+            <h5>{{ treePosition }}</h5>
+        </p-header>
         <ng-template let-p pTemplate="gridItem">
-            <div *ngIf="p.name != 'blank'" style="padding:.5em; display: flex; justify-content: center;" class="ui-g-12 ui-md-5">
+            <div *ngIf="p.name != 'blank'" style="padding:.5em; display: flex; justify-content: center;"
+                class="ui-g-12 ui-md-5">
                 <div class="card space-around" style="width: 15rem;">
                     <img class="image-container"
                         src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
@@ -39,6 +45,7 @@
                         <ngx-barcode [bc-height]='40' [bc-width]='1.5' [bc-value]='p.attributes[0].barcode'
                             [bc-display-value]="true" [bc-background]="background">
                         </ngx-barcode>
+                        <img id='itf' style="display: none;"/>
                         <a class="btn btn-primary" (click)="itemDetail(p)">Ver Detalles</a>
                     </div>
                 </div>

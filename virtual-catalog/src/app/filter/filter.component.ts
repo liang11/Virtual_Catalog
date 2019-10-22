@@ -14,6 +14,7 @@ import { company } from '../classes/company';
 import { price } from '../classes/price';
 import { Router } from '@angular/router';
 import { priceAttributes } from '../classes/priceAttributes';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'filter',
@@ -58,6 +59,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   listProdUseSelected: any[] = [];
   listMarkSelected: any[] = [];
   listPriceSelected: any[] = [];
+  companySelected: any = null;
 
   historicoVenta: string = "No";
   selectedValuePrice: string = "No";
@@ -132,6 +134,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   selectedProducts(data: any[]) {
     this.listIndvProdSelected = data;
+  }
+
+  selectedCompany(data: any[]) {
+    this.companySelected = data;
+    //console.log(this.companySelected);
   }
 
   selectedLifeCycle(data: any[]) {
@@ -215,8 +222,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.updateFilters(this.listSubFamilySelected);
     this.updateFilters(this.listCategorySelected);
     this.updateFilters(this.listSubCategorySelected);
-
-    console.log(this.filtersToApply);
 
     this.filtersToApply.forEach(element => {
       universe.filter((item) => item.getAttribute(this.getHierarchy(element.name)) == element.name).forEach(product => {
@@ -341,10 +346,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   generateCatalog() {
-    this.filterProducts();
+    //this.filterProducts();
     console.log("genere");
 
-    this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
+    //this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
+    this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
       this.listProductAttributes = _prices;
 
       let mixed = [];
@@ -368,15 +374,64 @@ export class FilterComponent implements OnInit, AfterViewInit {
         historicoVenta: this.historicoVenta,
         spinner: this.spinner,
         allProducts: this.listProducts,
-        productImgSize: this.listImgSelected.pop().id,
+        productImgSize: "_l_",//this.listImgSelected.pop().id,
         prices: this.listProductAttributes
       }
 
+      var doc = new jsPDF();
+
+      // Set Fonts
+      doc.setFontType("bold");
+      doc.setTextColor(0, 0, 0);
+
+      //SubCategory Title
+      doc.setFontSize(30);
+      doc.text("SubCategory", 20, 20);
+
+      //Set Family tag
+      doc.setFontSize(20);
+      doc.setFillColor(8, 100, 139);
+      doc.rect(185, 0, 15, 85, 'F');
+
+      doc.text("Familia", 190, 10, { rotationDirection: "0", angle: "-90" });
+
+      //Set SubFamily tag
+      doc.setFillColor(8, 100, 139);
+      doc.rect(185, 185, 15, 115, 'F');
+
+      doc.text("SubFamilia", 190, 190, { rotationDirection: "0", angle: "-90" });
+
+
+      let x = 20;
+      let y = 40;
+      var img;
+      async function loadImage() {
+        for (let index = 0; index < 4; index++) {
+          let aux = mixed[index];
+          img = await toDataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
+          console.log("si espere");
+          //console.log(img);
+          doc.addImage(img, 'PNG', x, y, 65, 65);
+          if (x == 100) {
+            x = 20;
+            y += 130;
+          }
+          else {
+            x += 80;
+          }
+
+        }
+
+        doc.save('a4.pdf');
+      }
+
+      //loadImage();
+
+      console.log("ya salve");
+      //doc.save('a4.pdf');
       this.router.navigate(['/catalog']);
 
     });
-
-
   }
 
   ngAfterViewInit() {
@@ -431,18 +486,36 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   getHierarchy(name: string) {
-    if(this.listFamily.some((e => e.name == name))) {
+    if (this.listFamily.some((e => e.name == name))) {
       return "family";
     }
-    if(this.listSubFamily.some((e => e.name == name))) {
+    if (this.listSubFamily.some((e => e.name == name))) {
       return "subFamily";
     }
-    if(this.listCategoria.some((e => e.name == name))) {
+    if (this.listCategoria.some((e => e.name == name))) {
       return "category";
     }
-    if(this.listSubCategoria.some((e => e.name == name))) {
+    if (this.listSubCategoria.some((e => e.name == name))) {
       return "subCategory";
     }
   }
 
+}
+
+function toDataURL(url) {
+  let promise = new Promise((resolve, reject) => {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        console.log("fucion primero");
+        resolve(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  });
+  return promise;
 }

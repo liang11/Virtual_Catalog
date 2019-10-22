@@ -69,7 +69,7 @@
                 </div>
                 <div class='componentWrapper'>
                     <div class="fix-title-border">
-                        <div class='componentTitle' 
+                        <div class='componentTitle'
                             pTooltip="Solamente los productos de la Empresa y Proveedor seleccionado serán tomadas en cuenta.">
                             Compañia
                             <img src="../assets/imgs/help_icon.png">
@@ -78,7 +78,8 @@
                             <div class="row">
                                 <div class="column">
                                     <h5>Empresa</h5>
-                                    <drop-down-multiselect class="space-around-noBottom" [listData]="listCompanies" [uniqueSelection]='1'>
+                                    <drop-down-multiselect class="space-around-noBottom" [listData]="listCompanies"
+                                        (listDataOutput)="selectedCompany($event)" [uniqueSelection]='1'>
                                     </drop-down-multiselect>
                                 </div>
                                 <div class="column">
@@ -98,7 +99,7 @@
                             <img src="../assets/imgs/help_icon.png">
                         </div>
                         <div class="componentContent">
-                            <div class="row text-field" >
+                            <div class="row text-field">
                                 *Este apartado es de selcción única, solamente se puede elegir una de las siguientes
                                 opciones.
                             </div>
@@ -298,7 +299,7 @@
                                         [disabled]="selectedValuePrice == 'Si' ? false:true">
                                     </p-radioButton>
                                     <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
-                                        [selectedItems]="listPriceSelected" (listDataOutput)="selectedPrice($event)"
+                                        [selectedItems]="listPriceSelected" (listDataOutput)="selectedPrice($event)" [uniqueSelection]='1'
                                         [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
                                     </drop-down-multiselect>
                                 </div>
@@ -318,8 +319,8 @@
 
                     <div class="column">
                         <h5>Tamaño de Imagen</h5>
-                        <drop-down-multiselect class="space-around" [listData]="listImgSize" [selectedItems]="listImgSelected"
-                            (listDataOutput)="selectedImgSize($event)">
+                        <drop-down-multiselect class="space-around" [listData]="listImgSize"
+                            [selectedItems]="listImgSelected" (listDataOutput)="selectedImgSize($event)" [uniqueSelection]='1'>
                         </drop-down-multiselect>
 
                         <h5>Ordenamiento</h5>
@@ -336,8 +337,7 @@
 
                     <div class="row align-button">
                         <hr width=95%>
-                        <button (click)="generateCatalog()" class="button-style"
-                            mat-button>Generar
+                        <button (click)="generateCatalog()" class="button-style" mat-button>Generar
                             Catálogo</button>
                     </div>
                 </div>
