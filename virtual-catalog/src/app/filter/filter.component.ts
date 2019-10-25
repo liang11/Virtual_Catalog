@@ -196,7 +196,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     if (this.listProdUseSelected.length > 0) {
       this.listProdUseSelected.forEach(element => {
-        aux = aux.concat(universe.filter((e) => e.productUse == element.name));
+        aux = aux.concat(universe.filter((e) => e.productUse == element.productUseId));
       });
       universe = aux;
       aux = [];

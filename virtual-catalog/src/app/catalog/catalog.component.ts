@@ -17,6 +17,8 @@ export class CatalogComponent {
 
   data: any = {};
   subCategoryList: any[];
+  familyList: any[] = [];
+  subFamilyList: any[] = [];
   treePosition: string = "";
   x: string;
   len = 40;
@@ -49,6 +51,9 @@ export class CatalogComponent {
         .thenBy(s => s.subCategory)
     );
 
+
+    this.familyList = this.getFamilies(this.productFiltered);
+    this.subFamilyList = this.getSubFamilies(this.productFiltered);
     this.subCategoryList = this.getSubCategory(this.productFiltered);
     console.log(this.subCategoryList);
 
@@ -111,8 +116,28 @@ export class CatalogComponent {
   getSubCategory(lista: any[]) {
     let temp: any[] = [];
     lista.forEach(product => {
-      if (!temp.some(e => e == product.subCategory)) {
-        temp.push(product.subCategory);
+      if (!temp.some(e => e.subCategory == product.subCategory && e.subFamily == product.subFamily && e.category == product.category)) {
+        temp.push({ subCategory: product.subCategory, subFamily: product.subFamily, category: product.category });
+      }
+    });
+    return temp;
+  }
+
+  getFamilies(lista: any[]) {
+    let temp: any[] = [];
+    lista.forEach(product => {
+      if (!temp.some(e => e == product.family)) {
+        temp.push(product.family);
+      }
+    });
+    return temp;
+  }
+
+  getSubFamilies(lista: any[]) {
+    let temp: any[] = [];
+    lista.forEach(product => {
+      if (!temp.some(e => e.name == product.subFamily)) {
+        temp.push({ name: product.subFamily, parent_id: product.family });
       }
     });
     return temp;
@@ -125,13 +150,13 @@ export class CatalogComponent {
     blank.name = "blank";
 
     lista.forEach(element => {
-      amount = this.productFiltered.filter((item) => element == item.subCategory).length;
-      idx = this.productFiltered.findIndex(i => i.subCategory == element) + amount;
+      amount = this.productFiltered.filter((item) => element.subCategory == item.subCategory && element.subFamily == item.subFamily && element.category == item.category).length;
+      idx = this.productFiltered.findIndex(i => i.subCategory == element.subCategory && i.subFamily == element.subFamily && element.category == i.category) + amount;
 
       if (amount % this.spinner != 0) {
         for (let index = 0; index < this.spinner - (amount % this.spinner); index++) {
           this.productFiltered.splice(idx, 0, blank);
-          idx++;
+          //idx++;
         }
       }
     });
@@ -144,50 +169,108 @@ export class CatalogComponent {
     doc.rect(0, 0, 210, 300, 'F');
 
     doc.setFontSize(25);
-    doc.setTextColor(255,255,255);
+    doc.setTextColor(255, 255, 255);
     let title = "CATÁLOGO DE PRODUCTOS";
     let year = "2019";
     var title_lines = doc.splitTextToSize(title, 65);
     let title_y = 120;
     for (var i = 0; i < title_lines.length; i++) {
-      doc.text(35, title_y, title_lines[i]);
+      doc.text(40, title_y, title_lines[i]);
       title_y += 12;
     }
 
     doc.setLineWidth(1.5);
-    doc.setDrawColor(255,255,255);
-    doc.line(105, 110, 105, 135);
+    doc.setDrawColor(255, 255, 255);
+    doc.line(110, 110, 110, 135);
 
-    doc.addPage();
+    doc.setFontSize(60);
+    doc.text(year, 115, 130);
+
+    var date = new Date();
+    let date_aux = "Fecha: ";
+    date_aux = date_aux + date.getUTCDate();
+    date_aux = date_aux + '.' + date.getUTCMonth();
+    date_aux = date_aux + '.' + date.getUTCFullYear();
 
     let x = 15;
     let y = 40;
+    let idx_x = 20;
+    let idx_y = 20;
+    let listFamily = this.familyList;
+    let listSubFamily = this.subFamilyList;
+
     var img;
     var imgs;
+    var family = '';
+
     async function loadImage(dataList) {
-      // Set Fonts
-      doc.setFontType("bold");
-      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(12);
+      doc.text(date_aux, 85, 280);
 
-      //SubCategory Title
-      doc.setFontSize(25);
-      doc.text(data[0].subCategory, 20, 20);
+      img = await dataURL('../../assets/imgs/mercasa_blanco.png');
+      doc.addImage(img, 70, 255, 55, 20);
 
-      //Set Family tag
-      doc.setFontSize(20);
+      doc.addPage();
+
+      doc.setTextColor(8, 100, 139);
+      console.log(listFamily);
+      for (let index = 1; index <= listFamily.length; index++) {
+        doc.text(index + listFamily[index - 1], idx_x, idx_y);
+        idx_y += 8;
+        let subFamily = listSubFamily.filter(i => i.parent_id == listFamily[index - 1]);
+        for (let s_family = 1; s_family <= subFamily.length; s_family++) {
+          doc.text(index + '.' + s_family + subFamily[s_family - 1].name, idx_x, idx_y);
+          idx_y += 4;
+        }
+        idx_y += 4;
+      }
+
       doc.setFillColor(8, 100, 139);
-      doc.rect(185, 0, 15, 85, 'F');
+      doc.rect(0, 210, 210, 90, 'F');
 
-      doc.text(data[0].family, 190, 10, { rotationDirection: "0", angle: "-90" });
+      doc.setFontSize(80);
+      doc.setTextColor(255, 255, 255);
+      doc.text("Índice", 10, 250);
 
-      //Set SubFamily tag
-      doc.setFillColor(8, 100, 139);
-      doc.rect(185, 185, 15, 115, 'F');
+      for (let index = 0; index < dataList.length; index++) {
+        let aux = dataList[index];
 
-      doc.text(data[0].subFamily, 190, 190, { rotationDirection: "0", angle: "-90" });
+        if (aux.name != 'blank' && family != aux.family) {
+          drawDivision(doc, aux.family);
+          family = aux.family;
+        }
 
-      for (let index = 1; index <= dataList.length; index++) {
-        let aux = dataList[index - 1];
+        if ((index % 4 == 0) && (index < dataList.length)) {
+          doc.addPage();
+          console.log(index);
+          // console.log(dataList[index]);
+
+          x = 15;
+          y = 40;
+
+          // Set Fonts
+          doc.setFontType("bold");
+          doc.setTextColor(0, 0, 0);
+
+          //SubCategory Title
+          doc.setFontSize(30);
+          doc.text(dataList[index].subCategory, 20, 20);
+
+          //Set Family tag
+          doc.setFontSize(20);
+          doc.setFillColor(8, 100, 139);
+          doc.rect(185, 0, 15, 85, 'F');
+          doc.setTextColor(255, 255, 255);
+
+          doc.text(dataList[index].family, 190, 10, { rotationDirection: "0", angle: "-90" });
+
+          //Set SubFamily tag
+          doc.setFillColor(8, 100, 139);
+          doc.rect(185, 185, 15, 115, 'F');;
+
+          doc.text(dataList[index].subFamily, 190, 190, { rotationDirection: "0", angle: "-90" });
+        }
+
         if (aux.name != 'blank') {
           img = await dataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
 
@@ -196,6 +279,7 @@ export class CatalogComponent {
             doc.setFontSize(10);
 
             doc.setFontType("bold");
+            doc.setTextColor(0, 0, 0);
             doc.text(aux.productId, x + 10, y + 75);
 
             doc.setFontType("normal");
@@ -220,36 +304,6 @@ export class CatalogComponent {
           catch (error) {
             //console.log(error);
           }
-        }
-
-        if ((index % 4 == 0) && (index < dataList.length)) {
-          doc.addPage();
-          console.log(index);
-          console.log(dataList[index]);
-
-          x = 15;
-          y = 40;
-
-          // Set Fonts
-          doc.setFontType("bold");
-          doc.setTextColor(0, 0, 0);
-
-          //SubCategory Title
-          doc.setFontSize(30);
-          doc.text(dataList[index].subCategory, 20, 20);
-
-          //Set Family tag
-          doc.setFontSize(20);
-          doc.setFillColor(8, 100, 139);
-          doc.rect(185, 0, 15, 85, 'F');
-
-          doc.text(dataList[index].family, 190, 10, { rotationDirection: "0", angle: "-90" });
-
-          //Set SubFamily tag
-          doc.setFillColor(8, 100, 139);
-          doc.rect(185, 185, 15, 115, 'F');
-
-          doc.text(dataList[index].subFamily, 190, 190, { rotationDirection: "0", angle: "-90" });
         }
       }
 
@@ -284,5 +338,21 @@ function textToBase64Barcode(text) {
   var canvas = document.createElement("canvas");
   JsBarcode(canvas, text, { width: 2, fontSize: 25 });
   return canvas.toDataURL("image/png");
+}
+
+function drawDivision(doc, text) {
+  doc.addPage();
+
+  doc.setFillColor(8, 100, 139);
+  doc.rect(0, 0, 210, 300, 'F');
+  doc.setFontSize(40);
+  doc.setTextColor(255, 255, 255);
+
+  var description_lines = doc.splitTextToSize(text, 65);
+  let temp_y = 150;
+  for (var i = 0; i < description_lines.length; i++) {
+    doc.text(75, temp_y, description_lines[i]);
+    temp_y += 12;
+  }
 }
 
