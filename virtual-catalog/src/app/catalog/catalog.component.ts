@@ -163,7 +163,7 @@ export class CatalogComponent {
   }
 
   generatePdf(data: any[]) {
-    var doc = new jsPDF();
+    var doc = new jsPDF('p', 'mm','a4',true);
 
     doc.setFillColor(8, 100, 139);
     doc.rect(0, 0, 210, 300, 'F');
@@ -198,6 +198,7 @@ export class CatalogComponent {
     let idx_y = 20;
     let listFamily = this.familyList;
     let listSubFamily = this.subFamilyList;
+    let catalogIndex: any[] = [];
 
     var img;
     var imgs;
@@ -212,19 +213,6 @@ export class CatalogComponent {
 
       doc.addPage();
 
-      doc.setTextColor(8, 100, 139);
-      console.log(listFamily);
-      for (let index = 1; index <= listFamily.length; index++) {
-        doc.text(index + listFamily[index - 1], idx_x, idx_y);
-        idx_y += 8;
-        let subFamily = listSubFamily.filter(i => i.parent_id == listFamily[index - 1]);
-        for (let s_family = 1; s_family <= subFamily.length; s_family++) {
-          doc.text(index + '.' + s_family + subFamily[s_family - 1].name, idx_x, idx_y);
-          idx_y += 4;
-        }
-        idx_y += 4;
-      }
-
       doc.setFillColor(8, 100, 139);
       doc.rect(0, 210, 210, 90, 'F');
 
@@ -236,14 +224,19 @@ export class CatalogComponent {
         let aux = dataList[index];
 
         if (aux.name != 'blank' && family != aux.family) {
-          drawDivision(doc, aux.family);
+          catalogIndex.push({ parent_id: '', name: aux.family, page: drawDivision(doc, aux.family) });
           family = aux.family;
+          console.log(catalogIndex);
         }
 
         if ((index % 4 == 0) && (index < dataList.length)) {
           doc.addPage();
           console.log(index);
           // console.log(dataList[index]);
+
+          if (!catalogIndex.some(e => e.name == dataList[index].subFamily)) {
+            catalogIndex.push({ parent_id: dataList[index].family, name: dataList[index].subFamily, page: doc.internal.getCurrentPageInfo().pageNumber });
+          }
 
           x = 15;
           y = 40;
@@ -272,11 +265,18 @@ export class CatalogComponent {
         }
 
         if (aux.name != 'blank') {
-          img = await dataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
+          img = await dataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_m_.PNG');
 
           try {
-            doc.addImage(img, 'PNG', x, y, 65, 65);
-            doc.setFontSize(10);
+            doc.addImage(img, 'PNG', x, y, 60, 60, undefined, 'SLOW');
+          }
+          catch (error) {
+            //console.log(error);
+            img = await dataURL('../../assets/imgs/error_img.png');
+            doc.addImage(img, 'PNG', x, y, 65, 65, undefined, 'SLOW');
+          }
+
+          doc.setFontSize(10);
 
             doc.setFontType("bold");
             doc.setTextColor(0, 0, 0);
@@ -300,14 +300,35 @@ export class CatalogComponent {
             else {
               x += 85;
             }
-          }
-          catch (error) {
-            //console.log(error);
-          }
+        }
+      }
+
+      doc.setTextColor(8, 100, 139);
+      doc.setFontSize(12);
+      doc.setPage(2);
+      console.log(listFamily);
+      for (let index = 1; index <= listFamily.length; index++) {
+        // doc.text(index + '  ' + listFamily[index - 1], idx_x, idx_y);
+        let temp = catalogIndex.filter(i => i.name == listFamily[index - 1]).pop();
+        doc.textWithLink(index + '  ' + listFamily[index - 1], idx_x, idx_y, { pageNumber: temp.page });
+        idx_y += 8;
+        //let subFamily = listSubFamily.filter(i => i.parent_id == listFamily[index - 1]);
+        let subFamily = catalogIndex.filter(i => i.parent_id == listFamily[index - 1]);
+        for (let s_family = 1; s_family <= subFamily.length; s_family++) {
+          // doc.text(index + '.' + s_family + '  ' + subFamily[s_family - 1].name, idx_x, idx_y);
+          let sf_temp = subFamily[s_family - 1];
+          doc.textWithLink(index + '.' + s_family + '  ' + subFamily[s_family - 1].name, idx_x + 10, idx_y, { pageNumber: sf_temp.page });
+          idx_y += 4;
+        }
+        idx_y += 4;
+        if(idx_y > 200) {
+          idx_x = 110;
+          idx_y = 20;
         }
       }
 
       doc.save('a4.pdf');
+      console.log(catalogIndex);
     }
 
     loadImage(data);
@@ -348,11 +369,24 @@ function drawDivision(doc, text) {
   doc.setFontSize(40);
   doc.setTextColor(255, 255, 255);
 
-  var description_lines = doc.splitTextToSize(text, 65);
+  var description_lines = doc.splitTextToSize(text, 70);
   let temp_y = 150;
   for (var i = 0; i < description_lines.length; i++) {
-    doc.text(75, temp_y, description_lines[i]);
+    doc.text(65, temp_y, description_lines[i]);
     temp_y += 12;
   }
+
+  return doc.internal.getCurrentPageInfo().pageNumber;
 }
 
+function getIndexFamily(productFiltered, atribute, searched) {
+  var index;
+  console.log(productFiltered);
+  if (atribute == 'family') {
+    index = productFiltered.findIndex(i => i.family == searched);
+  } else {
+    index = productFiltered.findIndex(i => i.subFamily == searched);
+  }
+
+  return index;
+}
