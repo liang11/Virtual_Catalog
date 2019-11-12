@@ -14,7 +14,8 @@ import {DialogModule} from 'primeng/dialog';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import {DataViewModule} from 'primeng/dataview';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-
+import  {ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -54,7 +55,9 @@ import { DataStorage } from './Service/DataStorage';
     DialogModule,
     NgxBarcodeModule,
     DataViewModule,
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    ProgressSpinnerModule,
+    ProgressBarModule
   ],
   providers: [ServiceVirtualCatalogService, DataStorage],
   bootstrap: [AppComponent]

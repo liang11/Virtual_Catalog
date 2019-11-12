@@ -5,6 +5,7 @@ import { product } from '../classes/product';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { firstBy } from "thenby";
 import jsPDF from 'jspdf';
+import { element } from 'protractor';
 declare var JsBarcode: any;
 // declare var $: any;
 
@@ -16,6 +17,7 @@ declare var JsBarcode: any;
 export class CatalogComponent {
 
   data: any = {};
+  downloadStatus = false;
   subCategoryList: any[];
   familyList: any[] = [];
   subFamilyList: any[] = [];
@@ -31,6 +33,9 @@ export class CatalogComponent {
   display: boolean = false;
   current_product: any = new product;
   temp: any[] = [];
+  showPrices: '';
+  downloadPercentage = 0;
+  genBtnStatus = false;
 
   contentArray = new Array(90).fill('');
   returnedArray: string[];
@@ -41,6 +46,7 @@ export class CatalogComponent {
     this.data = dataStorage.data;
     this.spinner = dataStorage.data.spinner;
     this.product_attributes = this.data.prices;
+    this.showPrices = dataStorage.data.showPrices;
     console.log(this.data.prices);
 
     this.productFiltered = this.data.productsList;
@@ -163,7 +169,16 @@ export class CatalogComponent {
   }
 
   generatePdf(data: any[]) {
-    var doc = new jsPDF('p', 'mm','a4',true);
+    this.downloadStatus = true;
+    this.downloadPercentage = 0;
+    this.genBtnStatus = true;
+    var doc = new jsPDF({
+      orientation: 'p',
+      unit: 'mm',
+      format: 'a4',
+      putOnlyUsedFonts: true,
+      compress: true
+    });
 
     doc.setFillColor(8, 100, 139);
     doc.rect(0, 0, 210, 300, 'F');
@@ -171,7 +186,7 @@ export class CatalogComponent {
     doc.setFontSize(25);
     doc.setTextColor(255, 255, 255);
     let title = "CATÁLOGO DE PRODUCTOS";
-    let year = "2019";
+    // let year = "2019";
     var title_lines = doc.splitTextToSize(title, 65);
     let title_y = 120;
     for (var i = 0; i < title_lines.length; i++) {
@@ -183,14 +198,15 @@ export class CatalogComponent {
     doc.setDrawColor(255, 255, 255);
     doc.line(110, 110, 110, 135);
 
-    doc.setFontSize(60);
-    doc.text(year, 115, 130);
-
     var date = new Date();
     let date_aux = "Fecha: ";
     date_aux = date_aux + date.getUTCDate();
     date_aux = date_aux + '.' + date.getUTCMonth();
     date_aux = date_aux + '.' + date.getUTCFullYear();
+
+    let year = "" + date.getUTCFullYear();
+    doc.setFontSize(60);
+    doc.text(year, 115, 130);
 
     let x = 15;
     let y = 40;
@@ -200,15 +216,15 @@ export class CatalogComponent {
     let listSubFamily = this.subFamilyList;
     let catalogIndex: any[] = [];
 
-    var img;
+    var img = null;
     var imgs;
     var family = '';
 
-    async function loadImage(dataList) {
+    var loadImage = async (dataList, percentage) => {
       doc.setFontSize(12);
       doc.text(date_aux, 85, 280);
 
-      img = await dataURL('../../assets/imgs/mercasa_blanco.png');
+      img = await dataURL('./assets/imgs/mercasa_blanco.png');
       doc.addImage(img, 70, 255, 55, 20);
 
       doc.addPage();
@@ -222,7 +238,10 @@ export class CatalogComponent {
 
       for (let index = 0; index < dataList.length; index++) {
         let aux = dataList[index];
-
+        let loadPercentage = Math.round(((index+1) * 100) / dataList.length);
+        console.log("Porcentage", loadPercentage);
+        this.downloadPercentage = loadPercentage;
+        
         if (aux.name != 'blank' && family != aux.family) {
           catalogIndex.push({ parent_id: '', name: aux.family, page: drawDivision(doc, aux.family) });
           family = aux.family;
@@ -265,41 +284,41 @@ export class CatalogComponent {
         }
 
         if (aux.name != 'blank') {
-          img = await dataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_m_.PNG');
+          img = await dataURL('http://giiis01:8021/images/' + aux.productId + '_l_.PNG');
 
           try {
             doc.addImage(img, 'PNG', x, y, 60, 60, undefined, 'SLOW');
           }
           catch (error) {
             //console.log(error);
-            img = await dataURL('../../assets/imgs/error_img.png');
+            img = await dataURL('./assets/imgs/error_img.png');
             doc.addImage(img, 'PNG', x, y, 65, 65, undefined, 'SLOW');
           }
 
           doc.setFontSize(10);
 
-            doc.setFontType("bold");
-            doc.setTextColor(0, 0, 0);
-            doc.text(aux.productId, x + 10, y + 75);
+          doc.setFontType("bold");
+          doc.setTextColor(0, 0, 0);
+          doc.text(aux.productId, x + 10, y + 75);
 
-            doc.setFontType("normal");
-            var description_lines = doc.splitTextToSize(aux.name, 65);
-            let temp_y = y;
-            for (var i = 0; i < description_lines.length; i++) {
-              doc.text(x + 10, temp_y + 80, description_lines[i]);
-              temp_y += 5;
-            }
+          doc.setFontType("normal");
+          var description_lines = doc.splitTextToSize(aux.name, 65);
+          let temp_y = y;
+          for (var i = 0; i < description_lines.length; i++) {
+            doc.text(x + 10, temp_y + 80, description_lines[i]);
+            temp_y += 5;
+          }
 
-            imgs = textToBase64Barcode(aux.attributes[0].barcode);
-            doc.addImage(imgs, 'PNG', x + 10, temp_y + 80, 50, 25);
+          imgs = textToBase64Barcode(aux.attributes[0].barcode);
+          doc.addImage(imgs, 'PNG', x + 10, temp_y + 80, 50, 25);
 
-            if (x == 100) {
-              x = 15;
-              y += 120;
-            }
-            else {
-              x += 85;
-            }
+          if (x == 100) {
+            x = 15;
+            y += 120;
+          }
+          else {
+            x += 85;
+          }
         }
       }
 
@@ -321,19 +340,18 @@ export class CatalogComponent {
           idx_y += 4;
         }
         idx_y += 4;
-        if(idx_y > 200) {
+        if (idx_y > 200) {
           idx_x = 110;
           idx_y = 20;
         }
       }
 
       doc.save('a4.pdf');
+      this.genBtnStatus = false;
       console.log(catalogIndex);
     }
-
-    loadImage(data);
+    loadImage(data, this.downloadPercentage);
   }
-
 }
 
 function dataURL(url) {

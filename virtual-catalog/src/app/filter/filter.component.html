@@ -67,7 +67,7 @@
                 <div class="row underline">
                     <h3> Opciones de Selección </h3>
                 </div>
-                <div class='componentWrapper'>
+                <!-- <div class='componentWrapper'>
                     <div class="fix-title-border">
                         <div class='componentTitle'
                             pTooltip="Solamente los productos de la Empresa y Proveedor seleccionado serán tomadas en cuenta.">
@@ -89,9 +89,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="componentWrapper">
+                <!-- <div class="componentWrapper">
                     <div class="fix-title-border">
                         <div class='componentTitle'
                             pTooltip="El IP o Índice de Penetración es un término utilizado para referirse a un conjunto de productos destinados para la venta a determinado cliente.">
@@ -131,9 +131,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="componentWrapper">
+                <!-- <div class="componentWrapper">
                     <div class="fix-title-border">
                         <div class='componentTitle'
                             pTooltip="Se podrá tomar en cuenta el historial de compras previamente hechas por parte de un cliente.">
@@ -176,38 +176,74 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="componentWrapper">
                     <div class="fix-title-border">
                         <div class='componentTitle'
                             pTooltip="Los producto filtrados serán los que cumplan con los siguientes atributos seleccionados.">
                             Parámetros de Artículo
-                            <img src="../assets/imgs/help_icon.png">
+                            <img src="./assets/imgs/help_icon.png">
                         </div>
                         <div class="componentContent">
                             <div class="row">
                                 <div class="column">
                                     <h5>Tipo de Artículo</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listItemType"
-                                        (listDataOutput)="selectedItemType($event)">
-                                    </drop-down-multiselect>
+                                    <div style="display: flex">
+                                        <drop-down-multiselect class="space-around" [listData]="listItemType"
+                                            (listDataOutput)="selectedItemType($event)">
+                                        </drop-down-multiselect>
+
+                                        <div *ngIf="!prodTypeStatus ? true:false">
+                                            <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
+                                                fill="#EEEEEE" animationDuration="1s">
+                                            </p-progressSpinner>
+                                        </div>
+                                    </div>
+
                                     <h5>Uso del Producto</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listProductUse"
-                                        (listDataOutput)="selectedUseProduct($event)">
-                                    </drop-down-multiselect>
-                                    <h5>Ocasión de Uso</h5>
-                                    <drop-down-multiselect class="space-around"></drop-down-multiselect>
+                                    <div style="display: flex">
+                                        <drop-down-multiselect class="space-around" [listData]="listProductUse"
+                                            (listDataOutput)="selectedUseProduct($event)">
+                                        </drop-down-multiselect>
+
+                                        <div *ngIf="!prodUseStatus ? true:false">
+                                            <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
+                                                fill="#EEEEEE" animationDuration="1s">
+                                            </p-progressSpinner>
+                                        </div>
+                                    </div>
+
+                                    <!-- <h5>Ocasión de Uso</h5>
+                                    <drop-down-multiselect class="space-around"></drop-down-multiselect> -->
                                 </div>
 
                                 <div class="column">
                                     <h5>Marca del Artículo</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listItemMark"
-                                        (listDataOutput)="selectedMark($event)">
-                                    </drop-down-multiselect>
+                                    <div style="display: flex">
+                                        <drop-down-multiselect class="space-around" [listData]="listItemMark"
+                                            (listDataOutput)="selectedMark($event)">
+                                        </drop-down-multiselect>
+
+                                        <div *ngIf="!prodMarkStatus ? true:false">
+                                            <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
+                                                fill="#EEEEEE" animationDuration="1s">
+                                            </p-progressSpinner>
+                                        </div>
+                                    </div>
+
                                     <h5>Ciclo de vida</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
-                                        (listDataOutput)="selectedLifeCycle($event)"></drop-down-multiselect>
+                                    <div style="display: flex">
+                                        <drop-down-multiselect class="space-around" [listData]="listLifeCycle"
+                                            (listDataOutput)="selectedLifeCycle($event)"></drop-down-multiselect>
+
+                                        <div *ngIf="!prodLifeCycleStatus ? true:false">
+                                            <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
+                                                fill="#EEEEEE" animationDuration="1s">
+                                            </p-progressSpinner>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -219,7 +255,7 @@
                         <div class='componentTitle'
                             pTooltip="Se filtrarán los productos que pertenezcan a las jerarquías seleccionadas.">
                             Clasificación de Artículos
-                            <img src="../assets/imgs/help_icon.png">
+                            <img src="./assets/imgs/help_icon.png">
                         </div>
                         <div class="componentContent">
                             <div class="row">
@@ -231,35 +267,79 @@
                                 <div class="row">
                                     <div class="column">
                                         <h5>Familia</h5>
-                                        <drop-down-multiselect [listData]="listFamily"
-                                            [selectedItems]="listFamilySelected"
-                                            (listDataOutput)="selectedFamilies($event)" class="space-around">
-                                        </drop-down-multiselect>
+                                        <div style="display: flex">
+                                            <drop-down-multiselect [listData]="listFamily"
+                                                [selectedItems]="listFamilySelected"
+                                                (listDataOutput)="selectedFamilies($event)" class="space-around">
+                                            </drop-down-multiselect>
+
+                                            <div *ngIf="!prodFamilyStatus ? true:false">
+                                                <p-progressSpinner [style]="{width: '30px', height: '30px'}"
+                                                    strokeWidth="8" fill="#EEEEEE" animationDuration="1s">
+                                                </p-progressSpinner>
+                                            </div>
+                                        </div>
+
                                         <h5>SubFamilia</h5>
-                                        <drop-down-multiselect [listData]="listSubFamilyFiltered"
-                                            [selectedItems]="listSubFamilySelected"
-                                            (listDataOutput)="selectedSubFamilies($event)" class="space-around">
-                                        </drop-down-multiselect>
+                                        <div style="display: flex">
+                                            <drop-down-multiselect [listData]="listSubFamilyFiltered"
+                                                [selectedItems]="listSubFamilySelected"
+                                                (listDataOutput)="selectedSubFamilies($event)" class="space-around">
+                                            </drop-down-multiselect>
+
+                                            <div *ngIf="!prodSubFamilyStatus ? true:false">
+                                                <p-progressSpinner [style]="{width: '30px', height: '30px'}"
+                                                    strokeWidth="8" fill="#EEEEEE" animationDuration="1s">
+                                                </p-progressSpinner>
+                                            </div>
+                                        </div>
+
                                         <h5>Categoría</h5>
-                                        <drop-down-multiselect [listData]="listCategoryFiltered"
-                                            [selectedItems]="listCategorySelected"
-                                            (listDataOutput)="selectedCategories($event)" class="space-around">
-                                        </drop-down-multiselect>
+                                        <div style="display: flex">
+                                            <drop-down-multiselect [listData]="listCategoryFiltered"
+                                                [selectedItems]="listCategorySelected"
+                                                (listDataOutput)="selectedCategories($event)" class="space-around">
+                                            </drop-down-multiselect>
+
+                                            <div *ngIf="!prodCategoryStatus ? true:false">
+                                                <p-progressSpinner [style]="{width: '30px', height: '30px'}"
+                                                    strokeWidth="8" fill="#EEEEEE" animationDuration="1s">
+                                                </p-progressSpinner>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div class="column">
                                         <h5>SubCategoría</h5>
-                                        <drop-down-multiselect [listData]="listSubCategoryFiltered"
-                                            [selectedItems]="listSubCategorySelected"
-                                            (listDataOutput)="selectedSubCategories($event)" class="space-around">
-                                        </drop-down-multiselect>
+                                        <div style="display: flex">
+                                            <drop-down-multiselect [listData]="listSubCategoryFiltered"
+                                                [selectedItems]="listSubCategorySelected"
+                                                (listDataOutput)="selectedSubCategories($event)" class="space-around">
+                                            </drop-down-multiselect>
+
+                                            <div *ngIf="!prodSubCategoryStatus ? true:false">
+                                                <p-progressSpinner [style]="{width: '30px', height: '30px'}"
+                                                    strokeWidth="8" fill="#EEEEEE" animationDuration="1s">
+                                                </p-progressSpinner>
+                                            </div>
+                                        </div>
+
                                         <h5>SubSubCategoría</h5>
                                         <drop-down-multiselect class="space-around"></drop-down-multiselect>
+
                                         <h5>Producto Individual</h5>
-                                        <drop-down-multiselect [listData]="listIndividualProducts"
-                                            [selectedItems]="listIndvProdSelected"
-                                            (listDataOutput)="selectedProducts($event)" class="space-around">
-                                        </drop-down-multiselect>
+                                        <div style="display: flex">
+                                            <drop-down-multiselect [listData]="listIndividualProducts"
+                                                [selectedItems]="listIndvProdSelected"
+                                                (listDataOutput)="selectedProducts($event)" class="space-around">
+                                            </drop-down-multiselect>
+                                            <div *ngIf="!indvProductStatus ? true:false">
+                                                <p-progressSpinner [style]="{width: '30px', height: '30px'}"
+                                                    strokeWidth="8" fill="#EEEEEE" animationDuration="1s">
+                                                </p-progressSpinner>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -299,25 +379,37 @@
                                         [disabled]="selectedValuePrice == 'Si' ? false:true">
                                     </p-radioButton>
                                     <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
-                                        [selectedItems]="listPriceSelected" (listDataOutput)="selectedPrice($event)" [uniqueSelection]='1'
+                                        [selectedItems]="listPriceSelected" (listDataOutput)="selectedPrice($event)"
+                                        [uniqueSelection]='1'
                                         [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
                                     </drop-down-multiselect>
+                                    <div *ngIf="!prodPriceListStatus ? true:false">
+                                        <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
+                                            fill="#EEEEEE" animationDuration="1s">
+                                        </p-progressSpinner>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <h5>Descripción</h5>
+                        <!-- <h5>Descripción</h5>
                         <p-radioButton name="groupname3" class="space-around-noBottom" value="Si" label="Si"
                             [(ngModel)]="selectedValueDescripcion"></p-radioButton>
                         <p-radioButton name="groupname3" class="space-around" value="No" label="No"
                             [(ngModel)]="selectedValueDescripcion">
-                        </p-radioButton>
+                        </p-radioButton> -->
                         <h5>Item x página</h5>
                         <p-spinner [(ngModel)]="spinner" name="spinner" [min]="1" [max]="8" class="space-around">
                         </p-spinner>
+
+                        <h5>Tamaño de Imagen</h5>
+                        <drop-down-multiselect class="space-around" [listData]="listImgSize"
+                            [selectedItems]="listImgSelected" (listDataOutput)="selectedImgSize($event)"
+                            [uniqueSelection]='1'>
+                        </drop-down-multiselect>
                     </div>
 
-                    <div class="column">
+                    <!-- <div class="column">
                         <h5>Tamaño de Imagen</h5>
                         <drop-down-multiselect class="space-around" [listData]="listImgSize"
                             [selectedItems]="listImgSelected" (listDataOutput)="selectedImgSize($event)" [uniqueSelection]='1'>
@@ -327,13 +419,13 @@
                         <drop-down-multiselect class="space-around">
                         </drop-down-multiselect>
 
-                        <!-- <h5>Promociones</h5>
+                        <h5>Promociones</h5>
                         <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
                             [(ngModel)]="selectedValuePromocion"></p-radioButton>
                         <p-radioButton name="groupname4" class="space-around" value="No" label="No"
                             [(ngModel)]="selectedValuePromocion">
-                        </p-radioButton> -->
-                    </div>
+                        </p-radioButton>
+                    </div> -->
 
                     <div class="row align-button">
                         <hr width=95%>

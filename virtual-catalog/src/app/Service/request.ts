@@ -116,7 +116,6 @@ export class request {
     return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
       '<s:Body>' +
       '<getCompanies xmlns="http://tempuri.org/">' +
-      
       '</getCompanies>' +
       '</s:Body>' +
       '</s:Envelope>';
@@ -127,21 +126,31 @@ export class request {
     return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
       '<s:Body>' +
       '<getPrices xmlns="http://tempuri.org/">' +
-      '<itemCodes xmlns:'+ requestPrefix +'="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">' +
-        this.getItemsList(items, requestPrefix + ":string") + 
+      '<itemCodes xmlns:' + requestPrefix + '="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">' +
+      this.getItemsList(items, requestPrefix + ":string") +
       '</itemCodes>' +
-      '<priceList>' + priceList +'</priceList>' +
+      '<priceList>' + priceList + '</priceList>' +
       '</getPrices>' +
       '</s:Body>' +
       '</s:Envelope>';
   }
 
-  getItemsList(items : String[], prefix){
+  getItemsList(items: String[], prefix) {
     var request = '';
     items.forEach(element => {
       request = request + '<' + prefix + '>' + element + '</' + prefix + '>';
     });
     return request;
+  }
+
+  getTest(aux: string) {
+    return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+      '<s:Body>' +
+      '<GetData xmlns="http://tempuri.org/">' +
+      '<value>' + aux + '</value>' +
+      '</GetData>' +
+      '</s:Body>' +
+      '</s:Envelope>';
   }
 }
 

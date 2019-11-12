@@ -16,6 +16,10 @@
         <div *ngIf="(i +1) % 2 === 0" class="w-100"></div>
     </ng-container>
 </div> -->
+<div *ngIf="downloadStatus">
+    <p-progressBar [value]="downloadPercentage"></p-progressBar>
+</div>
+
 <div style="display: flex;justify-content: center;background-color: darkgray;">
     <!-- <div class="row">
                 <div class="col-xs-12 col-12">
@@ -28,24 +32,27 @@
     <p-dataView [rows]="spinner" [value]="productFiltered" [paginator]="true" paginatorPosition="both" layout="grid"
         (onPage)="pagination($event)">
         <p-header>
-            <button (click)="generatePdf(productFiltered)" class="button-style" mat-button>Generar
-                Catálogo</button>
-            <h5>{{ treePosition }}</h5>
+            <div style="padding: 1rem;">
+                <h5>{{ treePosition }}</h5>
+                <button [disabled]="genBtnStatus" (click)="generatePdf(productFiltered)"
+                    class="btn btn-primary float-right">Generar
+                    Catálogo</button>
+            </div>
         </p-header>
         <ng-template let-p pTemplate="gridItem">
             <div *ngIf="p.name != 'blank'" style="padding:.5em; display: flex; justify-content: center;"
                 class="ui-g-12 ui-md-5">
                 <div class="card space-around" style="width: 15rem;">
                     <img class="image-container"
-                        src="http://186.176.206.154:8088/images/Products/{{ p.productId }}{{ data.productImgSize }}.PNG"
-                        onerror="this.src='../assets/imgs/error_img.png'">
+                        src="http://giiis01:8021/images/{{ p.productId }}{{ data.productImgSize }}.PNG"
+                        onerror="this.src='./assets/imgs/error_img.png'">
                     <div class="card-body">
                         <h6 class="card-title">{{ p.name }}</h6>
                         <h6 class="card-text">{{ p.productId }}</h6>
                         <ngx-barcode [bc-height]='40' [bc-width]='1.5' [bc-value]='p.attributes[0].barcode'
                             [bc-display-value]="true" [bc-background]="background">
                         </ngx-barcode>
-                        <img id='itf' style="display: none;"/>
+                        <img id='itf' style="display: none;" />
                         <a class="btn btn-primary" (click)="itemDetail(p)">Ver Detalles</a>
                     </div>
                 </div>
@@ -60,20 +67,20 @@
         <ngb-carousel *ngIf="images">
             <ng-template ngbSlide>
                 <div class="img_container">
-                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_l_.PNG"
-                        onerror="this.src='../assets/imgs/error_img.png'">
+                    <img src="http://giiis01:8021/images/{{ this.current_product.productId }}_l_.PNG"
+                        onerror="this.src='./assets/imgs/error_img.png'">
                 </div>
             </ng-template>
             <ng-template ngbSlide>
                 <div class="img_container">
-                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_m_.PNG"
-                        onerror="this.src='../assets/imgs/error_img.png'">
+                    <img src="http://giiis01:8021/images/{{ this.current_product.productId }}_m_.PNG"
+                        onerror="this.src='./assets/imgs/error_img.png'">
                 </div>
             </ng-template>
             <ng-template ngbSlide>
                 <div class="img_container">
-                    <img src="http://186.176.206.154:8088/images/Products/{{ this.current_product.productId }}_s_.PNG"
-                        onerror="this.src='../assets/imgs/error_img.png'">
+                    <img src="http://giiis01:8021/images/{{ this.current_product.productId }}_s_.PNG"
+                        onerror="this.src='./assets/imgs/error_img.png'">
                 </div>
             </ng-template>
         </ngb-carousel>
@@ -81,15 +88,21 @@
         <div class="detail_container">
             <h3>{{ this.current_product.name }}</h3>
             <h4>{{ this.current_product.productId }}</h4>
-            <p>
+            <!-- <p>
                 Esto es la descripcion.
-            </p>
+            </p> -->
             <ng-container *ngFor="let a of temp">
                 <div style="display: flex; align-items: center; justify-content: space-between">
                     <p>
-                        Unidad: {{ a.unit }} <br>
-                        Precio: ₡ {{ a.price | number }}
+                        Unidad: {{ a.unit }}
+                        <!-- <br> -->
                     </p>
+                    <div *ngIf="showPrices == 'Si' ? true:false">
+                        <p>
+                            Precio: ₡ {{ a.price | number }}
+                        </p>
+                    </div>
+
                     <ngx-barcode [bc-height]='38' [bc-value]='a.barcode' [bc-display-value]="true">
                     </ngx-barcode>
                 </div>

@@ -7,11 +7,41 @@ import { Interpreter } from './Service/interpreter';
 })
 export class ServiceVirtualCatalogService {
 
-    serviceLink = "http://john-wick:8091/Service1.svc";
+    //serviceLink = "http://john-wick:8091/Service1.svc";
+    serviceLink = "http://172.30.1.83:8021/Service1.svc";
 
     request: request = new request();
 
     constructor() { }
+
+    public test(aux: string) {
+        return new Promise((resolve, reject) => {
+            var xmlRequest = this.request.getTest(aux);
+            var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
+            xhr.open("POST", this.serviceLink, true);
+            // xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            // xhr.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type, SOAPAction');
+            xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/GetData");
+            xhr.setRequestHeader("Content-Type", "text/xml");
+        
+            xhr.onreadystatechange = function (aEvt) {
+                var interpreter: Interpreter;
+                interpreter = new Interpreter();
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        console.log('ellll')
+                        resolve(interpreter.parseTest(xhr.responseXML));
+                    }
+                }
+            };
+            xhr.onerror = function (aEvt) {
+                alert("Error al invocar el servicio del IIS.");
+            }
+            xhr.send(xmlRequest);
+        })
+    }
 
     public getFamily() {
         return new Promise((resolve, reject) => {
@@ -19,9 +49,12 @@ export class ServiceVirtualCatalogService {
             var xhr = new XMLHttpRequest();
             //xhr.withCredentials = true;
             xhr.open("POST", this.serviceLink, true);
-            xhr.setRequestHeader("Content-Type", "text/xml");
+            // xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            // xhr.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type, SOAPAction');
             xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IService1/getFamilies");
-            xhr.send(xmlRequest);
+            xhr.setRequestHeader("Content-Type", "text/xml");
+        
             xhr.onreadystatechange = function (aEvt) {
                 var interpreter: Interpreter;
                 interpreter = new Interpreter();
@@ -34,6 +67,7 @@ export class ServiceVirtualCatalogService {
             xhr.onerror = function (aEvt) {
                 alert("Error al invocar el servicio del IIS.");
             }
+            xhr.send(xmlRequest);
         })
     }
 

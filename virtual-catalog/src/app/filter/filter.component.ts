@@ -71,6 +71,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
   text = '';
   boolClient: boolean = true;
   filtersToApply: any[] = [];
+  prodTypeStatus: boolean = false;
+  prodMarkStatus: boolean = false;
+  prodUseStatus: boolean = false;
+  prodLifeCycleStatus: boolean = false;
+  prodFamilyStatus: boolean = false;
+  prodSubFamilyStatus: boolean = false;
+  prodCategoryStatus: boolean = false;
+  prodSubCategoryStatus: boolean = false;
+  prodSubSubCategoryStatus: boolean = false;
+  prodPriceListStatus: boolean = false;
+  indvProductStatus: boolean = false;
 
   constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router) { }
 
@@ -288,30 +299,39 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.service.test('alo').then((aux: string)=>{
+      console.log(aux);
+    })
     this.service.getProduct().then((products: product[]) => {
       this.listProducts = products;
       // this.listIndividualProducts = this.filterRepeat(this.listProducts);
       console.log(products);
+      this.indvProductStatus = true;
     })
     this.service.getFamily().then((families: family[]) => {
       //console.log(families);
       this.listFamily = families;
+      this.prodFamilyStatus = true;
     })
     this.service.getSubFamily().then((subFamilies: subFamily[]) => {
       //console.log(subFamilies);
       this.listSubFamily = subFamilies;
+      this.prodSubFamilyStatus = true;
     })
     this.service.getCategoria().then((categorias: subFamily[]) => {
       //console.log(categorias);
       this.listCategoria = categorias;
+      this.prodCategoryStatus = true;
     })
     this.service.getSubCategoria().then((subCategorias: subFamily[]) => {
       //console.log(subCategorias);
       this.listSubCategoria = subCategorias;
+      this.prodSubCategoryStatus = true;
     })
     this.service.getLifeCycle().then((lifeCycles: lifeCycle[]) => {
       //console.log(lifeCycles);
       this.listLifeCycle = lifeCycles;
+      this.prodLifeCycleStatus = true;
     })
     this.service.getMainActivity().then((mainActivity: ipLevel[]) => {
       //console.log(lifeCycles);
@@ -324,18 +344,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.service.getPriceGroup().then((priceGroup: priceGroup[]) => {
       //console.log(lifeCycles);
       this.listPriceGroup = priceGroup;
+      this.prodPriceListStatus = true;
     })
     this.service.getProductUse().then((_productUse: productUse[]) => {
       //console.log(lifeCycles);
       this.listProductUse = _productUse;
+      this.prodUseStatus = true;
     })
     this.service.getItemType().then((_itemType: itemType[]) => {
       //console.log(lifeCycles);
       this.listItemType = _itemType;
+      this.prodTypeStatus = true;
     })
     this.service.getItemMark().then((_itemMark: itemMark[]) => {
       //console.log(lifeCycles);
       this.listItemMark = _itemMark;
+      this.prodMarkStatus = true;
     })
     this.service.getCompanies().then((_companies: company[]) => {
       //console.log(lifeCycles);
@@ -348,10 +372,40 @@ export class FilterComponent implements OnInit, AfterViewInit {
   generateCatalog() {
     //this.filterProducts();
     console.log("genere");
+    let price_selected: any;
+    let imgSize_selected: any;
+    if (this.listPriceSelected.length == 0) {
+      price_selected = 'AA';
+    } else {
+      price_selected = this.listPriceSelected.pop().priceId;
+    }
 
-    //this.service.getPrices(this.getProductsCodes(), this.listPriceSelected.pop().priceId).then((_prices: price[]) => {
-    this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
+    if (this.listImgSelected.length == 0) {
+      imgSize_selected = '_l_';
+    } else {
+      imgSize_selected = this.listImgSelected.pop().id;
+    }
+
+    this.service.getPrices(this.getProductsCodes(), price_selected).then((_prices: price[]) => {
+      //this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
       this.listProductAttributes = _prices;
+
+      this.listProductAttributes.forEach(element => {
+        element.attributes.sort(function (a, b) {
+          console.log(element.itemId);
+          if (Number(a.price) > Number(b.price)) {
+            console.log(a.price + '>' + b.price);
+            return 1;
+          };
+          if (Number(a.price) < Number(b.price)) {
+            console.log(a.price + '<' + b.price);
+            return -1;
+          };
+          return 0;
+        });
+      });
+
+      console.log(this.listProductAttributes);
 
       let mixed = [];
 
@@ -374,8 +428,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
         historicoVenta: this.historicoVenta,
         spinner: this.spinner,
         allProducts: this.listProducts,
-        productImgSize: "_l_",//this.listImgSelected.pop().id,
-        prices: this.listProductAttributes
+        productImgSize: imgSize_selected,
+        prices: this.listProductAttributes,
+        showPrices: this.selectedValuePrice
       }
 
       var doc = new jsPDF();

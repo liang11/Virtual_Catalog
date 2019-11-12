@@ -30,6 +30,22 @@ export class Interpreter{
         return families;
     }
 
+    parseTest(xml: XMLDocument) {
+        //var families: family[] = [];
+        var xmlFamily = xml.getElementsByTagName("GetDataResult");
+        var result = xmlFamily.item(0).textContent;
+
+        //for (var index = 0; index < xmlFamily.length; index++) {
+          //  var newFamily = new family();
+            // newFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
+            // newFamily.label = newFamily.name;
+            // newFamily.id = index;
+            // newFamily.parent_id = "";
+        //    families.push(newFamily);
+        //}
+        return result;
+    }
+
     parseSubFamily(xml: XMLDocument) {
         var subFamilies: subFamily[] = [];
         var xmlFamily = xml.getElementsByTagName(this.prefix + "SubFamilyService");

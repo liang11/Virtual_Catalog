@@ -7,7 +7,8 @@ import { CatalogComponent } from './catalog/catalog.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'filter', component: FilterComponent },
-  { path: 'catalog', component: CatalogComponent} //, data: {data:'Tests Data'}}
+  { path: 'catalog', component: CatalogComponent },
+  { path: '**', redirectTo: '' } //, data: {data:'Tests Data'}}
 ];
 
 @NgModule({
