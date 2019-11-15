@@ -14,8 +14,10 @@ import {DialogModule} from 'primeng/dialog';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import {DataViewModule} from 'primeng/dataview';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import  {ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -27,6 +29,7 @@ import { DropDownMultiselectComponent } from './drop-down-multiselect/drop-down-
 import { ServiceVirtualCatalogService } from './service-virtual-catalog.service';
 import { CatalogComponent } from './catalog/catalog.component';
 import { DataStorage } from './Service/DataStorage';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -56,10 +59,12 @@ import { DataStorage } from './Service/DataStorage';
     NgxBarcodeModule,
     DataViewModule,
     PaginationModule.forRoot(),
+    BlockUIModule.forRoot(),
     ProgressSpinnerModule,
-    ProgressBarModule
+    ProgressBarModule,
+    ToastModule
   ],
-  providers: [ServiceVirtualCatalogService, DataStorage],
+  providers: [ServiceVirtualCatalogService, DataStorage, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

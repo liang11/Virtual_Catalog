@@ -15,6 +15,8 @@ import { price } from '../classes/price';
 import { Router } from '@angular/router';
 import { priceAttributes } from '../classes/priceAttributes';
 import jsPDF from 'jspdf';
+import { MessageService } from 'primeng/api';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'filter',
@@ -83,7 +85,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
   prodPriceListStatus: boolean = false;
   indvProductStatus: boolean = false;
 
-  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router) { }
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router, private messageService: MessageService) { }
+
+  showWarn() {
+    this.messageService.add({ severity: 'warn', summary: 'Atención!', detail: 'Seleccione como mínimo una familia de productos.' });
+  }
+
+  toggleBlocking(message?: string) {
+    this.blockUI.start(message);
+  }
 
   selectedFamilies(data: family[]) {
     console.log(this.text);
@@ -299,7 +311,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.service.test('alo').then((aux: string)=>{
+    this.service.test('alo').then((aux: string) => {
       console.log(aux);
     })
     this.service.getProduct().then((products: product[]) => {
@@ -371,122 +383,131 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   generateCatalog() {
     //this.filterProducts();
-    console.log("genere");
-    let price_selected: any;
-    let imgSize_selected: any;
-    if (this.listPriceSelected.length == 0) {
-      price_selected = 'AA';
+    if (this.listFamilySelected.length <= 0) {
+      this.showWarn();
     } else {
-      price_selected = this.listPriceSelected.pop().priceId;
-    }
-
-    if (this.listImgSelected.length == 0) {
-      imgSize_selected = '_l_';
-    } else {
-      imgSize_selected = this.listImgSelected.pop().id;
-    }
-
-    this.service.getPrices(this.getProductsCodes(), price_selected).then((_prices: price[]) => {
-      //this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
-      this.listProductAttributes = _prices;
-
-      this.listProductAttributes.forEach(element => {
-        element.attributes.sort(function (a, b) {
-          console.log(element.itemId);
-          if (Number(a.price) > Number(b.price)) {
-            console.log(a.price + '>' + b.price);
-            return 1;
-          };
-          if (Number(a.price) < Number(b.price)) {
-            console.log(a.price + '<' + b.price);
-            return -1;
-          };
-          return 0;
-        });
-      });
-
-      console.log(this.listProductAttributes);
-
-      let mixed = [];
-
-      this.listProductAttributes.forEach((itm, i) => {
-        mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));
-      });
-
-      // console.log(mergeById(this.listIndvProdSelected, this.listProductAttributes));
-      console.log(mixed);
-
-      this._data.data = {
-        familyList: this.listFamilySelected,
-        subFamilyList: this.listSubFamilySelected,
-        categoryList: this.listCategorySelected,
-        subCategoryList: this.listSubCategorySelected,
-        productsList: mixed,//this.listIndvProdSelected, //Este es el que hacce display.
-        lifeCycle: this.listLifeCycleSelected,
-        mainActivity: this.listMainActivitySelected,
-        speciality: this.listSpecialitySelected,
-        historicoVenta: this.historicoVenta,
-        spinner: this.spinner,
-        allProducts: this.listProducts,
-        productImgSize: imgSize_selected,
-        prices: this.listProductAttributes,
-        showPrices: this.selectedValuePrice
+      this.toggleBlocking("Generando Catálogo...");
+      console.log("genere");
+      let price_selected: any;
+      let imgSize_selected: any;
+      if (this.listPriceSelected.length == 0) {
+        price_selected = 'AD';
+      } else {
+        price_selected = this.listPriceSelected.pop().priceId;
       }
 
-      var doc = new jsPDF();
+      if (this.listImgSelected.length == 0) {
+        imgSize_selected = '_l_';
+      } else {
+        imgSize_selected = this.listImgSelected.pop().id;
+      }
 
-      // Set Fonts
-      doc.setFontType("bold");
-      doc.setTextColor(0, 0, 0);
+      this.service.getPrices(this.getProductsCodes(), price_selected).then((_prices: price[]) => {
+        //this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
+        this.listProductAttributes = _prices;
 
-      //SubCategory Title
-      doc.setFontSize(30);
-      doc.text("SubCategory", 20, 20);
+        this.listProductAttributes.forEach(element => {
+          element.attributes.sort(function (a, b) {
+            console.log(element.itemId);
+            if (Number(a.price) > Number(b.price)) {
+              console.log(a.price + '>' + b.price);
+              return 1;
+            };
+            if (Number(a.price) < Number(b.price)) {
+              console.log(a.price + '<' + b.price);
+              return -1;
+            };
+            return 0;
+          });
+        });
 
-      //Set Family tag
-      doc.setFontSize(20);
-      doc.setFillColor(8, 100, 139);
-      doc.rect(185, 0, 15, 85, 'F');
+        console.log(this.listProductAttributes);
 
-      doc.text("Familia", 190, 10, { rotationDirection: "0", angle: "-90" });
+        let mixed = [];
 
-      //Set SubFamily tag
-      doc.setFillColor(8, 100, 139);
-      doc.rect(185, 185, 15, 115, 'F');
-
-      doc.text("SubFamilia", 190, 190, { rotationDirection: "0", angle: "-90" });
-
-
-      let x = 20;
-      let y = 40;
-      var img;
-      async function loadImage() {
-        for (let index = 0; index < 4; index++) {
-          let aux = mixed[index];
-          img = await toDataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
-          console.log("si espere");
-          //console.log(img);
-          doc.addImage(img, 'PNG', x, y, 65, 65);
-          if (x == 100) {
-            x = 20;
-            y += 130;
-          }
-          else {
-            x += 80;
+        this.listProductAttributes.forEach((itm, i) => {
+          if (itm.attributes.length > 0) {
+            mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));
           }
 
+        });
+
+        // console.log(mergeById(this.listIndvProdSelected, this.listProductAttributes));
+        console.log(mixed);
+
+        this._data.data = {
+          familyList: this.listFamilySelected,
+          subFamilyList: this.listSubFamilySelected,
+          categoryList: this.listCategorySelected,
+          subCategoryList: this.listSubCategorySelected,
+          productsList: mixed,//this.listIndvProdSelected, //Este es el que hacce display.
+          lifeCycle: this.listLifeCycleSelected,
+          mainActivity: this.listMainActivitySelected,
+          speciality: this.listSpecialitySelected,
+          historicoVenta: this.historicoVenta,
+          spinner: this.spinner,
+          allProducts: this.listProducts,
+          productImgSize: imgSize_selected,
+          prices: this.listProductAttributes,
+          showPrices: this.selectedValuePrice
         }
 
-        doc.save('a4.pdf');
-      }
+        var doc = new jsPDF();
 
-      //loadImage();
+        // Set Fonts
+        doc.setFontType("bold");
+        doc.setTextColor(0, 0, 0);
 
-      console.log("ya salve");
-      //doc.save('a4.pdf');
-      this.router.navigate(['/catalog']);
+        //SubCategory Title
+        doc.setFontSize(30);
+        doc.text("SubCategory", 20, 20);
 
-    });
+        //Set Family tag
+        doc.setFontSize(20);
+        doc.setFillColor(8, 100, 139);
+        doc.rect(185, 0, 15, 85, 'F');
+
+        doc.text("Familia", 190, 10, { rotationDirection: "0", angle: "-90" });
+
+        //Set SubFamily tag
+        doc.setFillColor(8, 100, 139);
+        doc.rect(185, 185, 15, 115, 'F');
+
+        doc.text("SubFamilia", 190, 190, { rotationDirection: "0", angle: "-90" });
+
+
+        let x = 20;
+        let y = 40;
+        var img;
+        async function loadImage() {
+          for (let index = 0; index < 4; index++) {
+            let aux = mixed[index];
+            img = await toDataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
+            console.log("si espere");
+            //console.log(img);
+            doc.addImage(img, 'PNG', x, y, 65, 65);
+            if (x == 100) {
+              x = 20;
+              y += 130;
+            }
+            else {
+              x += 80;
+            }
+
+          }
+
+          doc.save('a4.pdf');
+        }
+
+        //loadImage();
+
+        console.log("ya salve");
+        //doc.save('a4.pdf');
+        this.blockUI.stop();
+        this.router.navigate(['/catalog']);
+
+      });
+    }
   }
 
   ngAfterViewInit() {

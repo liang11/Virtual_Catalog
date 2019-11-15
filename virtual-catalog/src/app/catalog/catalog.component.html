@@ -29,11 +29,16 @@
                   <pagination [totalItems]="10" [itemsPerPage]="4" (pageChanged)="pageChanged($event)"></pagination>
                 </div>
               </div> -->
-    <p-dataView [rows]="spinner" [value]="productFiltered" [paginator]="true" paginatorPosition="both" layout="grid"
+    <p-dataView #dv [rows]="spinner" [value]="productFiltered" [paginator]="true" paginatorPosition="both" layout="grid" filterBy="productId"
         (onPage)="pagination($event)">
         <p-header>
             <div style="padding: 1rem;">
                 <h5>{{ treePosition }}</h5>
+                <div class="ui-g-6 ui-md-4 filter-container">
+                    <div >
+                        <input type="search" pInputText placeholder="Buscar por código" (keyup)="dv.filter($event.target.value)">
+                    </div>
+                </div>
                 <button [disabled]="genBtnStatus" (click)="generatePdf(productFiltered)"
                     class="btn btn-primary float-right">Generar
                     Catálogo</button>
