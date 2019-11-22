@@ -5,7 +5,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     display: flex;
     padding: 0.5rem 2rem; 
-    /* position: absolute; */
     bottom: 0;
     width: 100%;
     box-sizing: border-box;
@@ -14,7 +13,6 @@
 }
 
 .footer-brand {
-    /* filter: saturate(175%) contrast(65%); */
     filter: invert(1);
     padding-top: 0.5rem;
 }

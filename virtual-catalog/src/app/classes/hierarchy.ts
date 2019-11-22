@@ -1,5 +1,5 @@
 
-export class subFamily {
+export class hierarchy{
     id: number;
     parent_id: string;
     name: string;

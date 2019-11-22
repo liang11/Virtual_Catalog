@@ -1,12 +1,12 @@
-
-<ngb-carousel class="main-carousel" *ngIf="images">
+<ngb-carousel class="main-carousel">
     <ng-template ngbSlide>
         <div class="center-image">
             <img src="./assets/imgs/book_icon.png">
         </div>
         <div class="catalog-msg">
             <h3>Catálogo de Productos</h3>
-            <p class="description">Genera tu propio catálogo de productos. Podrás<br> ver fotos, descripción, precio y muchos más datos de tu interés.</p>
+            <p class="description">Genera tu propio catálogo de productos. Podrás<br> ver fotos, descripción, precio y
+                muchos más datos de tu interés.</p>
         </div>
         <div class="align-button" routerLink="/filter">
             <button class="button-style" mat-button>Nuevo</button>
@@ -19,28 +19,12 @@
         </div>
         <div class="catalog-msg">
             <h3>Cotiza una compra</h3>
-            <p class="description">Genera tu propia cotización. Podrás<br> generar tu compra y enviarnos tu propuesta para que podamos evaluarla, contactanos para saber 
+            <p class="description">Genera tu propia cotización. Podrás generar tu compra<br> y enviarnos tu propuesta
+                para que podamos evaluarla, <br>contactanos para saber
                 sobre las últimas promociones y demás!.</p>
         </div>
         <div class="align-button">
             <button class="button-style" mat-button>Coming Soon!</button>
         </div>
     </ng-template>
-
-<!--     
-    <ng-template ngbSlide>
-        <img [src]="images[1]" alt="Random second slide">
-        <div class="carousel-caption">
-            <h3>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-    </ng-template>
-    <ng-template ngbSlide>
-        <img [src]="images[2]" alt="Random third slide">
-        <div class="carousel-caption">
-            <h3>Third slide label</h3>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-        </div>
-    </ng-template> 
--->
 </ngb-carousel>

@@ -1,62 +1,3 @@
-<!-- <div class="filter-page">
-    <h1 class="filter_page-title">Configuración</h1>
-    <div class="form-container">
-        <form class="row">
-            <div class="column">
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Familia</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </div>
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Sub-familia</option>
-                        <option value="2">5</option>
-                        <option value="3">6</option>
-                    </select>
-                </div>
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Categoría</option>
-                        <option value="2">5</option>
-                        <option value="3">6</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Sub-categoría</option>
-                        <option value="2">5</option>
-                        <option value="3">6</option>
-                    </select>
-                </div>
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Sub sub-categoría</option>
-                        <option value="2">5</option>
-                        <option value="3">6</option>
-                    </select>
-                </div>
-                <div class="form-group test">
-                    <select class="form-control">
-                        <option value="1">Índice de penetración</option>
-                        <option value="2">5</option>
-                        <option value="3">6</option>
-                    </select>
-                </div>
-            </div>
-        </form>
-
-        <div class="align-button">
-            <button class="button-style" routerLink="/filter" mat-button>Generar Catálogo</button>
-        </div>
-    </div>
-
-</div> -->
 <block-ui>
     <div class="filter-page">
         <h1 class="filter_page-title">Configuración</h1>
@@ -67,116 +8,123 @@
                     <div class="row underline">
                         <h3> Opciones de Selección </h3>
                     </div>
+                    <!-- Sección de Compañia -->
                     <!-- <div class='componentWrapper'>
-                    <div class="fix-title-border">
-                        <div class='componentTitle'
-                            pTooltip="Solamente los productos de la Empresa y Proveedor seleccionado serán tomadas en cuenta.">
-                            Compañia
-                            <img src="../assets/imgs/help_icon.png">
-                        </div>
-                        <div class='componentContent'>
-                            <div class="row">
-                                <div class="column">
-                                    <h5>Empresa</h5>
-                                    <drop-down-multiselect class="space-around-noBottom" [listData]="listCompanies"
-                                        (listDataOutput)="selectedCompany($event)" [uniqueSelection]='1'>
-                                    </drop-down-multiselect>
-                                </div>
-                                <div class="column">
-                                    <h5>Proveedores</h5>
-                                    <drop-down-multiselect class="space-around-noBottom"></drop-down-multiselect>
+                        <div class="fix-title-border">
+                            <div class='componentTitle'
+                                pTooltip="Solamente los productos de la Empresa y Proveedor seleccionado serán tomadas en cuenta.">
+                                Compañia
+                                <img src="../assets/imgs/help_icon.png">
+                            </div>
+                            <div class='componentContent'>
+                                <div class="row">
+                                    <div class="column">
+                                        <h5>Empresa</h5>
+                                        <drop-down-multiselect class="space-around-noBottom" [listData]="listCompanies"
+                                            (listDataOutput)="selectedCompany($event)" [uniqueSelection]='1'>
+                                        </drop-down-multiselect>
+                                    </div>
+                                    <div class="column">
+                                        <h5>Proveedores</h5>
+                                        <drop-down-multiselect class="space-around-noBottom"></drop-down-multiselect>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
 
+                    <!-- Sección de IP -->
                     <!-- <div class="componentWrapper">
-                    <div class="fix-title-border">
-                        <div class='componentTitle'
-                            pTooltip="El IP o Índice de Penetración es un término utilizado para referirse a un conjunto de productos destinados para la venta a determinado cliente.">
-                            Gestión de IP(opcional)
-                            <img src="../assets/imgs/help_icon.png">
-                        </div>
-                        <div class="componentContent">
-                            <div class="row text-field">
-                                *Este apartado es de selcción única, solamente se puede elegir una de las siguientes
-                                opciones.
+                        <div class="fix-title-border">
+                            <div class='componentTitle'
+                                pTooltip="El IP o Índice de Penetración es un término utilizado para referirse a un conjunto de productos destinados para la venta a determinado cliente.">
+                                Gestión de IP(opcional)
+                                <img src="../assets/imgs/help_icon.png">
                             </div>
-                            <div class="row">
-                                <div class="column">
-                                    <h5>Actividad Comercial</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listMainActivity"
-                                        [disable]="listSpecialitySelected.length > 0 || text != '' ? true:false"
-                                        (listDataOutput)="selectedMainActivity($event)"></drop-down-multiselect>
-                                    <h5>Código del Cliente</h5>
-                                    <div class="input-group space-around">
-                                        <input type="text" class="form-control" [(ngModel)]="text"
-                                            (keyup)="checkEmpty()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
-                                        <button type="button" class="button-text-small" (click)="checkClient()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                            <div class="componentContent">
+                                <div class="row text-field">
+                                    *Este apartado es de selcción única, solamente se puede elegir una de las siguientes
+                                    opciones.
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <h5>Actividad Comercial</h5>
+                                        <drop-down-multiselect class="space-around" [listData]="listMainActivity"
+                                            [disable]="listSpecialitySelected.length > 0 || txt_client != '' ? true:false"
+                                            (listDataOutput)="selectedMainActivity($event)"></drop-down-multiselect>
+                                        <h5>Código del Cliente</h5>
+                                        <div class="input-group space-around">
+                                            <input type="text" class="form-control" [(ngModel)]="txt_client"
+                                                (keyup)="checkEmpty()"
+                                                [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                            <button type="button" class="button-text-small" (click)="checkClient()"
+                                                [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="column">
+                                        <h5>Especialidad</h5>
+                                        <drop-down-multiselect class="space-around" [listData]="listSpeciality"
+                                            [disable]="listMainActivitySelected.length > 0 || txt_client != '' ? true:false"
+                                            (listDataOutput)="selectedSpeciality($event)"></drop-down-multiselect>
+                                        <h5>Dirección</h5>
+                                        <drop-down-multiselect class="space-around" [disable]="bool_client">
+                                        </drop-down-multiselect>
                                     </div>
                                 </div>
-
-                                <div class="column">
-                                    <h5>Especialidad</h5>
-                                    <drop-down-multiselect class="space-around" [listData]="listSpeciality"
-                                        [disable]="listMainActivitySelected.length > 0 || text != '' ? true:false"
-                                        (listDataOutput)="selectedSpeciality($event)"></drop-down-multiselect>
-                                    <h5>Dirección</h5>
-                                    <drop-down-multiselect class="space-around" [disable]="boolClient">
-                                    </drop-down-multiselect>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
 
+                    <!-- Sección de Histórico -->
                     <!-- <div class="componentWrapper">
-                    <div class="fix-title-border">
-                        <div class='componentTitle'
-                            pTooltip="Se podrá tomar en cuenta el historial de compras previamente hechas por parte de un cliente.">
-                            Historial(opcional)
-                            <img src="../assets/imgs/help_icon.png">
-                        </div>
-                        <div class="componentContent">
-                            <div class="row">
-                                <div class="column">
-                                    <h5>Código del Cliente</h5>
-                                    <div class="input-group space-around">
-                                        <input type="text" class="form-control" [(ngModel)]="text"
-                                            (keyup)="checkEmpty()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
-                                        <button type="button" class="button-text-small" (click)="checkClient()"
-                                            [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                        <div class="fix-title-border">
+                            <div class='componentTitle'
+                                pTooltip="Se podrá tomar en cuenta el historial de compras previamente hechas por parte de un cliente.">
+                                Historial(opcional)
+                                <img src="../assets/imgs/help_icon.png">
+                            </div>
+                            <div class="componentContent">
+                                <div class="row">
+                                    <div class="column">
+                                        <h5>Código del Cliente</h5>
+                                        <div class="input-group space-around">
+                                            <input type="text" class="form-control" [(ngModel)]="txt_historic"
+                                                (keyup)="checkEmpty()"
+                                                [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">
+                                            <button type="button" class="button-text-small" (click)="checkClient()"
+                                                [disabled]="listSpecialitySelected.length > 0 || listMainActivitySelected.length > 0 ? true:false">Verificar</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="column">
-                                    <h5>Histórico de Venta</h5>
-                                    <div>
-                                        <p-radioButton name="groupname" class="space-around-noBottom" value="Si"
-                                            label="Si" [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                                        </p-radioButton> <img src="../assets/imgs/help_icon.png" style="float:right;"
-                                            pTooltip="Se tomarán en cuenta solamente los productos que se hayan comprado en las últimas 12 semanas.">
-                                    </div>
-                                    <div>
-                                        <p-radioButton name="groupname" class="space-around-noBottom" value="No"
-                                            label="No" [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                                        </p-radioButton> <img src="../assets/imgs/help_icon.png" style="float:right;"
-                                            pTooltip="Se tomarán en cuenta solamente los productos que NO se hayan comprado previamente.">
-                                    </div>
-                                    <div>
-                                        <p-radioButton name="groupname" class="space-around" value="Todos" label="Todos"
-                                            [(ngModel)]="historicoVenta" [disabled]="boolClient">
-                                        </p-radioButton> <img src="../assets/imgs/help_icon.png" style="float:right;"
-                                            pTooltip="Se tomarán en cuenta todos los productos, tantos los adquiridos previamente cono los que no lo han sido.">
+                                    <div class="column">
+                                        <h5>Histórico de Venta</h5>
+                                        <div>
+                                            <p-radioButton name="groupname" class="space-around-noBottom" value="Si"
+                                                label="Si" [(ngModel)]="rb_historicoVenta" [disabled]="bool_historic">
+                                            </p-radioButton> <img src="../assets/imgs/help_icon.png"
+                                                style="float:right;"
+                                                pTooltip="Se tomarán en cuenta solamente los productos que se hayan comprado en las últimas 12 semanas.">
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="groupname" class="space-around-noBottom" value="No"
+                                                label="No" [(ngModel)]="rb_historicoVenta" [disabled]="bool_historic">
+                                            </p-radioButton> <img src="../assets/imgs/help_icon.png"
+                                                style="float:right;"
+                                                pTooltip="Se tomarán en cuenta solamente los productos que NO se hayan comprado previamente.">
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="groupname" class="space-around" value="Todos"
+                                                label="Todos" [(ngModel)]="rb_historicoVenta"
+                                                [disabled]="bool_historic">
+                                            </p-radioButton> <img src="../assets/imgs/help_icon.png"
+                                                style="float:right;"
+                                                pTooltip="Se tomarán en cuenta todos los productos, tantos los adquiridos previamente cono los que no lo han sido.">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
 
                     <div class="componentWrapper">
                         <div class="fix-title-border">
@@ -217,7 +165,7 @@
                                         </div>
 
                                         <!-- <h5>Ocasión de Uso</h5>
-                                    <drop-down-multiselect class="space-around"></drop-down-multiselect> -->
+                                        <drop-down-multiselect class="space-around"></drop-down-multiselect> -->
                                     </div>
 
                                     <div class="column">
@@ -338,7 +286,7 @@
 
                                             <h5>Producto Individual</h5>
                                             <div style="display: flex">
-                                                <drop-down-multiselect [listData]="listIndividualProducts"
+                                                <drop-down-multiselect [listData]="listIndvProductsFiltered"
                                                     [selectedItems]="listIndvProdSelected"
                                                     (listDataOutput)="selectedProducts($event)" class="space-around">
                                                 </drop-down-multiselect>
@@ -367,29 +315,29 @@
                         <div class="column">
                             <h5>Precio</h5>
                             <p-radioButton name="groupname6" class="space-around-noBottom" value="Si" label="Si"
-                                [(ngModel)]="selectedValuePrice"></p-radioButton>
+                                [(ngModel)]="rd_showPrice"></p-radioButton>
                             <p-radioButton name="groupname6" class="space-around" value="No" label="No"
-                                [(ngModel)]="selectedValuePrice">
+                                [(ngModel)]="rd_showPrice">
                             </p-radioButton>
-                            <div *ngIf="selectedValuePrice == 'Si' ? true:false">
+                            <div *ngIf="rd_showPrice == 'Si' ? true:false">
                                 <div class="border-box-col">
                                     <h6>Lista de Precio</h6>
                                     <p-radioButton name="groupname2" class="space-around-noBottom" value="Cliente"
-                                        [disabled]="!boolClient && listMainActivitySelected && listSpecialitySelected ? false:true"
-                                        label="Cliente" [(ngModel)]="selectedValuePriceList"></p-radioButton>
+                                        [disabled]="!bool_client && listMainActivitySelected && listSpecialitySelected ? false:true"
+                                        label="Cliente" [(ngModel)]="rd_priceList"></p-radioButton>
                                     <p-radioButton name="groupname2" class="space-around-noBottom" value="Direccion"
-                                        label="Dirección" [(ngModel)]="selectedValuePriceList"
-                                        [disabled]="!boolClient && listMainActivitySelected && listSpecialitySelected ? false:true">
+                                        label="Dirección" [(ngModel)]="rd_priceList"
+                                        [disabled]="!bool_client && listMainActivitySelected && listSpecialitySelected ? false:true">
                                     </p-radioButton>
                                     <div class="radio-other">
                                         <p-radioButton name="groupname2" class="space-around-noBottom" value="Other"
-                                            label="Otro" [(ngModel)]="selectedValuePriceList"
-                                            [disabled]="selectedValuePrice == 'Si' ? false:true">
+                                            label="Otro" [(ngModel)]="rd_priceList"
+                                            [disabled]="rd_showPrice == 'Si' ? false:true">
                                         </p-radioButton>
                                         <drop-down-multiselect class="space-around-noBottom" [listData]="listPriceGroup"
                                             [selectedItems]="listPriceSelected" (listDataOutput)="selectedPrice($event)"
                                             [uniqueSelection]='1'
-                                            [disable]="selectedValuePriceList == 'Other' && selectedValuePrice == 'Si' ? false:true">
+                                            [disable]="rd_priceList == 'Other' && rd_showPrice == 'Si' ? false:true">
                                         </drop-down-multiselect>
                                         <div *ngIf="!prodPriceListStatus ? true:false">
                                             <p-progressSpinner [style]="{width: '30px', height: '30px'}" strokeWidth="8"
@@ -401,11 +349,12 @@
                             </div>
 
                             <!-- <h5>Descripción</h5>
-                        <p-radioButton name="groupname3" class="space-around-noBottom" value="Si" label="Si"
-                            [(ngModel)]="selectedValueDescripcion"></p-radioButton>
-                        <p-radioButton name="groupname3" class="space-around" value="No" label="No"
-                            [(ngModel)]="selectedValueDescripcion">
-                        </p-radioButton> -->
+                            <p-radioButton name="groupname3" class="space-around-noBottom" value="Si" label="Si"
+                                [(ngModel)]="rd_showDescription"></p-radioButton>
+                            <p-radioButton name="groupname3" class="space-around" value="No" label="No"
+                                [(ngModel)]="rd_showDescription">
+                            </p-radioButton> -->
+
                             <h5>Item x página</h5>
                             <p-spinner [(ngModel)]="spinner" name="spinner" [min]="1" [max]="8" class="space-around">
                             </p-spinner>
@@ -418,22 +367,23 @@
                         </div>
 
                         <!-- <div class="column">
-                        <h5>Tamaño de Imagen</h5>
-                        <drop-down-multiselect class="space-around" [listData]="listImgSize"
-                            [selectedItems]="listImgSelected" (listDataOutput)="selectedImgSize($event)" [uniqueSelection]='1'>
-                        </drop-down-multiselect>
+                            <h5>Tamaño de Imagen</h5>
+                            <drop-down-multiselect class="space-around" [listData]="listImgSize"
+                                [selectedItems]="listImgSelected" (listDataOutput)="selectedImgSize($event)"
+                                [uniqueSelection]='1'>
+                            </drop-down-multiselect>
 
-                        <h5>Ordenamiento</h5>
-                        <drop-down-multiselect class="space-around">
-                        </drop-down-multiselect>
+                            <h5>Ordenamiento</h5>
+                            <drop-down-multiselect class="space-around">
+                            </drop-down-multiselect>
 
-                        <h5>Promociones</h5>
-                        <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
-                            [(ngModel)]="selectedValuePromocion"></p-radioButton>
-                        <p-radioButton name="groupname4" class="space-around" value="No" label="No"
-                            [(ngModel)]="selectedValuePromocion">
-                        </p-radioButton>
-                    </div> -->
+                            <h5>Promociones</h5>
+                            <p-radioButton name="groupname4" class="space-around-noBottom" value="Si" label="Si"
+                                [(ngModel)]="rd_showPromotions"></p-radioButton>
+                            <p-radioButton name="groupname4" class="space-around" value="No" label="No"
+                                [(ngModel)]="rd_showPromotions">
+                            </p-radioButton>
+                        </div> -->
 
                         <div class="row align-button">
                             <hr width=95%>

@@ -1,5 +1,4 @@
-import { family } from '../classes/family';
-import { subFamily } from '../classes/subFamily';
+import { hierarchy } from '../classes/hierarchy';
 import { product } from '../classes/product';
 import { lifeCycle } from '../classes/lifeCycle';
 import { ipLevel } from '../classes/ipLevel';
@@ -17,10 +16,10 @@ export class Interpreter{
     prefix: string = "a:";
 
     parseFamily(xml: XMLDocument) {
-        var families: family[] = [];
+        var families: hierarchy[] = [];
         var xmlFamily = xml.getElementsByTagName(this.prefix + "FamilyService");
         for (var index = 0; index < xmlFamily.length; index++) {
-            var newFamily = new family();
+            var newFamily = new hierarchy();
             newFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
             newFamily.label = newFamily.name;
             newFamily.id = index;
@@ -47,25 +46,24 @@ export class Interpreter{
     }
 
     parseSubFamily(xml: XMLDocument) {
-        var subFamilies: subFamily[] = [];
+        var subFamilies: hierarchy[] = [];
         var xmlFamily = xml.getElementsByTagName(this.prefix + "SubFamilyService");
         for (var index = 0; index < xmlFamily.length; index++) {
-            var newSubFamily = new subFamily();
+            var newSubFamily = new hierarchy();
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "family").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "subFamily").item(0).textContent;
             newSubFamily.label = newSubFamily.name;
             newSubFamily.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             subFamilies.push(newSubFamily);
         }
         return subFamilies;
     }
 
     parseCategoria(xml: XMLDocument) {
-        var categories: subFamily[] = [];
+        var categories: hierarchy[] = [];
         var xmlFamily = xml.getElementsByTagName(this.prefix + "CategoryService");
         for (var index = 0; index < xmlFamily.length; index++) {
-            var newSubFamily = new subFamily();
+            var newSubFamily = new hierarchy();
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "subFamily").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;
             newSubFamily.id = index;
@@ -76,10 +74,10 @@ export class Interpreter{
     }
 
     parseSubCategoria(xml: XMLDocument) {
-        var categories: subFamily[] = [];
+        var categories: hierarchy[] = [];
         var xmlFamily = xml.getElementsByTagName(this.prefix + "SubCategoryService");
         for (var index = 0; index < xmlFamily.length; index++) {
-            var newSubFamily = new subFamily();
+            var newSubFamily = new hierarchy();
             newSubFamily.parent_id = xmlFamily.item(index).getElementsByTagName(this.prefix + "category").item(0).textContent;
             newSubFamily.name = xmlFamily.item(index).getElementsByTagName(this.prefix + "subCategory").item(0).textContent;
             newSubFamily.id = index;
@@ -123,7 +121,6 @@ export class Interpreter{
             newLifeCycle.label = newLifeCycle.name;
             newLifeCycle.labelCode = newLifeCycle.lifeCycleId;
             newLifeCycle.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             lifeCycleList.push(newLifeCycle);
         }
         return lifeCycleList;
@@ -137,7 +134,6 @@ export class Interpreter{
             newMainActivity.name = xmlMainActivity.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
             newMainActivity.label = newMainActivity.name;
             newMainActivity.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             mainActivityList.push(newMainActivity);
         }
         return mainActivityList;
@@ -151,7 +147,6 @@ export class Interpreter{
             newSpeciality.name = xmlSpeciality.item(index).getElementsByTagName(this.prefix + "name").item(0).textContent;
             newSpeciality.label = newSpeciality.name;
             newSpeciality.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             specialityList.push(newSpeciality);
         }
         return specialityList;
@@ -167,7 +162,6 @@ export class Interpreter{
             newPriceGroup.label = newPriceGroup.name;
             newPriceGroup.labelCode = newPriceGroup.priceId;
             newPriceGroup.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             priceGroupList.push(newPriceGroup);
         }
         return priceGroupList;
@@ -183,7 +177,6 @@ export class Interpreter{
             newProductUse.label = newProductUse.name;
             newProductUse.labelCode = newProductUse.productUseId;
             newProductUse.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             productUseList.push(newProductUse);
         }
         return productUseList;
@@ -198,7 +191,6 @@ export class Interpreter{
             newItemType.itemTypeId = xmlItemType.item(index).getElementsByTagName(this.prefix + "id").item(0).textContent;
             newItemType.label = newItemType.name;
             newItemType.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             itemTypeList.push(newItemType);
         }
         return itemTypeList;
@@ -226,7 +218,6 @@ export class Interpreter{
             newItemBarcode.itemId = xmlItemBarcode.item(index).getElementsByTagName(this.prefix + "itemId").item(0).textContent;
             newItemBarcode.unit = xmlItemBarcode.item(index).getElementsByTagName(this.prefix + "unit").item(0).textContent;
             newItemBarcode.id = index;
-            // newFamily.transportId = xmlTransports.item(transportIndex).getElementsByTagName(this.prefix + "specificRole").item(0).textContent;
             itemBarcodeList.push(newItemBarcode);
         }
         return itemBarcodeList;
@@ -242,7 +233,6 @@ export class Interpreter{
             newCompany.label = newCompany.name;
             newCompany.labelCode = newCompany.companyId;
             newCompany.id = index;
-            
             companyList.push(newCompany);
         }
         return companyList;
@@ -270,7 +260,8 @@ export class Interpreter{
             }
             newCPrice.id = index;
             newCPrice.itemId = xmlPrice.item(index).getElementsByTagName(this.prefix + "itemId").item(0).textContent;
-
+            
+            // Si no tiene atributos se le mete un blanco
             // if(attributeList.length == 0) {
             //     let new_attributes: priceAttributes = new priceAttributes();
             //     new_attributes.barcode = '0';

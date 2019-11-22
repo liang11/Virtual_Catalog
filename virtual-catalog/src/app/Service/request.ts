@@ -121,6 +121,9 @@ export class request {
       '</s:Envelope>';
   }
 
+  // Request al web service para traer los precios, unidad y código de barra respectivo.
+  // @param items -- lista de los códigos de los productos a traerse.
+  // @param priceList -- el tipo de cliente para traer los precios respectivos. 
   getPrices(items: string[], priceList: string) {
     var requestPrefix = 'item'
     return '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -135,6 +138,10 @@ export class request {
       '</s:Envelope>';
   }
 
+  // Preparo el header con toso los productos que deseao obtener.
+  // @param items -- lista de los códigos de los productos a obtener.
+  // @param prefix -- prefijo para escribir en la en la consulta.
+  // returns -- string estructurado para completar la consulta al web service.
   getItemsList(items: String[], prefix) {
     var request = '';
     items.forEach(element => {

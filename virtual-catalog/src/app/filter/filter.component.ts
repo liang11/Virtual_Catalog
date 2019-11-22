@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceVirtualCatalogService } from '../service-virtual-catalog.service';
-import { family } from '../classes/family';
-import { subFamily } from '../classes/subFamily';
+import { hierarchy } from '../classes/hierarchy';
 import { DataStorage } from '../Service/DataStorage';
 import { product } from '../classes/product';
 import { lifeCycle } from '../classes/lifeCycle';
@@ -13,8 +12,6 @@ import { itemMark } from '../classes/itemMark';
 import { company } from '../classes/company';
 import { price } from '../classes/price';
 import { Router } from '@angular/router';
-import { priceAttributes } from '../classes/priceAttributes';
-import jsPDF from 'jspdf';
 import { MessageService } from 'primeng/api';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
@@ -23,56 +20,59 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
-export class FilterComponent implements OnInit, AfterViewInit {
+export class FilterComponent implements OnInit {
 
-  listProducts: any[] = [];
-  listFamily: any[] = [];
-  listSubFamily: any[] = [];
-  listCategoria: any[] = [];
-  listSubCategoria: any[] = [];
-  listMainActivity: any[] = [];
-  listSpeciality: any[] = [];
-  listLifeCycle: any[] = [];
-  listPriceGroup: any[] = [];
-  listProductUse: any[] = [];
-  listProductSize: any[] = [];
-  listImgSize: any[] = [];
-  listItemType: any[] = [];
-  listItemMark: any[] = [];
-  listCompanies: any[] = [];
-  listProductAttributes: any[] = [];
+  listaAllProducts: any[] = [];         // Todos los productos.
+  listFamily: any[] = [];               // Todas las familias.
+  listSubFamily: any[] = [];            // Todas las subFamlias.
+  listCategoria: any[] = [];            // Todas las categorias.
+  listSubCategoria: any[] = [];         // Todas las subCategorias.
+  listMainActivity: any[] = [];         // Todos los mainActivity(IP).
+  listSpeciality: any[] = [];           // Todas las especialidades(IP).
+  listLifeCycle: any[] = [];            // Todos los lifeCycle.
+  listPriceGroup: any[] = [];           // Todos las listas de precios.
+  listProductUse: any[] = [];           // Todos los usos de productos.
+  listImgSize: any[] = [];              // Todos los tamaños de las imágenes.
+  listItemType: any[] = [];             // Todos los tipos de artículos.
+  listItemMark: any[] = [];             // Todas las marcas de artículos.
+  listCompanies: any[] = [];            // Todas las compañías.
 
-  listSubFamilyFiltered: any[] = [];
-  listCategoryFiltered: any[] = [];
-  listSubCategoryFiltered: any[] = [];
-  listProductFiltered: any[] = [];
-  listIndividualProducts: any[] = [];
+  listProductAttributes: any[] = [];    // Lista de productos con su respectiva lista de atributos(unidad, precio, cod.barra). 
 
-  listFamilySelected: any[] = [];
-  listSubFamilySelected: any[] = [];
-  listCategorySelected: any[] = [];
-  listSubCategorySelected: any[] = [];
-  listMainActivitySelected: any[] = [];
-  listSpecialitySelected: any[] = [];
-  listLifeCycleSelected: any[] = [];
-  listIndvProdSelected: any[] = [];
-  listImgSelected: any[] = [];
-  listItemTypeSelected: any[] = [];
-  listProdUseSelected: any[] = [];
-  listMarkSelected: any[] = [];
-  listPriceSelected: any[] = [];
-  companySelected: any = null;
+  listSubFamilyFiltered: any[] = [];    // Lista de subFamilias dependiendo de las familias seleccionadas.
+  listCategoryFiltered: any[] = [];     // Lista de categorias dependiendo de las subFamilias seleccionadas.
+  listSubCategoryFiltered: any[] = [];  // Lista de subCategorias dependiendo de las categorias seleccionadas.
+  listIndvProductsFiltered: any[] = []; // Lista de productos que calzan con los filtros.
 
-  historicoVenta: string = "No";
-  selectedValuePrice: string = "No";
-  selectedValueDescripcion: string = "No";
-  selectedValuePromocion: string = "No";
-  selectedValuePriceList: string = "Other";
-  property: string = ""
-  spinner: number = 4;
-  text = '';
-  boolClient: boolean = true;
-  filtersToApply: any[] = [];
+  listFamilySelected: any[] = [];       // Lista de familias seleccionadas.
+  listSubFamilySelected: any[] = [];    // Lista de subFamilias seleccionadas.
+  listCategorySelected: any[] = [];     // Lista de categorias seleccionadas.
+  listSubCategorySelected: any[] = [];  // Lista de subCategorias seleccionadas.
+  listMainActivitySelected: any[] = []; // Lista de mainActivity seleccionadas.
+  listSpecialitySelected: any[] = [];   // Lista de speciality seleccionadas.
+  listLifeCycleSelected: any[] = [];    // Lista de lifeCycle seleccionadas.
+  listIndvProdSelected: any[] = [];     // Lista de prodIndividuales seleccionadas.
+  listImgSelected: any[] = [];          // Lista de tamaño de imgágen seleccionada.
+  listItemTypeSelected: any[] = [];     // Lista de tipo de item seleccionado.
+  listProdUseSelected: any[] = [];      // Lista de uso de producto selecionnado.
+  listMarkSelected: any[] = [];         // Lista de marcas seleccionadas.
+  listPriceSelected: any[] = [];        // Lista de grupo de precio seleccionado.
+  companySelected: any = [];            // Lista de compañia seleccionada.
+
+  rb_historicoVenta: string = "No";     // Radiobutton seleccionado para histórico de ventas(Si, No, Todos).
+  rd_showPrice: string = "No";          // Radiobutton seleccionado para mostrar precios(Si, No).
+  rd_showDescription: string = "No";    // Radiobutton seleccionado para mostrar descripción(Si, No). 
+  rd_showPromotions: string = "No";     // Radiobutton seleccionado para mostrar promociones(Si, No).
+  rd_priceList: string = "Other";       // Radiobutton selecionnado para escoger lista de precios(Cliente, Dirección, Otro).                  
+
+  spinner: number = 4;                  // Cantidad de itemsxpágina.
+  txt_client = '';                      // Código del cliente para habilitar IP.
+  txt_historic = '';                    // Código del cliente para habilitar histórico.
+  bool_client: boolean = true;          // Habilitar/Deshabilitar selecciones sobre IP.
+  bool_historic: boolean = true;        // Habilitar/Deshabilitar selecciones sobre histórico.
+  filtersToApply: any[] = [];           // Lista temporal que contiene los filtros a aplicar sobre los productos.
+
+  // Flags para saber cuando ya terminaron los web services y ya se cargaron en la aplicación.
   prodTypeStatus: boolean = false;
   prodMarkStatus: boolean = false;
   prodUseStatus: boolean = false;
@@ -87,23 +87,35 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   @BlockUI() blockUI: NgBlockUI;
 
-  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage, public router: Router, private messageService: MessageService) { }
+  constructor(private service: ServiceVirtualCatalogService, private _data: DataStorage,
+    public router: Router, private messageService: MessageService) { }
 
+  // Pop-up warning cuando se intenta generar un catálogo sin haber escogido mínimo una familia para mostrar.
   showWarn() {
-    this.messageService.add({ severity: 'warn', summary: 'Atención!', detail: 'Seleccione como mínimo una familia de productos.' });
+    this.messageService.add({
+      severity: 'warn', summary: 'Atención!',
+      detail: 'Seleccione como mínimo una familia de productos.'
+    });
   }
 
+  // Función que bloque la pantalla cuando se está generando el catálogo.
+  // @param message -- mensaje a desplegar mientras la pantalla esta bloqueada
   toggleBlocking(message?: string) {
     this.blockUI.start(message);
   }
 
-  selectedFamilies(data: family[]) {
-    console.log(this.text);
+  // Función cuando se selecciona una familia, se actualizan en cascada la jerarquía
+  // dependiendo de la selección.
+  // @param data -- Lista de familias seleccionadas que vienen desde el componente 'drop-down-multiselect'
+  selectedFamilies(data: hierarchy[]) {
+    console.log("Selected families", data);
+
     this.listFamilySelected = data;
     this.listSubFamilyFiltered = [];
     let temp: any[] = [];
+
     this.listFamilySelected.forEach(element => {
-      this.listSubFamily.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
+      this.listSubFamily.filter((item: hierarchy) => item.parent_id == element.name).forEach(item => {
         if (!this.listSubFamilyFiltered.some(e => e.name == item.name)) {
           this.listSubFamilyFiltered.push(item);
         }
@@ -112,15 +124,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
         temp.push(item);
       });
     });
+
     this.selectedSubFamilies(temp);
   }
 
-  selectedSubFamilies(data: subFamily[]) {
+  // Función cuando se selecciona una subFamilia, se actualizan en cascada la jerarquía
+  // dependiendo de la selección.
+  // @param data -- Lista de subFamilias seleccionadas que vienen desde el componente 'drop-down-multiselect'
+  selectedSubFamilies(data: hierarchy[]) {
+    console.log("Selected subFamilies", data);
+
     this.listSubFamilySelected = data;
     this.listCategoryFiltered = [];
     let temp: any[] = [];
+
     this.listSubFamilySelected.forEach(element => {
-      this.listCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach((item, index) => {
+      this.listCategoria.filter((item: hierarchy) => item.parent_id == element.name).forEach(item => {
         if (!this.listCategoryFiltered.some(e => e.name == item.name)) {
           this.listCategoryFiltered.push(item);
         }
@@ -133,12 +152,18 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.selectedCategories(temp);
   }
 
-  selectedCategories(data: subFamily[]) {
+  // Función cuando se selecciona una categoria, se actualizan en cascada la jerarquía
+  // dependiendo de la selección.
+  // @param data -- Lista de cateogorias seleccionadas que vienen desde el componente 'drop-down-multiselect'
+  selectedCategories(data: hierarchy[]) {
+    console.log("Selected categories", data);
+
     this.listCategorySelected = data;
     this.listSubCategoryFiltered = [];
     let temp: any[] = [];
+
     data.forEach(element => {
-      this.listSubCategoria.filter((item: subFamily) => element.name == item.parent_id).forEach(item => {
+      this.listSubCategoria.filter((item: hierarchy) => item.parent_id == element.name).forEach(item => {
         if (!this.listSubCategoryFiltered.some(e => e.name == item.name)) {
           this.listSubCategoryFiltered.push(item);
         }
@@ -147,100 +172,141 @@ export class FilterComponent implements OnInit, AfterViewInit {
         temp.push(item);
       });
     });
+
     this.selectedSubCategories(temp);
   }
 
-  selectedSubCategories(data: subFamily[]) {
+  // Función cuando se selecciona una subCategoria, al ser el íltimo nivel de la jerarquía 
+  // entonces procede filtrar los productos individuales. 
+  // @param data -- Lista de subCategorias seleccionadas que vienen desde el componente 'drop-down-multiselect'
+  selectedSubCategories(data: hierarchy[]) {
+    console.log("Selected subCategories", data);
     this.listSubCategorySelected = data;
+
     this.filterProducts();
   }
 
+  // Actualiza la lista de productos seleccionados.
+  // @param data -- Lista de productos seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedProducts(data: any[]) {
+    console.log("Selected products", data);
     this.listIndvProdSelected = data;
   }
 
+  // Actualiza la lista de compañia seleccionada.
+  // @param data -- Lista de compañias seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedCompany(data: any[]) {
+    console.log("Selected Company", data);
     this.companySelected = data;
-    //console.log(this.companySelected);
   }
 
+  // Actualiza la lista de ciclo de vida seleccionada y los productos que cumplan con esa selección.
+  // @param data -- Lista de lifeCycle seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedLifeCycle(data: any[]) {
+    console.log("Seleccted lifeCycle", data);
     this.listLifeCycleSelected = data;
+
     this.filterProducts();
   }
 
+  // Actualiza la lista de principal actividad comercial seleccionada.
+  // @param data -- Lista de mainActivity seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedMainActivity(data: any[]) {
+    console.log("Selected mainActivity", data);
     this.listMainActivitySelected = data;
   }
 
+  // Actualiza la lista de especialidad seleccionada.
+  // @param data -- Lista de speciality seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedSpeciality(data: any[]) {
+    //console.log("Selected speciality", data);
     this.listSpecialitySelected = data;
   }
 
+  // Actualiza la lista de tamaño de imagen seleccionada.
+  // @param data -- Lista de imgSize seleccionada que vienen desde el componente 'drop-down-multiselect'
   selectedImgSize(data: any[]) {
+    console.log("Selected imgSize", data);
     this.listImgSelected = data;
   }
 
+  // Actualiza la lista de tipo de item seleccionada y los productos que cumplan con esa selección.
+  // @param data -- Lista de itemType seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedItemType(data: any[]) {
+    console.log("Selected itemType", data);
     this.listItemTypeSelected = data;
+
     this.filterProducts();
   }
 
+  // Actualiza la lista de uso del producto seleccionada y los productos que cumplan con esa selección.
+  // @param data -- Lista de productUse seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedUseProduct(data: any[]) {
+    console.log("Selected product use", data);
     this.listProdUseSelected = data;
+
     this.filterProducts();
   }
 
+  // Actualiza la lista de marcas seleccionada y los productos que cumplan con esa selección.
+  // @param data -- Lista de itemMark seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedMark(data: any[]) {
+    console.log("Selected marks", data);
     this.listMarkSelected = data;
+
     this.filterProducts();
   }
 
+  // Actualiza la lista de precios seleccionada.
+  // @param data -- Lista de priceList seleccionadas que vienen desde el componente 'drop-down-multiselect'
   selectedPrice(data: any[]) {
+    console.log("Selected priceList", data);
     this.listPriceSelected = data;
-    console.log(this.listPriceSelected);
   }
 
+  // Filtra la lista de productos con todos los criterios escogidos.
   filterProducts() {
-    let universe = this.listProducts;
-    let temp = [];
-    let aux: any = [];
-    this.listProductFiltered = [];
-    let lowerLevel = this.getLowerLevel();
-    temp = this.getList(lowerLevel);
+    let universe = this.listaAllProducts;
+    let listProductFiltered = [];
 
+    // Revisa si hay seleccionado algo en itemType, y lo filtra.
     if (this.listItemTypeSelected.length > 0) {
+      let aux: any = [];
       this.listItemTypeSelected.forEach(element => {
         aux = aux.concat(universe.filter((e) => e.itemType == element.name));
       });
       universe = aux;
-      aux = [];
     }
 
+    // Revisa si hay seleccionado algo en productUse, y lo filtra.
     if (this.listProdUseSelected.length > 0) {
+      let aux: any = [];
       this.listProdUseSelected.forEach(element => {
         aux = aux.concat(universe.filter((e) => e.productUse == element.productUseId));
       });
       universe = aux;
-      aux = [];
     }
 
+    // Revisa si hay seleccionado algo en itemMark, y lo filtra.
     if (this.listMarkSelected.length > 0) {
+      let aux: any = [];
       this.listMarkSelected.forEach(element => {
         aux = aux.concat(universe.filter((e) => e.itemMark == element.name));
       });
       universe = aux;
-      aux = [];
     }
 
+    // Revisa si hay seleccionado algo en lifeCycle, y lo filtra.
     if (this.listLifeCycleSelected.length > 0) {
+      let aux: any = [];
       this.listLifeCycleSelected.forEach(element => {
         aux = aux.concat(universe.filter((e) => e.lifeCycle == element.lifeCycleId));
       });
       universe = aux;
-      aux = [];
     }
 
+    // Genera una lista de todos los filtros a nivel de jerarquías y luego los aplica
+    // sobre la lista de todos los productos.
     this.filtersToApply = this.listFamilySelected.slice(0);
     this.updateFilters(this.listSubFamilySelected);
     this.updateFilters(this.listCategorySelected);
@@ -248,131 +314,176 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     this.filtersToApply.forEach(element => {
       universe.filter((item) => item.getAttribute(this.getHierarchy(element.name)) == element.name).forEach(product => {
-        if (!this.listProductFiltered.some(e => e.productId == product.productId)) {
-          this.listProductFiltered.push(product);
+        if (!listProductFiltered.some(e => e.productId == product.productId)) {
+          listProductFiltered.push(product);
         }
       });
-    }); this.listIndividualProducts = this.listProductFiltered;
+    });
 
-    // temp.forEach(element => {
-    //   universe.filter((item) => item.getAttribute(lowerLevel) == element.name).forEach(product => {
-    //     if (!this.listProductFiltered.some(e => e.productId == product.productId)) {
-    //       this.listProductFiltered.push(product);
-    //     }
-    //   });
-    // }); this.listIndividualProducts = this.listProductFiltered;
-
-    this.listIndvProdSelected = this.listIndividualProducts;
-
-    // this.listIndvProdSelected.forEach(element => {
-    //   if (!this.listProductFiltered.some(e => element.productId == e.productId)) {
-    //     this.listProductFiltered.push(element);
-    //   }
-    // });
+    this.listIndvProductsFiltered = listProductFiltered;
+    this.listIndvProdSelected = this.listIndvProductsFiltered;
   }
 
-  filterIndividualProducts() {
-    let temp = [];
-    let aux = [];
-    this.listIndividualProducts = [];
-    let lowerLevel = this.getLowerLevel();
-    temp = this.getList(lowerLevel);
-
-    if (temp.length > 0) {
-      this.listProducts.forEach(element => {
-        if (temp.some(e => e.name == element.getAttribute(lowerLevel))) {
-          if (!this.listIndividualProducts.some(item => item.productId == element.productId)) {
-            this.listIndividualProducts.push(element);
-          }
-        }
-      });
-
-      this.listIndvProdSelected.forEach(element => {
-        if (!temp.some(e => e.name == element.getAttribute(lowerLevel))) {
-          aux.push(element);
-        }
-      });
-
-      this.listIndvProdSelected = aux;
-    } else {
-      this.listIndividualProducts = this.filterRepeat(this.listProducts);
-    }
-  }
-
+  // Revisa si el código del cliente existe.
   checkClient() {
-    this.boolClient = false;
-    console.log(this.text);
+    // Llamada al web service para verificar código de cliente y habilitar los campos respectivos.
+    console.log(this.txt_client);
+    console.log(this.txt_historic);
+
+    this.bool_client = false;
+    this.bool_historic = false;
   }
 
+  // Revisa si la entrada de texto para el código del cliente esta vacía, para habilitar y desabilitar 
+  // ciertos componentes respectivos.
   checkEmpty() {
-    if (!(this.text.length > 0)) {
-      this.boolClient = true;
+    if (!(this.txt_client.length > 0)) {
+      // this.bool_client = false;
+      // this.bool_historic = false;
     }
   }
 
+  // Revisa si la variable ya existe dentro del Application.sessionStorage.
+  // @param variable -- key value para revisar si exsite en sessionStorage
+  // return -- boolean dependiendo si existe o no.
+  checkSessionExistance(variable: String) {
+    for (let index = 0; index < sessionStorage.length; index++) {
+      let key = sessionStorage.key(index);
+      if (key == variable) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Hace las llamadas a todoso los web-services y carga los datos.
   ngOnInit() {
     this.service.test('alo').then((aux: string) => {
       console.log(aux);
     })
-    this.service.getProduct().then((products: product[]) => {
-      this.listProducts = products;
-      // this.listIndividualProducts = this.filterRepeat(this.listProducts);
-      console.log(products);
+    if (true) {//(this.checkSessionExistance('indvProduct')) {
+      console.log('if');
+      this.service.getProduct().then((products: product[]) => {
+        this.listaAllProducts = products;
+        sessionStorage.setItem('indvProduct', JSON.stringify(this.listaAllProducts));
+        console.log(products);
+        this.indvProductStatus = true;
+      })
+    } else {
+      console.log('else');
+      this.listaAllProducts = JSON.parse(sessionStorage.getItem('indvProduct'));
+      console.log(this.listaAllProducts);
       this.indvProductStatus = true;
-    })
-    this.service.getFamily().then((families: family[]) => {
-      //console.log(families);
-      this.listFamily = families;
+    }
+
+    if (true) {//(this.checkSessionExistance('family')) {
+      this.service.getFamily().then((families: hierarchy[]) => {
+        this.listFamily = families;
+        sessionStorage.setItem('family', JSON.stringify(this.listFamily));
+        this.prodFamilyStatus = true;
+      })
+    } else {
+      this.listFamily = JSON.parse(sessionStorage.getItem('family'));
       this.prodFamilyStatus = true;
-    })
-    this.service.getSubFamily().then((subFamilies: subFamily[]) => {
-      //console.log(subFamilies);
-      this.listSubFamily = subFamilies;
+    }
+
+    if (true) {//(this.checkSessionExistance('subFamily')) {
+      this.service.getSubFamily().then((subFamilies: hierarchy[]) => {
+        this.listSubFamily = subFamilies;
+        sessionStorage.setItem('subFamily', JSON.stringify(this.listSubFamily));
+        this.prodSubFamilyStatus = true;
+      })
+    } else {
+      this.listSubFamily = JSON.parse(sessionStorage.getItem('subFamily'));
       this.prodSubFamilyStatus = true;
-    })
-    this.service.getCategoria().then((categorias: subFamily[]) => {
-      //console.log(categorias);
-      this.listCategoria = categorias;
+    }
+
+    if (true) {//(this.checkSessionExistance('category')) {
+      this.service.getCategoria().then((categorias: hierarchy[]) => {
+        this.listCategoria = categorias;
+        sessionStorage.setItem('category', JSON.stringify(this.listCategoria));
+        this.prodCategoryStatus = true;
+      })
+    } else {
+      this.listCategoria = JSON.parse(sessionStorage.getItem('category'));
       this.prodCategoryStatus = true;
-    })
-    this.service.getSubCategoria().then((subCategorias: subFamily[]) => {
-      //console.log(subCategorias);
-      this.listSubCategoria = subCategorias;
+    }
+
+    if (true) {//(this.checkSessionExistance('subCategory')) {
+      this.service.getSubCategoria().then((subCategorias: hierarchy[]) => {
+        this.listSubCategoria = subCategorias;
+        sessionStorage.setItem('subCategory', JSON.stringify(this.listSubCategoria));
+        this.prodSubCategoryStatus = true;
+      })
+    } else {
+      this.listSubCategoria = JSON.parse(sessionStorage.getItem('subCategory'));
       this.prodSubCategoryStatus = true;
-    })
-    this.service.getLifeCycle().then((lifeCycles: lifeCycle[]) => {
-      //console.log(lifeCycles);
-      this.listLifeCycle = lifeCycles;
+    }
+
+    if (true) {//(this.checkSessionExistance('lifeCycle')) {
+      this.service.getLifeCycle().then((lifeCycles: lifeCycle[]) => {
+        this.listLifeCycle = lifeCycles;
+        sessionStorage.setItem('lifeCycle', JSON.stringify(this.listLifeCycle));
+        this.prodLifeCycleStatus = true;
+      })
+    } else {
+      this.listLifeCycle = JSON.parse(sessionStorage.getItem('lifeCycle'));
       this.prodLifeCycleStatus = true;
-    })
+    }
+
+    if (true) {//(this.checkSessionExistance('priceGroup')) {
+      this.service.getPriceGroup().then((priceGroup: priceGroup[]) => {
+        this.listPriceGroup = priceGroup;
+        sessionStorage.setItem('priceGroup', JSON.stringify(this.listPriceGroup));
+        this.prodPriceListStatus = true;
+      })
+    } else {
+      this.listPriceGroup = JSON.parse(sessionStorage.getItem('priceGroup'));
+      this.prodPriceListStatus = true;
+    }
+
+    if (true) {//(this.checkSessionExistance('productUse')) {
+      this.service.getProductUse().then((_productUse: productUse[]) => {
+        this.listProductUse = _productUse;
+        sessionStorage.setItem('productUse', JSON.stringify(this.listProductUse));
+        this.prodUseStatus = true;
+      })
+    } else {
+      this.listProductUse = JSON.parse(sessionStorage.getItem('productUse'));
+      this.prodUseStatus = true;
+    }
+
+    if (true) {//(this.checkSessionExistance('itemType')) {
+      this.service.getItemType().then((_itemType: itemType[]) => {
+        this.listItemType = _itemType;
+        sessionStorage.setItem('itemType', JSON.stringify(this.listItemType));
+        this.prodTypeStatus = true;
+      })
+    } else {
+      this.listItemType = JSON.parse(sessionStorage.getItem('itemType'));
+      this.prodTypeStatus = true;
+    }
+
+    if (true) {//(this.checkSessionExistance('itemMark')) {
+      this.service.getItemMark().then((_itemMark: itemMark[]) => {
+        this.listItemMark = _itemMark;
+        sessionStorage.setItem('itemMark', JSON.stringify(this.listItemMark));
+        this.prodMarkStatus = true;
+      })
+    } else {
+      this.listItemMark = JSON.parse(sessionStorage.getItem('itemMark'));
+      this.prodMarkStatus = true;
+    }
+
     this.service.getMainActivity().then((mainActivity: ipLevel[]) => {
       //console.log(lifeCycles);
       this.listMainActivity = mainActivity;
     })
     this.service.getSpeciality().then((speciality: ipLevel[]) => {
-      //console.log(lifeCycles);
+      //console.log(speciality);
       this.listSpeciality = speciality;
     })
-    this.service.getPriceGroup().then((priceGroup: priceGroup[]) => {
-      //console.log(lifeCycles);
-      this.listPriceGroup = priceGroup;
-      this.prodPriceListStatus = true;
-    })
-    this.service.getProductUse().then((_productUse: productUse[]) => {
-      //console.log(lifeCycles);
-      this.listProductUse = _productUse;
-      this.prodUseStatus = true;
-    })
-    this.service.getItemType().then((_itemType: itemType[]) => {
-      //console.log(lifeCycles);
-      this.listItemType = _itemType;
-      this.prodTypeStatus = true;
-    })
-    this.service.getItemMark().then((_itemMark: itemMark[]) => {
-      //console.log(lifeCycles);
-      this.listItemMark = _itemMark;
-      this.prodMarkStatus = true;
-    })
+
     this.service.getCompanies().then((_companies: company[]) => {
       //console.log(lifeCycles);
       this.listCompanies = _companies;
@@ -381,15 +492,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.listImgSize = [{ labelCode: 'S', label: 'Small', id: '_s_' }, { labelCode: 'M', label: 'Medium', id: '_m_' }, { labelCode: 'L', label: 'Large', id: '_l_' }, { labelCode: 'XL', label: 'Extra Large', id: '' }];
   }
 
+  // Genera el catálogo con la lista de productos ya filtrados.
   generateCatalog() {
-    //this.filterProducts();
+    // Validación si se seleccionó como mínimo una familia de productos para mostrar.
     if (this.listFamilySelected.length <= 0) {
       this.showWarn();
     } else {
+      // Bloquea la pantalla hasta que se genere el catálogo.
       this.toggleBlocking("Generando Catálogo...");
-      console.log("genere");
+
       let price_selected: any;
       let imgSize_selected: any;
+
+      // Reviso por valores vacíos y se les asigna como default los siguientes valores.
       if (this.listPriceSelected.length == 0) {
         price_selected = 'AD';
       } else {
@@ -402,10 +517,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
         imgSize_selected = this.listImgSelected.pop().id;
       }
 
+      // Llamada al web-service de conseguir los precios y códigos de barras de los productos filtrados.
       this.service.getPrices(this.getProductsCodes(), price_selected).then((_prices: price[]) => {
-        //this.service.getPrices(this.getProductsCodes(), 'AA').then((_prices: price[]) => {
         this.listProductAttributes = _prices;
+        let mixed = [];
 
+        // Para productos que tienen más de una unidad del producto, se ordena de menor a mayor.
         this.listProductAttributes.forEach(element => {
           element.attributes.sort(function (a, b) {
             console.log(element.itemId);
@@ -423,133 +540,69 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         console.log(this.listProductAttributes);
 
-        let mixed = [];
-
+        // Combino(relaciono) la lista de productos con sus respectivos atributos. 
         this.listProductAttributes.forEach((itm, i) => {
           if (itm.attributes.length > 0) {
             mixed.push(Object.assign({}, itm, this.listIndvProdSelected[i]));
           }
-
         });
 
-        // console.log(mergeById(this.listIndvProdSelected, this.listProductAttributes));
         console.log(mixed);
 
+        // Save state of the filters-page.
+        // Esto para cuando se regrese la página quede la configuración pasada del catálogo.
+        sessionStorage.setItem('itemTypeSelected', JSON.stringify(this.listItemTypeSelected));
+        sessionStorage.setItem('productUseSelected', JSON.stringify(this.listProdUseSelected));
+        sessionStorage.setItem('itemMarkSelected', JSON.stringify(this.listMarkSelected));
+        sessionStorage.setItem('lifeCycleSelected', JSON.stringify(this.listLifeCycleSelected));
+        sessionStorage.setItem('familyListSelected', JSON.stringify(this.listFamilySelected));
+        sessionStorage.setItem('subFamilyListSelected', JSON.stringify(this.listSubFamilySelected));
+        sessionStorage.setItem('categoryListSelected', JSON.stringify(this.listCategorySelected));
+        sessionStorage.setItem('subCategoryListSelected', JSON.stringify(this.listSubCategorySelected));
+        sessionStorage.setItem('indvProductSelected', JSON.stringify(this.listIndvProdSelected));
+        sessionStorage.setItem('valuePriceSelected', JSON.stringify(this.rd_showPrice));
+        sessionStorage.setItem('valuePriceListSelected', JSON.stringify(this.listPriceSelected));
+        sessionStorage.setItem('spinner', JSON.stringify(this.spinner));
+        sessionStorage.setItem('imgSizeSelected', JSON.stringify(this.listImgSelected));
+
+        // Implementación temporal para la persistencia de los datos.
         this._data.data = {
           familyList: this.listFamilySelected,
           subFamilyList: this.listSubFamilySelected,
           categoryList: this.listCategorySelected,
           subCategoryList: this.listSubCategorySelected,
-          productsList: mixed,//this.listIndvProdSelected, //Este es el que hacce display.
+          productsList: mixed,//Este es el que hacce display.
           lifeCycle: this.listLifeCycleSelected,
           mainActivity: this.listMainActivitySelected,
           speciality: this.listSpecialitySelected,
-          historicoVenta: this.historicoVenta,
-          spinner: this.spinner,
-          allProducts: this.listProducts,
-          productImgSize: imgSize_selected,
+          rb_historicoVenta: this.rb_historicoVenta,
+          spinner: this.spinner, //*
+          allProducts: this.listaAllProducts,
+          productImgSize: imgSize_selected,//*
           prices: this.listProductAttributes,
-          showPrices: this.selectedValuePrice
+          showPrices: this.rd_showPrice
         }
 
-        var doc = new jsPDF();
-
-        // Set Fonts
-        doc.setFontType("bold");
-        doc.setTextColor(0, 0, 0);
-
-        //SubCategory Title
-        doc.setFontSize(30);
-        doc.text("SubCategory", 20, 20);
-
-        //Set Family tag
-        doc.setFontSize(20);
-        doc.setFillColor(8, 100, 139);
-        doc.rect(185, 0, 15, 85, 'F');
-
-        doc.text("Familia", 190, 10, { rotationDirection: "0", angle: "-90" });
-
-        //Set SubFamily tag
-        doc.setFillColor(8, 100, 139);
-        doc.rect(185, 185, 15, 115, 'F');
-
-        doc.text("SubFamilia", 190, 190, { rotationDirection: "0", angle: "-90" });
-
-
-        let x = 20;
-        let y = 40;
-        var img;
-        async function loadImage() {
-          for (let index = 0; index < 4; index++) {
-            let aux = mixed[index];
-            img = await toDataURL('http://186.176.206.154:8088/images/Products/' + aux.productId + '_l_.PNG');
-            console.log("si espere");
-            //console.log(img);
-            doc.addImage(img, 'PNG', x, y, 65, 65);
-            if (x == 100) {
-              x = 20;
-              y += 130;
-            }
-            else {
-              x += 80;
-            }
-
-          }
-
-          doc.save('a4.pdf');
-        }
-
-        //loadImage();
-
-        console.log("ya salve");
-        //doc.save('a4.pdf');
+        // Desbloqueo la pantalla y navego a la pantalla del catálogo.
         this.blockUI.stop();
         this.router.navigate(['/catalog']);
-
       });
     }
   }
 
-  ngAfterViewInit() {
-
-  }
-
-  getLowerLevel() {
-    if (this.listSubCategorySelected.length > 0) { return "subCategory" };
-    if (this.listCategorySelected.length > 0) { return "category" };
-    if (this.listSubFamilySelected.length > 0) { return "subFamily" };
-    if (this.listFamilySelected.length > 0) { return "family" };
-  }
-
-  getList(list: string) {
-    switch (list) {
-      case "family": { return this.listFamilySelected; }
-      case "subFamily": { return this.listSubFamilySelected; }
-      case "category": { return this.listCategorySelected; }
-      case "subCategory": { return this.listSubCategorySelected; }
-      default: { return [] };
-    }
-  }
-
-  filterRepeat(lista: any[]) {
-    let temp: any[] = [];
-    lista.forEach(product => {
-      if (!temp.some(e => e.productId == product.productId)) {
-        temp.push(product);
-      }
-    });
-    return temp;
-  }
-
+  // Genera una lista de strings con los códigos de los productos.
+  // returns -- string[] con todos los códgos de los productos.
   getProductsCodes() {
     let productCodes: string[] = [];
-    console.log(this.listIndvProdSelected);
     this.listIndvProdSelected.forEach(element => {
       productCodes.push(element.productId);
     });
     return productCodes;
   }
 
+  // Filtra que no se esté filtrando por la misma familia 2 veces, 
+  // ie. si ya esta la subFamilia de 'Alcoholicas' para filtrar, entonces no agregar que filtre por 'Bebidas'. 
+  // @param filter -- hierarchy[] lista de filtros de la jerarquía (family, subFamily, etc).
   updateFilters(filter: any[]) {
     filter.forEach(element => {
       let position = this.filtersToApply.findIndex(i => i.name == element.parent_id);
@@ -561,6 +614,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Get the level of hierarchy that belongs the entry.
+  // ie. input: Alcoholicas - return: subFamily; 
+  // ie. input: Bebidas - return: family.
+  // @param name -- recibe un nombre de la jerarquía.
+  // returns -- string del nivel de la jerarquía en la pertence 'name'.
   getHierarchy(name: string) {
     if (this.listFamily.some((e => e.name == name))) {
       return "family";
@@ -576,22 +634,4 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
   }
 
-}
-
-function toDataURL(url) {
-  let promise = new Promise((resolve, reject) => {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        console.log("fucion primero");
-        resolve(reader.result);
-      }
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-  });
-  return promise;
 }

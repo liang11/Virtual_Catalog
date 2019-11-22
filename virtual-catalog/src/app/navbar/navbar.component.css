@@ -8,7 +8,6 @@
 }
 
 .navbar-brand {
-  /* filter: saturate(175%) contrast(65%); */
   filter: invert(1);
   padding-top: 0.5rem;
 }
